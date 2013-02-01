@@ -1,0 +1,30 @@
+{
+  "name": "spalt",
+  "version": "0.0.1",
+  "description": "A beer recipe calculator",
+  "main": "lib/spalt.js",
+  "scripts": {
+    "pretest": "cake build",
+    "prepublish": "cake build",
+    "test": "cake test"
+  },
+  "repository": "",
+  "keywords": [
+    "beer",
+    "homebrew",
+    "homebrewing",
+    "malt",
+    "hops",
+    "yeast",
+    "ferment"
+  ],
+  "author": "Daniel G. Taylor",
+  "license": "MIT",
+  "devDependencies": {
+    "coffee-script": "*",
+    "mocha": "*"
+  },
+  "engines": {
+    "node": ">=0.8"
+  }
+}
