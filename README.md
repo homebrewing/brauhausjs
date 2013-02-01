@@ -7,7 +7,7 @@ A library for homebrew beer calculations using Node.js or a web browser. Feature
  * Automatically generated recipe instructions
  * Color to RGB conversions, CSS color support, etc
 
-[![Build Status](https://travis-ci.org/danielgtaylor/spaltjs.png)](https://travis-ci.org/danielgtaylor/spaltjs)
+[![Build Status](https://travis-ci.org/danielgtaylor/spaltjs.png?branch=master)](https://travis-ci.org/danielgtaylor/spaltjs)
 
 Installation
 ------------
