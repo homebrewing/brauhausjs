@@ -7,6 +7,8 @@ A library for homebrew beer calculations using Node.js or a web browser. Feature
  * Automatically generated recipe instructions
  * Color to RGB conversions, CSS color support, etc
 
+This project is named after the [Spalt hop variety](http://beerlegends.com/spalt-hops), which is a noble hop from the [Spalt region](http://en.wikipedia.org/wiki/Spalt) of southern Germany.
+
 [![Build Status](https://travis-ci.org/danielgtaylor/spaltjs.png?branch=master)](https://travis-ci.org/danielgtaylor/spaltjs)
 
 Installation
@@ -52,7 +54,7 @@ Coming soon...
 
 License
 -------
-Copyright (c) 2012 Daniel G. Taylor
+Copyright (c) 2013 Daniel G. Taylor
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
