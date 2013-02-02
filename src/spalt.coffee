@@ -92,10 +92,10 @@ class Spalt.Fermentable extends Spalt.Ingredient
 
         value
 
-    # Get the gravity units per gallon
-    gu: ->
-        # gu = parts per gallon * weight in pounds
-        (@yield * 0.46214) * (@weight * 2.20462)
+    # Get the gravity units for a specific liquid volume
+    gu: (gallons = 1.0) ->
+        # gu = parts per gallon * weight in pounds / gallons
+        (@yield * 0.46214) * (@weight * 2.20462) / gallons
 
     # Get a rgb triplet for this fermentable's color
     colorRgb: ->
@@ -120,6 +120,9 @@ class Spalt.Recipe extends Spalt.OptionConstructor
     boilSize: 10.0
     batchSize: 20.0
 
+    steepEfficiency: 0.5
+    mashEfficiency: 0.75
+
     fermentables: []
     spices: []
     yeast: []
@@ -138,7 +141,14 @@ class Spalt.Recipe extends Spalt.OptionConstructor
         @og = 1.0
 
         for fermentable in @fermentables
-            @og += fermentable.gu() / (@batchSize * 264.172)
+            efficiency = 1.0
+            addition = fermentable.addition()
+            if addition is 'steep'
+                efficiency = @steepEfficiency
+            else if addition is 'mash'
+                efficiency = @mashEfficiency
+
+            @og += fermentable.gu(@batchSize * 264.172) * efficiency
 
     toXml: ->
         xml = '<?xml version="1.0" encoding="utf-8"?><recipes><recipe>'

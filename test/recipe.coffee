@@ -21,3 +21,26 @@ describe 'Recipe', ->
         # Run tests
         it 'Should calculate OG as 1.051', ->
             assert.equal 1.051, recipe.og.toFixed(3)
+
+    describe 'Steep', ->
+        recipe = new Recipe
+            batchSize: 20.0
+            boilSize: 10.0
+
+        # Add some ingredients
+        recipe.add 'fermentable'
+            name: 'Extra pale LME'
+            weight: 2.5
+            yield: 75.0
+            color: 2.0
+
+        recipe.add 'fermentable'
+            name: 'Caramel 60L'
+            weight: 0.5
+            yield: 73.0
+            color: 60.0
+
+        recipe.calculate()
+
+        it 'Should calculate OG as 1.090', ->
+            assert.equal 1.090, recipe.og.toFixed(3)
