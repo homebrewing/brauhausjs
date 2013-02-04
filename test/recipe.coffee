@@ -42,5 +42,22 @@ describe 'Recipe', ->
 
         recipe.calculate()
 
-        it 'Should calculate OG as 1.090', ->
-            assert.equal 1.090, recipe.og.toFixed(3)
+        it 'Should calculate OG as 1.040', ->
+            assert.equal 1.040, recipe.og.toFixed(3)
+
+    describe 'Mash', ->
+        recipe = new Recipe
+            batchSize: 20.0
+            boilSize: 10.0
+
+        # Add some ingredients
+        recipe.add 'fermentable'
+            name: 'Pilsner malt'
+            weight: 4.5
+            yield: 74.0
+            color: 1.5
+
+        recipe.calculate()
+
+        it 'Should calculate OG as 1.048', ->
+            assert.equal 1.048, recipe.og.toFixed(3)

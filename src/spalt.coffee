@@ -129,9 +129,9 @@ class Spalt.Recipe extends Spalt.OptionConstructor
     steepEfficiency: 0.5
     mashEfficiency: 0.75
 
-    fermentables: []
-    spices: []
-    yeast: []
+    fermentables: null
+    spices: null
+    yeast: null
 
     og: 0.0
     fg: 0.0
@@ -139,13 +139,20 @@ class Spalt.Recipe extends Spalt.OptionConstructor
     ibu: 0.0
     abv: 0.0
 
+    constructor: (options) ->
+        @fermentables = []
+        @spices = []
+        @yeast = []
+
+        super(options)
+
     add: (type, values) ->
         if type is 'fermentable'
             @fermentables.push new Spalt.Fermentable(values)
 
     calculate: ->
         @og = 1.0
-
+        
         for fermentable in @fermentables
             efficiency = 1.0
             addition = fermentable.addition()
