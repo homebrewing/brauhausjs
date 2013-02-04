@@ -5,6 +5,10 @@ task 'build', 'Build lib from src', ->
         console.log stdout
         throw err if err
 
+        exec './node_modules/.bin/uglifyjs --comments -o lib/spalt.min.js lib/spalt.js', (err, stdout) ->
+            console.log stdout
+            throw err if err
+
 task 'test', 'Run library tests', ->
     exec './node_modules/.bin/mocha --compilers coffee:coffee-script -R spec --colors', (err, stdout) ->
         console.log stdout

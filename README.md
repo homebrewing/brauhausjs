@@ -19,8 +19,36 @@ You can install Spalt.js using `npm`:
 npm install spalt
 ```
 
-Quick Example (CoffeeScript)
-----------------------------
+Quick Example (browser)
+-----------------------
+Here is an example of how to use the library in a browser. Be sure to copy the `lib/spalt.min.js` file onto the web server. This example assumes it is accessible via `/scripts/spalt.min.js`:
+
+```html
+<script type="text/javascript" src="/scripts/spalt.min.js"></script>
+<script type="text/javascript">
+    var r = new Spalt.Recipe({
+        name: 'My test brew',
+        description: 'A new test beer using Spalt.js!',
+        batchSize: 20.0,
+        boilSize: 10.0
+    });
+
+    r.add('fermentable', {
+        name: 'Extra pale liquid extract',
+        color: 2.5,
+        weight: 4.2,
+        yield: 78.0
+    });
+
+    r.calculate();
+
+    console.log('Original Gravity: ' + r.og.toFixed(3));
+    console.log 'Alcohol: ' + r.abv + ' by volume'));
+</script>
+```
+
+Quick Example (Node.js CoffeeScript)
+------------------------------------
 Here is an example of how to use the library from CoffeeScript:
 
 ```coffeescript
@@ -44,9 +72,32 @@ console.log "Original Gravity: #{ r.og.toFixed 3 }"
 console.log "Alcohol: #{ r.abv }% by volume"
 ```
 
-Quick Example (Javascript)
---------------------------
-Coming soon...
+Quick Example (Node.js Javascript)
+----------------------------------
+Here is an example of how to use the library form Javascript:
+
+```javascript
+Recipe = require('spalt').Recipe
+
+var r = new Recipe({
+    name: 'My test brew',
+    description: 'A new test beer using Spalt.js!',
+    batchSize: 20.0,
+    boilSize: 10.0
+});
+
+r.add('fermentable', {
+    name: 'Extra pale liquid extract',
+    color: 2.5,
+    weight: 4.2,
+    yield: 78.0
+});
+
+r.calculate();
+
+console.log('Original Gravity: ' + r.og.toFixed(3));
+console.log 'Alcohol: ' + r.abv + ' by volume'));
+```
 
 Reference
 ---------

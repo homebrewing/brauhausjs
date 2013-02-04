@@ -22,7 +22,8 @@
   "license": "MIT",
   "devDependencies": {
     "coffee-script": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "uglify-js": "*"
   },
   "engines": {
     "node": ">=0.6"

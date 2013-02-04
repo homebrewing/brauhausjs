@@ -1,3 +1,9 @@
+###
+@preserve Spalt.js Beer Calculator
+Copyright 2013 Daniel G. Taylor <danielgtaylor@gmail.com>
+https://github.com/danielgtaylor/spaltjs
+###
+
 # Create the base module so it works in both node.js and in browsers
 Spalt = exports? and exports or @Spalt = {}
 
