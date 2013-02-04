@@ -1,11 +1,11 @@
 ###
-@preserve Spalt.js Beer Calculator
+@preserve BrauHaus.js Beer Calculator
 Copyright 2013 Daniel G. Taylor <danielgtaylor@gmail.com>
-https://github.com/danielgtaylor/spaltjs
+https://github.com/danielgtaylor/brauhausjs
 ###
 
 # Create the base module so it works in both node.js and in browsers
-Spalt = exports? and exports or @Spalt = {}
+BrauHaus = exports? and exports or @BrauHaus = {}
 
 # Regular expressions to match for steeping grains, such as caramel malts.
 # This is used to create the recipe timeline.
@@ -32,14 +32,14 @@ COLOR_NAMES = [
 ]
 
 # A base class which sets passed options as properties
-class Spalt.OptionConstructor
+class BrauHaus.OptionConstructor
     constructor: (options) ->
         # Set any properties passed in
         for own property of options
             @[property] = options[property]
 
 # Convert SRM color values to [r, g, b] triplets
-Spalt.srmToRgb = (srm) ->
+BrauHaus.srmToRgb = (srm) ->
     r = Math.round(Math.min(255, Math.max(0, 255 * Math.pow(0.975, srm))))
     g = Math.round(Math.min(255, Math.max(0, 245 * Math.pow(0.88, srm))))
     b = Math.round(Math.min(255, Math.max(0, 220 * Math.pow(0.7, srm))))
@@ -47,12 +47,12 @@ Spalt.srmToRgb = (srm) ->
     [r, g, b]
 
 # Convert SRM color values to CSS-friendly strings
-Spalt.srmToCss = (srm) ->
-    [r, g, b] = Spalt.srmToRgb srm
+BrauHaus.srmToCss = (srm) ->
+    [r, g, b] = BrauHaus.srmToRgb srm
     "rgb(#{ r }, #{ g }, #{ b })"
 
 # Convert SRM color values into friendly names
-Spalt.srmToName = (srm) ->
+BrauHaus.srmToName = (srm) ->
     color = COLOR_NAMES[0][1]
 
     for item in COLOR_NAMES
@@ -61,7 +61,7 @@ Spalt.srmToName = (srm) ->
     color
 
 # Base class for new recipe ingredients
-class Spalt.Ingredient extends Spalt.OptionConstructor
+class BrauHaus.Ingredient extends BrauHaus.OptionConstructor
     constructor: (options) ->
         # Set default name based on the class name
         @name = 'New ' + @constructor.name
@@ -69,7 +69,7 @@ class Spalt.Ingredient extends Spalt.OptionConstructor
         super(options)
 
 # A fermentable ingredient, e.g. liquid malt extract.
-class Spalt.Fermentable extends Spalt.Ingredient
+class BrauHaus.Fermentable extends BrauHaus.Ingredient
     weight: 1.0
     yield: 75.0
     color: 2.0
@@ -105,13 +105,13 @@ class Spalt.Fermentable extends Spalt.Ingredient
 
     # Get a rgb triplet for this fermentable's color
     colorRgb: ->
-        Spalt.srmToRgb @color
+        BrauHaus.srmToRgb @color
 
     # Get a CSS-friendly string for this fermentable's color
     colorCss: ->
-        Spalt.srmToCss @color
+        BrauHaus.srmToCss @color
 
-class Spalt.Spice extends Spalt.Ingredient
+class BrauHaus.Spice extends BrauHaus.Ingredient
     weight: 0.025
     aa: 0.0
     use: 'boil'
@@ -119,7 +119,7 @@ class Spalt.Spice extends Spalt.Ingredient
     form: 'pellet'
 
 # A beer recipe
-class Spalt.Recipe extends Spalt.OptionConstructor
+class BrauHaus.Recipe extends BrauHaus.OptionConstructor
     name: 'New Recipe'
     description: 'Recipe description'
     author: 'Anonymous Brewer'
@@ -148,7 +148,7 @@ class Spalt.Recipe extends Spalt.OptionConstructor
 
     add: (type, values) ->
         if type is 'fermentable'
-            @fermentables.push new Spalt.Fermentable(values)
+            @fermentables.push new BrauHaus.Fermentable(values)
 
     calculate: ->
         @og = 1.0

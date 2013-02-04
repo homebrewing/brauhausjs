@@ -1,4 +1,4 @@
-{Recipe} = require '../lib/spalt'
+{Recipe} = require '../lib/brauhaus'
 
 assert = require 'assert'
 

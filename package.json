@@ -1,8 +1,8 @@
 {
-  "name": "spalt",
+  "name": "brauhaus",
   "version": "0.0.4",
   "description": "A beer recipe calculator",
-  "main": "lib/spalt.js",
+  "main": "lib/brauhaus.js",
   "scripts": {
     "pretest": "cake build",
     "prepublish": "cake build",

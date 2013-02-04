@@ -1,4 +1,4 @@
-{Fermentable} = require '../lib/spalt'
+{Fermentable} = require '../lib/brauhaus'
 
 assert = require 'assert'
 

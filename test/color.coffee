@@ -1,4 +1,4 @@
-{srmToCss, srmToName} = require '../lib/spalt'
+{srmToCss, srmToName} = require '../lib/brauhaus'
 
 assert = require 'assert'
 

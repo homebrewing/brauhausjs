@@ -1,5 +1,5 @@
-Spalt.js
-========
+BrauHaus.js
+===========
 A library for homebrew beer calculations using Node.js or a web browser. Features:
 
  * BeerXML import / export
@@ -7,28 +7,26 @@ A library for homebrew beer calculations using Node.js or a web browser. Feature
  * Automatically generated recipe instructions
  * Color to RGB conversions, CSS color support, etc
 
-This project is named after the [Spalt hop variety](http://beerlegends.com/spalt-hops), which is a noble hop from the [Spalt region](http://en.wikipedia.org/wiki/Spalt) of southern Germany.
-
-[![Build Status](https://travis-ci.org/danielgtaylor/spaltjs.png?branch=master)](https://travis-ci.org/danielgtaylor/spaltjs)
+[![Build Status](https://travis-ci.org/danielgtaylor/brauhausjs.png?branch=master)](https://travis-ci.org/danielgtaylor/brauhausjs)
 
 Installation
 ------------
-You can install Spalt.js using `npm`:
+You can install BrauHaus.js using `npm`:
 
 ```bash
-npm install spalt
+npm install brauhaus
 ```
 
 Quick Example (browser)
 -----------------------
-Here is an example of how to use the library in a browser. Be sure to copy the `lib/spalt.min.js` file onto the web server. This example assumes it is accessible via `/scripts/spalt.min.js`:
+Here is an example of how to use the library in a browser. Be sure to copy the `lib/brauhaus.min.js` file onto the web server. This example assumes it is accessible via `/scripts/brauhaus.min.js`:
 
 ```html
-<script type="text/javascript" src="/scripts/spalt.min.js"></script>
+<script type="text/javascript" src="/scripts/brauhaus.min.js"></script>
 <script type="text/javascript">
-    var r = new Spalt.Recipe({
+    var r = new BrauHaus.Recipe({
         name: 'My test brew',
-        description: 'A new test beer using Spalt.js!',
+        description: 'A new test beer using BrauHaus.js!',
         batchSize: 20.0,
         boilSize: 10.0
     });
@@ -52,11 +50,11 @@ Quick Example (Node.js CoffeeScript)
 Here is an example of how to use the library from CoffeeScript:
 
 ```coffeescript
-{Recipe} = require 'spalt'
+{Recipe} = require 'brauhaus'
 
 r = new Recipe
     name: 'My test brew'
-    description: 'A new test beer using Spalt.js!'
+    description: 'A new test beer using BrauHaus.js!'
     batchSize: 20.0
     boilSize: 10.0
 
@@ -77,11 +75,11 @@ Quick Example (Node.js Javascript)
 Here is an example of how to use the library form Javascript:
 
 ```javascript
-Recipe = require('spalt').Recipe
+Recipe = require('brauhaus').Recipe
 
 var r = new Recipe({
     name: 'My test brew',
-    description: 'A new test beer using Spalt.js!',
+    description: 'A new test beer using BrauHaus.js!',
     batchSize: 20.0,
     boilSize: 10.0
 });
