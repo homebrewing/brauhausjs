@@ -33,3 +33,7 @@ describe 'Fermentible', ->
     it 'Should calculate 3.5 SRM as rgb(233, 157, 63)', ->
         f.color = 3.5
         assert.equal 'rgb(233, 157, 63)', f.colorCss()
+
+    it 'Should calculate 3.5 SRM as "straw"', ->
+        f.color = 3.5
+        assert.equal 'straw', f.colorName()
