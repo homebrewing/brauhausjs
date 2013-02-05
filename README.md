@@ -1,4 +1,4 @@
-BrauHaus.js
+Brauhaus.js
 ===========
 A library for homebrew beer calculations using Node.js or a web browser. Features:
 
@@ -11,7 +11,7 @@ A library for homebrew beer calculations using Node.js or a web browser. Feature
 
 Installation
 ------------
-You can install BrauHaus.js using `npm`:
+You can install Brauhaus.js using `npm`:
 
 ```bash
 npm install brauhaus
@@ -19,14 +19,14 @@ npm install brauhaus
 
 Quick Example (browser)
 -----------------------
-Here is an example of how to use the library in a browser. Be sure to copy the `lib/brauhaus.min.js` file onto the web server. This example assumes it is accessible via `/scripts/brauhaus.min.js`:
+Here is an example of how to use the library in a browser. Be sure to copy the `lib/Brauhaus.min.js` file onto the web server. This example assumes it is accessible via `/scripts/Brauhaus.min.js`:
 
 ```html
 <script type="text/javascript" src="/scripts/brauhaus.min.js"></script>
 <script type="text/javascript">
-    var r = new BrauHaus.Recipe({
+    var r = new Brauhaus.Recipe({
         name: 'My test brew',
-        description: 'A new test beer using BrauHaus.js!',
+        description: 'A new test beer using Brauhaus.js!',
         batchSize: 20.0,
         boilSize: 10.0
     });
@@ -54,7 +54,7 @@ Here is an example of how to use the library from CoffeeScript:
 
 r = new Recipe
     name: 'My test brew'
-    description: 'A new test beer using BrauHaus.js!'
+    description: 'A new test beer using Brauhaus.js!'
     batchSize: 20.0
     boilSize: 10.0
 
@@ -79,7 +79,7 @@ Recipe = require('brauhaus').Recipe
 
 var r = new Recipe({
     name: 'My test brew',
-    description: 'A new test beer using BrauHaus.js!',
+    description: 'A new test beer using Brauhaus.js!',
     batchSize: 20.0,
     boilSize: 10.0
 });
