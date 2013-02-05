@@ -1,9 +1,8 @@
-{Fermentable} = require '../lib/brauhaus'
-
-assert = require 'assert'
+Brauhaus = Brauhaus ? require '../lib/brauhaus'
+assert = assert ? require 'assert'
 
 describe 'Fermentible', ->
-    f = new Fermentable
+    f = new Brauhaus.Fermentable
     
     names =
         'Light liquid malt extract': ['extract', 'boil']

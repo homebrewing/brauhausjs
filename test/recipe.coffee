@@ -1,10 +1,9 @@
-{Recipe} = require '../lib/brauhaus'
-
-assert = require 'assert'
+Brauhaus = Brauhaus ? require '../lib/brauhaus'
+assert = assert ? require 'assert'
 
 describe 'Recipe', ->
     describe 'Extract', ->
-        recipe = new Recipe
+        recipe = new Brauhaus.Recipe
             batchSize: 20.0
             boilSize: 10.0
 
@@ -32,7 +31,7 @@ describe 'Recipe', ->
             assert.equal 4.6, recipe.color.toFixed(1)
 
     describe 'Steep', ->
-        recipe = new Recipe
+        recipe = new Brauhaus.Recipe
             batchSize: 20.0
             boilSize: 10.0
 
@@ -64,7 +63,7 @@ describe 'Recipe', ->
             assert.equal 9.4, recipe.color.toFixed(1)
 
     describe 'Mash', ->
-        recipe = new Recipe
+        recipe = new Brauhaus.Recipe
             batchSize: 20.0
             boilSize: 10.0
 

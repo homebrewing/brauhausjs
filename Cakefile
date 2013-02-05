@@ -9,7 +9,17 @@ task 'build', 'Build lib from src', ->
             console.log stdout
             throw err if err
 
-task 'test', 'Run library tests', ->
-    exec './node_modules/.bin/mocha --compilers coffee:coffee-script -R spec --colors', (err, stdout) ->
+    exec './node_modules/.bin/coffee --compile --bare test', (err, stdout) ->
         console.log stdout
         throw err if err
+
+task 'test', 'Run library tests', ->
+    exec './node_modules/.bin/mocha --compilers coffee:coffee-script -R spec --colors test/*.coffee', (err, stdout) ->
+        console.log stdout
+        throw err if err
+
+    # Run headless web browser tests on continuous integration hosts
+    if process.env.CI
+        exec 'node_modules/.bin/mocha-phantomjs test/test.html', (err, stdout) ->
+            console.log stdout
+            throw err if err

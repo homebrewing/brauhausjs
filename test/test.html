@@ -1,0 +1,26 @@
+<html>
+<head>
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+</head>
+<body>
+    <div id="mocha"></div>
+    <script src="../lib/brauhaus.min.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>
+        var assert = chai.assert;
+
+        mocha.setup('bdd');
+    </script>
+    <script src="color.js"></script>
+    <script src="fermentable.js"></script>
+    <script src="recipe.js"></script>
+    <script>
+        if (window.mochaPhantomJS) { 
+            mochaPhantomJS.run();
+        } else { 
+            mocha.run();
+        }
+    </script>
+</body>
+</html>
