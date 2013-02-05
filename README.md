@@ -7,7 +7,7 @@ A library for homebrew beer calculations using Node.js or a web browser. Feature
  * Automatically generated recipe instructions
  * Color to RGB conversions, CSS color support, etc
 
-[![Build Status](https://travis-ci.org/danielgtaylor/brauhausjs.png?branch=master)](https://travis-ci.org/danielgtaylor/brauhausjs)
+[![Build Status](https://travis-ci.org/danielgtaylor/brauhausjs.png)](https://travis-ci.org/danielgtaylor/brauhausjs)
 
 Installation
 ------------
