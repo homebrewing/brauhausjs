@@ -22,6 +22,15 @@ describe 'Recipe', ->
         it 'Should calculate OG as 1.051', ->
             assert.equal 1.051, recipe.og.toFixed(3)
 
+        it 'Should calculate FG as 1.013', ->
+            assert.equal 1.013, recipe.fg.toFixed(3)
+
+        it 'Should calculate ABV as 5.0 %', ->
+            assert.equal 5.0, recipe.abv.toFixed(1)
+
+        it 'Should calculate color as 4.6 SRM', ->
+            assert.equal 4.6, recipe.color.toFixed(1)
+
     describe 'Steep', ->
         recipe = new Recipe
             batchSize: 20.0
@@ -45,6 +54,15 @@ describe 'Recipe', ->
         it 'Should calculate OG as 1.040', ->
             assert.equal 1.040, recipe.og.toFixed(3)
 
+        it 'Should calculate FG as 1.010', ->
+            assert.equal 1.010, recipe.fg.toFixed(3)
+
+        it 'Should calculate ABV as 3.9 %', ->
+            assert.equal 3.9, recipe.abv.toFixed(1)
+
+        it 'Should calculate color as 9.4 SRM', ->
+            assert.equal 9.4, recipe.color.toFixed(1)
+
     describe 'Mash', ->
         recipe = new Recipe
             batchSize: 20.0
@@ -61,3 +79,12 @@ describe 'Recipe', ->
 
         it 'Should calculate OG as 1.048', ->
             assert.equal 1.048, recipe.og.toFixed(3)
+
+        it 'Should calculate FG as 1.012', ->
+            assert.equal 1.012, recipe.fg.toFixed(3)
+
+        it 'Should calculate ABV as 4.7 %', ->
+            assert.equal 4.7, recipe.abv.toFixed(1)
+
+        it 'Should calculate color as 3.0 SRM', ->
+            assert.equal 3.0, recipe.color.toFixed(1)

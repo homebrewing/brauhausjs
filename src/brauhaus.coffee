@@ -189,7 +189,11 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
     calculate: ->
         @og = 1.0
+        @fg = 0.0
+
+        mcu = 0.0
         
+        # Calculate gravities and color from fermentables
         for fermentable in @fermentables
             efficiency = 1.0
             addition = fermentable.addition()
@@ -198,7 +202,25 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
             else if addition is 'mash'
                 efficiency = @mashEfficiency
 
+            mcu += fermentable.color * fermentable.weight / @batchSize * 8.34539
+
             @og += fermentable.gu(@batchSize * 264.172) * efficiency
+
+        @color = 1.4922 * Math.pow(mcu, 0.6859)
+
+        # Get attenuation for final gravity
+        attenuation = 0.0
+        for yeast in @yeast
+            attenuation = yeast.attenuation if yeast.attenuation > attenuation
+
+        attenuation = 75.0 if attenuation is 0
+
+        # Update final gravity based on original gravity and maximum
+        # attenuation from yeast.
+        @fg = @og - ((@og - 1.0) * attenuation / 100.0)
+
+        # Update alcohol by volume based on original and final gravity
+        @abv = ((1.05 * (@og - @fg)) / @fg) / 0.79 * 100.0
 
     toXml: ->
         xml = '<?xml version="1.0" encoding="utf-8"?><recipes><recipe>'
