@@ -30,6 +30,9 @@ describe 'Recipe', ->
         it 'Should calculate color as 4.6 SRM', ->
             assert.equal 4.6, recipe.color.toFixed(1)
 
+        it 'Should calculate calories as 166 kcal', ->
+            assert.equal 166, Math.round(recipe.calories)
+
     describe 'Steep', ->
         recipe = new Brauhaus.Recipe
             batchSize: 20.0
@@ -62,6 +65,9 @@ describe 'Recipe', ->
         it 'Should calculate color as 9.4 SRM', ->
             assert.equal 9.4, recipe.color.toFixed(1)
 
+        it 'Should calculate calories as 130 kcal', ->
+            assert.equal 130, Math.round(recipe.calories)
+
     describe 'Mash', ->
         recipe = new Brauhaus.Recipe
             batchSize: 20.0
@@ -87,3 +93,6 @@ describe 'Recipe', ->
 
         it 'Should calculate color as 3.0 SRM', ->
             assert.equal 3.0, recipe.color.toFixed(1)
+
+        it 'Should calculate calories as 158 kcal', ->
+            assert.equal 158, Math.round(recipe.calories)

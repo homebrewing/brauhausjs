@@ -169,6 +169,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     author: 'Anonymous Brewer'
     boilSize: 10.0
     batchSize: 20.0
+    servingSize: 0.355
 
     steepEfficiency: 0.5
     mashEfficiency: 0.75
@@ -182,6 +183,12 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     color: 0.0
     ibu: 0.0
     abv: 0.0
+
+    ogPlato: 0.0
+    fgPlato: 0.0
+    abw: 0.0
+    realExtract: 0.0
+    calories: 0.0
 
     constructor: (options) ->
         @fermentables = []
@@ -197,8 +204,10 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     calculate: ->
         @og = 1.0
         @fg = 0.0
+        @ibu = 0.0
 
         mcu = 0.0
+        attenuation = 0.0
         
         # Calculate gravities and color from fermentables
         for fermentable in @fermentables
@@ -216,7 +225,6 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         @color = 1.4922 * Math.pow(mcu, 0.6859)
 
         # Get attenuation for final gravity
-        attenuation = 0.0
         for yeast in @yeast
             attenuation = yeast.attenuation if yeast.attenuation > attenuation
 
@@ -228,6 +236,18 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
         # Update alcohol by volume based on original and final gravity
         @abv = ((1.05 * (@og - @fg)) / @fg) / 0.79 * 100.0
+
+        # Gravity degrees plato approximations
+        @ogPlato = (-463.37) + (668.72 * @og) - (205.35 * (@og * @og))
+        @fgPlato = (-463.37) + (668.72 * @fg) - (205.35 * (@fg * @fg))
+
+        # Update calories
+        @realExtract = (0.1808 * @ogPlato) + (0.8192 * @fgPlato)
+        @abw = 0.79 * @abv / @fg
+        @calories = Math.max(0, ((6.9 * @abw) + 4.0 * (@realExtract - 0.10)) * @fg * @servingSize * 10)
+
+        # Calculate bitterness
+        # TODO
 
     toXml: ->
         xml = '<?xml version="1.0" encoding="utf-8"?><recipes><recipe>'
