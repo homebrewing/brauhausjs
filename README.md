@@ -42,7 +42,7 @@ Here is an example of how to use the library in a browser. Be sure to copy the `
     r.calculate();
 
     console.log('Original Gravity: ' + r.og.toFixed(3));
-    console.log 'Alcohol: ' + r.abv + ' by volume'));
+    console.log('Alcohol: ' + r.abv + ' by volume');
 </script>
 ```
 
@@ -95,7 +95,7 @@ r.add('fermentable', {
 r.calculate();
 
 console.log('Original Gravity: ' + r.og.toFixed(3));
-console.log 'Alcohol: ' + r.abv + ' by volume'));
+console.log('Alcohol: ' + r.abv + ' by volume');
 ```
 
 Reference
