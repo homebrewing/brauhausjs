@@ -65,6 +65,26 @@ class Brauhaus.Ingredient extends Brauhaus.OptionConstructor
 
         super(options)
 
+    # Check if a regex or list of regexes matches the name, returning
+    # either true/false or a value if the list has two items
+    nameRegex: (regex) ->
+        result = false
+
+        if typeof regex is 'string'
+            result = regex.exec(@name)
+        else
+            for item in regex
+                if Array.isArray(item) and item.length is 2
+                    if item[0].exec(@name)
+                        result = item[1]
+                        break
+                else if typeof item is 'string'
+                    result = item.exec(@name)
+                else
+                    throw 'Invalid regex input!'
+
+        result
+
 ###
 A fermentable ingredient, e.g. liquid malt extract. Each ingredient
 has a name, weight in kilograms, yield as a percentage, color in
@@ -97,25 +117,23 @@ class Brauhaus.Fermentable extends Brauhaus.Ingredient
     # Get the type of fermentable based on its name, either extract
     # or grain (steeping / mashing)
     type: ->
-        if Brauhaus.Fermentable.BOIL.exec(@name) then 'extract' else 'grain'
+        @nameRegex [
+            [Brauhaus.Fermentable.BOIL, 'extract'],
+            [/.*/, 'grain']
+        ]
 
     # When is this item added in the brewing process? Boil, steep, or mash?
     addition: ->
-        value = 'mash'
-
-        # Forced values take precedence, then search with regex
-        if /mash/i.exec @name
-            value = 'mash'
-        else if /steep/i.exec @name
-            value = 'steep'
-        else if /boil/i.exec @name
-            value = 'boil'
-        else if Brauhaus.Fermentable.BOIL.exec @name
-            value = 'boil'
-        else if Brauhaus.Fermentable.STEEP.exec @name
-            value = 'steep'
-
-        value
+        @nameRegex [
+            # Forced values take precedence, then search known names and
+            # default to mashing
+            [/mash/i, 'mash'],
+            [/steep/i, 'steep'],
+            [/boil/i, 'boil'],
+            [Brauhaus.Fermentable.BOIL, 'boil'],
+            [Brauhaus.Fermentable.STEEP, 'steep'],
+            [/.*/, 'mash']
+        ]
 
     # Get the gravity units for a specific liquid volume with 100% efficiency
     gu: (gallons = 1.0) ->

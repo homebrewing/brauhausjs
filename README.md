@@ -5,6 +5,7 @@ A library for homebrew beer calculations using Node.js or a web browser. Feature
  * BeerXML import / export
  * Calculate OG, FG, IBU, ABV, and color
  * Automatically generated recipe instructions
+ * Estimate recipe cost based on ingredients
  * Color to RGB conversions, CSS color support, etc
 
 [![Build Status](https://travis-ci.org/danielgtaylor/brauhausjs.png)](https://travis-ci.org/danielgtaylor/brauhausjs)
