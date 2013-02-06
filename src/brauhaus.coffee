@@ -8,16 +8,8 @@ https://github.com/danielgtaylor/brauhausjs
 # Create the base module so it works in both node.js and in browsers
 Brauhaus = exports? and exports or @Brauhaus = {}
 
-# Regular expressions to match for steeping grains, such as caramel malts.
-# This is used to create the recipe timeline.
-STEEP_FERMENTABLES = /biscuit|black|cara|chocolate|crystal|munich|roast|special ?b|toast|victory|vienna/i
-
-# Regular expressions to match for boiling sugars (DME, LME, etc).
-# This is used to create the recipe timeline.
-BOIL_FERMENTABLES = /candi|candy|dme|dry|extract|honey|lme|liquid|sugar|syrup|turbinado/i
-
 # Friendly beer color names and their respective SRM values
-COLOR_NAMES = [
+Brauhaus.COLOR_NAMES = [
     [2, 'pale straw'],
     [3, 'straw'],
     [4, 'pale gold'],
@@ -47,9 +39,9 @@ Brauhaus.srmToCss = (srm) ->
 
 # Convert SRM color values into friendly names
 Brauhaus.srmToName = (srm) ->
-    color = COLOR_NAMES[0][1]
+    color = Brauhaus.COLOR_NAMES[0][1]
 
-    for item in COLOR_NAMES
+    for item in Brauhaus.COLOR_NAMES
         color = item[1] if item[0] <= srm
 
     color
@@ -82,6 +74,21 @@ getting the type, addition, color name, and gravity units per volume
 of liquid.
 ###
 class Brauhaus.Fermentable extends Brauhaus.Ingredient
+    # Regular expressions to match for steeping grains, such as caramel malts.
+    # This is used to create the recipe timeline.
+    @STEEP = /biscuit|black|cara|chocolate|crystal|munich|roast|special ?b|toast|victory|vienna/i
+
+    # Regular expressions to match for boiling sugars (DME, LME, etc).
+    # This is used to create the recipe timeline.
+    @BOIL = /candi|candy|dme|dry|extract|honey|lme|liquid|sugar|syrup|turbinado/i
+
+    # Estimated prices per kilogram in USD
+    @PRICES: [
+        [/dry|dme/i, 8.80],
+        [/liquid|lme/i, 6.60],
+        [/.*/i, 4.40]
+    ]
+
     weight: 1.0
     yield: 75.0
     color: 2.0
@@ -90,7 +97,7 @@ class Brauhaus.Fermentable extends Brauhaus.Ingredient
     # Get the type of fermentable based on its name, either extract
     # or grain (steeping / mashing)
     type: ->
-        if BOIL_FERMENTABLES.exec(@name) then 'extract' else 'grain'
+        if Brauhaus.Fermentable.BOIL.exec(@name) then 'extract' else 'grain'
 
     # When is this item added in the brewing process? Boil, steep, or mash?
     addition: ->
@@ -103,9 +110,9 @@ class Brauhaus.Fermentable extends Brauhaus.Ingredient
             value = 'steep'
         else if /boil/i.exec @name
             value = 'boil'
-        else if BOIL_FERMENTABLES.exec @name
+        else if Brauhaus.Fermentable.BOIL.exec @name
             value = 'boil'
-        else if STEEP_FERMENTABLES.exec @name
+        else if Brauhaus.Fermentable.STEEP.exec @name
             value = 'steep'
 
         value
