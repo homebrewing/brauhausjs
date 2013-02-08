@@ -1,18 +1,22 @@
-Brauhaus.js
+Brauhaus.js [![Build Status](https://travis-ci.org/danielgtaylor/brauhausjs.png)](https://travis-ci.org/danielgtaylor/brauhausjs)
 ===========
-A library for homebrew beer calculations using Node.js or a web browser. Features:
+A library for homebrew beer calculations. Features:
 
+ * Supports web browsers and Node.js
  * BeerXML import / export
  * Calculate OG, FG, IBU, ABV, and color
+ * Tinseth and Rager IBU formula support
  * Automatically generated recipe instructions
  * Estimate recipe cost based on ingredients
  * Color to RGB conversions, CSS color support, etc
 
-[![Build Status](https://travis-ci.org/danielgtaylor/brauhausjs.png)](https://travis-ci.org/danielgtaylor/brauhausjs)
-
 Installation
 ------------
-You can install Brauhaus.js using `npm`:
+There are two ways to use Brauhaus.js - either in a web browser (client-side) or on Node.js (server-side). To use Brauhaus.js in a web browser, simply download the following file and jump to the quick example for your browser below:
+
+ * [Download the latest brauhaus.min.js](https://raw.github.com/danielgtaylor/brauhausjs/master/lib/brauhaus.min.js)
+
+For Node.js, you can install Brauhaus.js using `npm`:
 
 ```bash
 npm install brauhaus

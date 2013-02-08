@@ -14,6 +14,22 @@ describe 'Recipe', ->
             yield: 75.0
             color: 3.5
 
+        recipe.add 'spice',
+            name: 'Cascade hops'
+            weight: 0.02835
+            aa: 5.0
+            use: 'boil'
+            time: 60
+            form: 'pellet'
+
+        recipe.add 'spice',
+            name: 'Cascade hops'
+            weight: 0.014
+            aa: 5.0
+            use: 'boil'
+            time: 10
+            form: 'pellet'
+
         # Calculate recipe values like og, fg, ibu
         recipe.calculate()
 
@@ -33,10 +49,14 @@ describe 'Recipe', ->
         it 'Should calculate calories as 166 kcal', ->
             assert.equal 166, Math.round(recipe.calories)
 
+        it 'Should calculate IBU (tinseth) as 22.0', ->
+            assert.equal 22.0, recipe.ibu.toFixed(1)
+
     describe 'Steep', ->
         recipe = new Brauhaus.Recipe
             batchSize: 20.0
             boilSize: 10.0
+            ibuMethod: 'rager'
 
         # Add some ingredients
         recipe.add 'fermentable'
@@ -50,6 +70,30 @@ describe 'Recipe', ->
             weight: 0.5
             yield: 73.0
             color: 60.0
+
+        recipe.add 'spice',
+            name: 'Cascade hops'
+            weight: 0.02835
+            aa: 5.0
+            use: 'boil'
+            time: 60
+            form: 'pellet'
+
+        recipe.add 'spice',
+            name: 'Cascade hops'
+            weight: 0.014
+            aa: 5.0
+            use: 'boil'
+            time: 20
+            form: 'pellet'
+
+        recipe.add 'spice',
+            name: 'Cascade hops'
+            weight: 0.014
+            aa: 5.0
+            use: 'boil'
+            time: 5
+            form: 'pellet'
 
         recipe.calculate()
 
@@ -68,6 +112,9 @@ describe 'Recipe', ->
         it 'Should calculate calories as 130 kcal', ->
             assert.equal 130, Math.round(recipe.calories)
 
+        it 'Should calculate IBU (rager) as 31.6', ->
+            assert.equal 31.6, recipe.ibu.toFixed(1)
+
     describe 'Mash', ->
         recipe = new Brauhaus.Recipe
             batchSize: 20.0
@@ -79,6 +126,14 @@ describe 'Recipe', ->
             weight: 4.5
             yield: 74.0
             color: 1.5
+
+        recipe.add 'spice',
+            name: 'Cascade hops'
+            weight: 0.02835
+            aa: 5.0
+            use: 'boil'
+            time: 45
+            form: 'pellet'
 
         recipe.calculate()
 
@@ -96,3 +151,6 @@ describe 'Recipe', ->
 
         it 'Should calculate calories as 158 kcal', ->
             assert.equal 158, Math.round(recipe.calories)
+
+        it 'Should calculate IBU (tinseth) as 17.5', ->
+            assert.equal 17.5, recipe.ibu.toFixed(1)

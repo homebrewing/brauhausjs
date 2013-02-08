@@ -5,6 +5,9 @@ Copyright 2013 Daniel G. Taylor <danielgtaylor@gmail.com>
 https://github.com/danielgtaylor/brauhausjs
 ###
 
+tanh = (number) ->
+    (Math.exp(number) - Math.exp(-number)) / (Math.exp(number) + Math.exp(-number))
+
 # Create the base module so it works in both node.js and in browsers
 Brauhaus = exports? and exports or @Brauhaus = {}
 
@@ -192,6 +195,9 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     steepEfficiency: 0.5
     mashEfficiency: 0.75
 
+    # The IBU calculation method (tinseth or rager)
+    ibuMethod: 'tinseth'
+
     fermentables: null
     spices: null
     yeast: null
@@ -218,12 +224,15 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     add: (type, values) ->
         if type is 'fermentable'
             @fermentables.push new Brauhaus.Fermentable(values)
+        else if type is 'spice'
+            @spices.push new Brauhaus.Spice(values)
 
     calculate: ->
         @og = 1.0
         @fg = 0.0
         @ibu = 0.0
 
+        earlyOg = 1.0
         mcu = 0.0
         attenuation = 0.0
         
@@ -238,7 +247,12 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
             mcu += fermentable.color * fermentable.weight / @batchSize * 8.34539
 
-            @og += fermentable.gu(@batchSize * 264.172) * efficiency
+            # Update gravities
+            gravity = fermentable.gu(@batchSize * 264.172) * efficiency
+            @og += gravity
+
+            if not fermentable.late
+                earlyOg += gravity
 
         @color = 1.4922 * Math.pow(mcu, 0.6859)
 
@@ -265,7 +279,25 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         @calories = Math.max(0, ((6.9 * @abw) + 4.0 * (@realExtract - 0.10)) * @fg * @servingSize * 10)
 
         # Calculate bitterness
-        # TODO
+        for spice in @spices
+            bitterness = 0.0
+            if spice.aa and spice.use is 'boil'
+                # Account for better utilization from pellets vs. whole
+                utilizationFactor = 1.0
+                if spice.form is 'pellet'
+                    utilizationFactor = 1.15
+
+                # Calculate bitterness based on chosen method
+                if @ibuMethod is 'tinseth'
+                    bitterness = 1.65 * Math.pow(0.000125, earlyOg - 1.0) * ((1 - Math.pow(Math.E, -0.04 * spice.time)) / 4.15) * ((spice.aa / 100.0 * spice.weight * 1000000) / @batchSize) * utilizationFactor
+                    @ibu += bitterness
+                else if @ibuMethod is 'rager'
+                    utilization = 18.11 + 13.86 * tanh((spice.time - 31.32) / 18.27)
+                    adjustment = Math.max(0, (earlyOg - 1.050) / 0.2)
+                    bitterness = spice.weight * 100 * utilization * utilizationFactor * spice.aa / (@batchSize * (1 + adjustment))
+                    @ibu += bitterness
+            else
+                throw "Unknown IBU method '#{@ibuMethod}'!"
 
     toXml: ->
         xml = '<?xml version="1.0" encoding="utf-8"?><recipes><recipe>'

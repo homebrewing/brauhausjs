@@ -1,6 +1,6 @@
 {
   "name": "brauhaus",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A beer recipe calculator",
   "main": "lib/brauhaus.js",
   "scripts": {
