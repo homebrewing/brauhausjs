@@ -24,7 +24,7 @@ npm install brauhaus
 
 Quick Example (browser)
 -----------------------
-Here is an example of how to use the library in a browser. Be sure to copy the `lib/Brauhaus.min.js` file onto the web server. This example assumes it is accessible via `/scripts/Brauhaus.min.js`:
+Here is an example of how to use the library in a browser. Be sure to copy the `lib/brauhaus.min.js` file onto the web server. This example assumes it is accessible via `/scripts/brauhaus.min.js`:
 
 ```html
 <script type="text/javascript" src="/scripts/brauhaus.min.js"></script>
@@ -44,10 +44,10 @@ Here is an example of how to use the library in a browser. Be sure to copy the `
     });
 
     r.add('spice', {
-        name: 'Cascade hops'
-        weight: 0.028
-        aa: 5.0
-        use: 'boil'
+        name: 'Cascade hops',
+        weight: 0.028,
+        aa: 5.0,
+        use: 'boil',
         form: 'pellet'
     });
 
@@ -114,10 +114,10 @@ r.add('fermentable', {
 });
 
 r.add('spice', {
-    name: 'Cascade hops'
-    weight: 0.028
-    aa: 5.0
-    use: 'boil'
+    name: 'Cascade hops',
+    weight: 0.028,
+    aa: 5.0,
+    use: 'boil',
     form: 'pellet'
 });
 
