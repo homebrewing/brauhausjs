@@ -43,10 +43,19 @@ Here is an example of how to use the library in a browser. Be sure to copy the `
         yield: 78.0
     });
 
+    r.add('spice', {
+        name: 'Cascade hops'
+        weight: 0.028
+        aa: 5.0
+        use: 'boil'
+        form: 'pellet'
+    });
+
     r.calculate();
 
     console.log('Original Gravity: ' + r.og.toFixed(3));
     console.log('Alcohol: ' + r.abv + ' by volume');
+    console.log('IBU: ' + r.ibu.toFixed(1));
 </script>
 ```
 
@@ -69,10 +78,18 @@ r.add 'fermentable',
     weight: 4.2
     yield: 78.0
 
+r.add 'spice',
+    name: 'Cascade hops'
+    weight: 0.028
+    aa: 5.0
+    use: 'boil'
+    form: 'pellet'
+
 r.calculate()
 
 console.log "Original Gravity: #{ r.og.toFixed 3 }"
 console.log "Alcohol: #{ r.abv }% by volume"
+console.log "IBU: ' + r.ibu.toFixed(1));
 ```
 
 Quick Example (Node.js Javascript)
@@ -94,6 +111,14 @@ r.add('fermentable', {
     color: 2.5,
     weight: 4.2,
     yield: 78.0
+});
+
+r.add('spice', {
+    name: 'Cascade hops'
+    weight: 0.028
+    aa: 5.0
+    use: 'boil'
+    form: 'pellet'
 });
 
 r.calculate();
