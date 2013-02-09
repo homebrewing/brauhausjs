@@ -105,13 +105,6 @@ class Brauhaus.Fermentable extends Brauhaus.Ingredient
     # This is used to create the recipe timeline.
     @BOIL = /candi|candy|dme|dry|extract|honey|lme|liquid|sugar|syrup|turbinado/i
 
-    # Estimated prices per kilogram in USD
-    @PRICES: [
-        [/dry|dme/i, 8.80],
-        [/liquid|lme/i, 6.60],
-        [/.*/i, 4.40]
-    ]
-
     weight: 1.0
     yield: 75.0
     color: 2.0
@@ -155,6 +148,16 @@ class Brauhaus.Fermentable extends Brauhaus.Ingredient
     colorName: ->
         Brauhaus.srmToName @color
 
+    # Get the price for this fermentable in USD
+    price: ->
+        pricePerKg = @nameRegex [
+            [/dry|dme/i, 8.80],
+            [/liquid|lme/i, 6.60],
+            [/.*/i, 4.40]
+        ]
+
+        @weight * pricePerKg
+
 ###
 A spice ingredient, e.g. cascade hops or crushed coriander. Each spice
 has a weight in kilograms, alpha acid (aa) percentage, use (mash, boil,
@@ -168,6 +171,14 @@ class Brauhaus.Spice extends Brauhaus.Ingredient
     time: 60
     form: 'pellet'
 
+    # Get the price for this spice in USD
+    price: ->
+        pricePerKg = @nameRegex [
+            [/.*/i, 17.64]
+        ]
+
+        @weight * pricePerKg
+
 ###
 A yeast ingredient, e.g. Safbrew T-58 or Brett B. Each yeast has a
 type (ale, lager, other), a form (liquid, dry), and an attenuation
@@ -178,6 +189,13 @@ class Brauhaus.Yeast extends Brauhaus.Ingredient
     type: 'ale'
     form: 'liquid'
     attenuation: 75.0
+
+    # Get the price for this yeast in USD
+    price: ->
+        @nameRegex [
+            [/wyeast|white labs|wlp/i, 7.00],
+            [/.*/i, 3.50]
+        ]
 
 ###
 A beer recipe, consisting of various ingredients and metadata which
@@ -207,6 +225,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     color: 0.0
     ibu: 0.0
     abv: 0.0
+    price: 0.0
 
     ogPlato: 0.0
     fgPlato: 0.0
@@ -226,11 +245,14 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
             @fermentables.push new Brauhaus.Fermentable(values)
         else if type is 'spice'
             @spices.push new Brauhaus.Spice(values)
+        else if type is 'yeast'
+            @yeast.push new Brauhaus.Yeast(values)
 
     calculate: ->
         @og = 1.0
         @fg = 0.0
         @ibu = 0.0
+        @price = 0.0
 
         earlyOg = 1.0
         mcu = 0.0
@@ -254,11 +276,17 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
             if not fermentable.late
                 earlyOg += gravity
 
+            # Update recipe price with fermentable
+            @price += fermentable.price()
+
         @color = 1.4922 * Math.pow(mcu, 0.6859)
 
         # Get attenuation for final gravity
         for yeast in @yeast
             attenuation = yeast.attenuation if yeast.attenuation > attenuation
+
+            # Update recipe price with yeast
+            @price += yeast.price()
 
         attenuation = 75.0 if attenuation is 0
 
@@ -296,8 +324,11 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
                     adjustment = Math.max(0, (earlyOg - 1.050) / 0.2)
                     bitterness = spice.weight * 100 * utilization * utilizationFactor * spice.aa / (@batchSize * (1 + adjustment))
                     @ibu += bitterness
-            else
-                throw "Unknown IBU method '#{@ibuMethod}'!"
+                else
+                    throw "Unknown IBU method '#{@ibuMethod}'!"
+
+            # Update recipe price with spice
+            @price += spice.price()
 
     toXml: ->
         xml = '<?xml version="1.0" encoding="utf-8"?><recipes><recipe>'

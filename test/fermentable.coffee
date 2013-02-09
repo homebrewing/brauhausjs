@@ -36,3 +36,18 @@ describe 'Fermentible', ->
     it 'Should calculate 3.5 SRM as "straw"', ->
         f.color = 3.5
         assert.equal 'straw', f.colorName()
+
+    it 'Should calculate 2.5kg "Pale liquid malt extract" as $16.50', ->
+        f.name = 'Pale liquid malt extract'
+        f.weight = 2.5
+        assert.equal 16.5, f.price()
+
+    it 'Should calculate 2.5kg "Light dry malt extract" as $22', ->
+        f.name = 'Light dry malt extract'
+        f.weight = 2.5
+        assert.equal 22, f.price()
+
+    it 'Should calculate 2.5kg "Pale malt" as $11', ->
+        f.name = 'Pale malt'
+        f.weight = 2.5
+        assert.equal 11, f.price()
