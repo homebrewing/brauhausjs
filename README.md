@@ -11,10 +11,10 @@ A library for homebrew beer calculations both in the browser and on the server. 
    * Dry hopping support
  * Automatically generated recipe instructions and timeline
  * Estimate monetary recipe cost based on ingredients
- * Built-in unit conversions (kg -> lb/oz, liter -> gallon, temps, etc)
+ * Built-in unit conversions (kg <-> lb/oz, liter <-> gallon, temps, etc)
  * Color to RGB conversions, CSS color support, etc
 
-Brauhaus.js was developed with and for [Malt.io](https://github.com/danielgtaylor/malt.io), a community website for homebrewers.
+Brauhaus.js was developed with and for [Malt.io](http://www.malt.io/), a community website for homebrewers to create and share recipes.
 
 Installation
 ------------
@@ -46,7 +46,7 @@ Here is an example of how to use the library from CoffeeScript:
 
 ```coffeescript
 # The following line is NOT required for web browser use
-Brauhaus = require 'brauhaus'
+Brauhaus = Brauhaus ? require 'brauhaus'
 
 # Create a recipe
 r = new Brauhaus.Recipe
@@ -81,7 +81,7 @@ r.calculate()
 # Print out calculated values
 console.log "Original Gravity: #{ r.og.toFixed 3 }"
 console.log "Final Gravity: #{ r.fg.toFixed 3 }"
-console.log "Color: #{ r.color.toFixed 1 }&deg; SRM }"
+console.log "Color: #{ r.color.toFixed 1 }&deg; SRM (#{ r.colorName() })"
 console.log "IBU: #{ r.ibu.toFixed 1 }"
 console.log "Alcohol: #{ r.abv.toFixed 1 }% by volume"
 console.log "Calories: #{ Math.round r.calories } kcal"
@@ -93,7 +93,7 @@ Here is an example of how to use the library form Javascript:
 
 ```javascript
 // The following line is NOT required for web browser use
-Brauhaus = require('brauhaus')
+var Brauhaus = Brauhaus || require('brauhaus');
 
 // Create a recipe
 var r = new Brauhaus.Recipe({
@@ -132,7 +132,7 @@ r.calculate();
 // Print out calculated values
 console.log('Original Gravity: ' + r.og.toFixed(3));
 console.log('Final Gravity: ' + r.fg.toFixed(3));
-console.log('Color: ' + r.color.toFixed(1) + '&deg; SRM');
+console.log('Color: ' + r.color.toFixed(1) + '&deg; SRM (' + r.colorName() + ')');
 console.log('IBU: ' + r.ibu.toFixed(1));
 console.log('Alcohol: ' + r.abv.toFixed(1) + '% by volume');
 console.log('Calories: ' + Math.round(r.calories) + ' kcal');
@@ -218,7 +218,7 @@ Convert a color in &deg;SRM to a RGB triplet.
 
 ```javascript
 >>> Brauhaus.srmToRgb(8)
-[ 208, 88, 13 ]
+[208, 88, 13]
 ```
 
 ### Brauhaus.srmToCss (number)
@@ -252,19 +252,11 @@ A fermentable is some kind of a sugar that yeast can metabolize into CO2 and alc
 
 | Property | Type   | Default         | Description             |
 | -------- | ------ | --------------- | ----------------------- |
+| color    | number | 2.0             | Color in &deg;SRM       |
+| late     | bool   | false           | Late addition           |
 | name     | string | New fermentable | Name of the fermentable |
 | weight   | number | 1.0             | Weight in kilograms     |
 | yield    | number | 75.0            | Percentage yield        |
-| color    | number | 2.0             | Color in &deg;SRM       |
-| late     | bool   | false           | Late addition           |
-
-### Fermentable.type ()
-Get the type of fermentable, either `extract` or `grain`.
-
-```javascript
->>> f.type()
-'grain'
-```
 
 ### Fermentable.addition ()
 Get the addition type of fermentable, one of `mash`, `steep`, or `boil`.
@@ -272,6 +264,70 @@ Get the addition type of fermentable, one of `mash`, `steep`, or `boil`.
 ```javascript
 >>> f.addition()
 'steep'
+```
+
+### Fermentable.colorRgb ()
+Get the color triplet for this fermentable. Shortcut for `Brauhaus.srmToRgb(f.color)`.
+
+```javascript
+>>> f.colorRgb()
+[233, 157, 63]
+```
+
+### Fermentable.colorCss ()
+Get the CSS-friendly color string for this fermentable. Shortcut for `Brauhaus.srmToCss(f.color)`.
+
+```javascript
+>>> f.colorCss()
+'rgb(233, 157, 63)'
+```
+
+### Fermentable.colorName ()
+Get the human-readable name for the color of this fermentable. Shortcut for `Brauhaus.srmToName(f.color)`.
+
+```javascript
+>>> f.colorName()
+'deep gold'
+```
+
+### Fermentable.gu (number)
+Get the gravity units of this fermentable for a number of liters, based on the weight and yield. These units make the original gravity when divided by 1000 and added to one.
+
+```javascript
+>>> f.gu(20.0)
+32
+```
+
+### Fermentable.plato (number)
+Get the gravity in degrees plato for this fermentable for a number of liters, based on the weight and yield.
+
+```javascript
+>>> f.plato(20.0)
+7.5301
+```
+
+### Fermentable.ppg ()
+Get the parts per gallon from the yield percentage.
+
+```javascript
+>>> f.ppg()
+36
+```
+
+### Fermentable.price ()
+Guess the price in USD per kilogram of this fermentable, based on the name. Prices are an approximation based on multiple online homebrew supply store prices. You should use `toFixed(2)` to display these.
+
+```javascript
+>>> f.price()
+13.5025
+```
+
+### Fermentable.type ()
+Get the type of fermentable, either `extract` or `grain`.
+
+```javascript
+>>> f.type()
+'grain'
 ```
 
 ### Fermentable.weightLb ()
@@ -293,41 +349,45 @@ A shortcut for `Brauhaus.kgToLbOz(f.weight)` to get the weight in pounds and oun
 }
 ```
 
-### Fermentable.ppg ()
-Get the parts per gallon from the yield percentage.
-
-```javascript
->>> f.ppg()
-36
-```
-
-### Fermentable.plato (number)
-Get the gravity in degrees plato for this fermentable for a number of liters, based on the weight and yield.
-
-```javascript
->>> f.plato(20.0)
-7.5301
-```
-
-### Fermentable.gu (number)
-Get the gravity units of this fermentable for a number of liters, based on the weight and yield. These units make the original gravity when divided by 1000 and added to one.
-
-```javascript
->>> f.gu(20.0)
-32
-```
-
-### Fermentable.price ()
-Guess the price in USD per kilogram of this fermentable, based on the name. Prices are an approximation based on multiple online homebrew supply store prices. You should use `toFixed(2)` to display these.
-
-```javascript
->>> f.price()
-13.5025
-```
-
 Brauhaus.Spice
 --------------
-Coming soon!
+A spice is some kind of substance added to flavor or protect a brew. Spices can be hops, coriander, orange peel, cinnamon, whirlfloc, Irish moss, rose hips, etc. Each spice can have the following properties:
+
+| Property | Type   | Default   | Description                                      |
+| -------- | ------ | --------- | ------------------------------------------------ |
+| aa       | number | 0.0       | Alpha-acid percentage (0 - 100)                  |
+| form     | string | pellet    | Form, like pellet, whole, ground, crushed, etc   |
+| name     | string | New spice | Name of the spice                                |
+| time     | number | 60        | Time in minutes to add the spice                 |
+| use      | string | boil      | When to use the spice (mash, boil, primary, etc) |
+| weight   | number | 1.0       | Weight in kilograms                              |
+
+### Spice.price ()
+Guess the price in USD per kilogram of this spice, based on the name. Prices are an approximation based on multiple online homebrew supply store prices. You should use `toFixed(2)` to display these.
+
+```javascript
+>>> s.price()
+2.5318
+```
+
+### Spice.weightLb ()
+A shortcut for `Brauhaus.kgToLb(s.weight)` to get the weight in pounds.
+
+```javascript
+>>> s.weightLb()
+0.0625
+```
+
+### Spice.weightLbOz ()
+A shortcut for `Brauhaus.kgToLbOz(s.weight)` to get the weight in pounds and ounces.
+
+```javascript
+>>> s.weightLbOz()
+{
+    lb: 0,
+    oz: 1
+}
+```
 
 Brauhaus.Yeast
 --------------
