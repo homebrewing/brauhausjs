@@ -5,7 +5,7 @@ task 'build', 'Build lib from src', ->
         console.log stdout
         throw err if err
 
-        exec './node_modules/.bin/uglifyjs --comments -o lib/brauhaus.min.js lib/brauhaus.js', (err, stdout) ->
+        exec './node_modules/.bin/uglifyjs --comments -o dist/brauhaus.min.js lib/brauhaus.js', (err, stdout) ->
             console.log stdout
             throw err if err
 

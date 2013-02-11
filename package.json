@@ -1,14 +1,18 @@
 {
   "name": "brauhaus",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "A beer recipe calculator",
+  "homepage": "https://github.com/danielgtaylor/brauhausjs",
   "main": "lib/brauhaus.js",
   "scripts": {
     "pretest": "cake build",
     "prepublish": "cake build",
     "test": "cake test"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danielgtaylor/brauhausjs"
+  },
   "keywords": [
     "beer",
     "homebrew",

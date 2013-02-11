@@ -11,6 +11,10 @@ tanh = (number) ->
 # Create the base module so it works in both node.js and in browsers
 Brauhaus = exports? and exports or @Brauhaus = {}
 
+###
+Global constants -------------------------------------------------------------
+###
+
 # Friendly beer color names and their respective SRM values
 Brauhaus.COLOR_NAMES = [
     [2, 'pale straw'],
@@ -26,6 +30,45 @@ Brauhaus.COLOR_NAMES = [
     [30, 'deep brown'],
     [40, 'black']
 ]
+
+###
+Conversion functions ---------------------------------------------------------
+###
+
+# Kilograms <=> pounds
+Brauhaus.kgToLb = (kg) ->
+    kg * 2.20462
+
+Brauhaus.lbToKg = (lb) ->
+    lb / 2.20462
+
+# Kilograms <=> pounds/ounces
+Brauhaus.kgToLbOz = (kg) ->
+    lb = Brauhaus.kgToLb kg
+
+    # Returns an anonymous object with lb and oz properties
+    { lb: Math.floor(lb), oz: (lb - Math.floor(lb)) * 16.0 }
+
+Brauhaus.lbOzToKg = (lb, oz) ->
+    Brauhaus.lbToKg lb + (oz / 16.0)
+
+# Liters <=> gallons
+Brauhaus.litersToGallons = (liters) ->
+    liters * 0.264172
+
+Brauhaus.gallonsToLiters = (gallons) ->
+    gallons / 0.264172
+
+# Celcius <=> Fahrenheit
+Brauhaus.cToF = (celcius) ->
+    celcius * 1.8 + 32
+
+Brauhaus.fToC = (fahrenheit) ->
+    (fahrenheit - 32) / 1.8
+
+###
+Color functions --------------------------------------------------------------
+###
 
 # Convert SRM color values to [r, g, b] triplets
 Brauhaus.srmToRgb = (srm) ->
@@ -48,6 +91,10 @@ Brauhaus.srmToName = (srm) ->
         color = item[1] if item[0] <= srm
 
     color
+
+###
+Base objects -----------------------------------------------------------------
+###
 
 # A base class which sets passed options as properties on itself.
 class Brauhaus.OptionConstructor
@@ -87,6 +134,10 @@ class Brauhaus.Ingredient extends Brauhaus.OptionConstructor
                     throw 'Invalid regex input!'
 
         result
+
+###
+Main objects -----------------------------------------------------------------
+###
 
 ###
 A fermentable ingredient, e.g. liquid malt extract. Each ingredient
@@ -131,10 +182,26 @@ class Brauhaus.Fermentable extends Brauhaus.Ingredient
             [/.*/, 'mash']
         ]
 
+    # Get the weight in pounds
+    weightLb: ->
+        Brauhaus.kgToLb @weight
+
+    # Get the weight in pounds and ounces
+    weightLbOz: ->
+        Brauhaus.kgToLbOz @weight
+
+    # Get the parts per gallon for this fermentable
+    ppg: ->
+        @yield * 0.46214
+
+    # Get the gravity for a specific liquid volume with 100% efficiency in degrees plato
+    plato: (liters = 1.0) ->
+        259 - (259 / (1.0 + @gu(liters) / 1000))
+
     # Get the gravity units for a specific liquid volume with 100% efficiency
-    gu: (gallons = 1.0) ->
+    gu: (liters = 1.0) ->
         # gu = parts per gallon * weight in pounds / gallons
-        (@yield * 0.46214) * (@weight * 2.20462) / gallons
+        @ppg() * @weightLb() / Brauhaus.litersToGallons(liters)
 
     # Get a rgb triplet for this fermentable's color
     colorRgb: ->
@@ -170,6 +237,14 @@ class Brauhaus.Spice extends Brauhaus.Ingredient
     use: 'boil'
     time: 60
     form: 'pellet'
+
+    # Get the weight in pounds
+    weightLb: ->
+        Brauhaus.kgToLb @weight
+
+    # Get the weight in pounds and ounces
+    weightLbOz: ->
+        Brauhaus.kgToLbOz @weight
 
     # Get the price for this spice in USD
     price: ->
@@ -240,6 +315,14 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
         super(options)
 
+    # Get the batch size in gallons
+    batchSizeGallons: ->
+        Brauhaus.litersToGallons @batchSize
+
+    # Get the boil size in gallons
+    boilSizeGallons: ->
+        Brauhaus.litersToGallons @boilSize
+
     add: (type, values) ->
         if type is 'fermentable'
             @fermentables.push new Brauhaus.Fermentable(values)
@@ -267,10 +350,10 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
             else if addition is 'mash'
                 efficiency = @mashEfficiency
 
-            mcu += fermentable.color * fermentable.weight / @batchSize * 8.34539
+            mcu += fermentable.color * fermentable.weightLb() / @batchSizeGallons()
 
             # Update gravities
-            gravity = fermentable.gu(@batchSize * 264.172) * efficiency
+            gravity = fermentable.gu(@batchSize) * efficiency / 1000.0
             @og += gravity
 
             if not fermentable.late

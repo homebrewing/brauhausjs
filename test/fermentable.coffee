@@ -24,10 +24,10 @@ describe 'Fermentible', ->
                 assert.equal data[0], f.type()
                 assert.equal data[1], f.addition()
 
-    it 'Should calculate GU of 1kg @ 75% yield as 76.4', ->
+    it 'Should calculate GU of 1kg @ 75% yield as 76.4 per gallon', ->
         f.weight = 1.0
         f.yield = 75.0
-        assert.equal 76.4, f.gu().toFixed(1)
+        assert.equal 76.4, f.gu(Brauhaus.gallonsToLiters(1.0)).toFixed(1)
 
     it 'Should calculate 3.5 SRM as rgb(233, 157, 63)', ->
         f.color = 3.5
