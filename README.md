@@ -391,7 +391,22 @@ A shortcut for `Brauhaus.kgToLbOz(s.weight)` to get the weight in pounds and oun
 
 Brauhaus.Yeast
 --------------
-Coming soon!
+Yeast are the biological workhorse that transform sugars into alcohol. Yeast can be professional strains like Wyeast 3068, harvested from bottles, harvested from the air, or other bugs like bacteria that produce acid.
+
+| Property    | Type   | Default   | Description                                |
+| ----------- | ------ | --------- | ------------------------------------------ |
+| attenuation | number | 75.0      | Percentage of sugars the yeast can convert |
+| form        | string | liquid    | Liquid or dry                              |
+| name        | string | New yeast | Name of the yeast                          |
+| type        | string | ale       | Ale, lager, or other                       |
+
+### Spice.price ()
+Guess the price in USD per packet of this yeast, based on the name. Prices are an approximation based on multiple online homebrew supply store prices. You should use `toFixed(2)` to display these.
+
+```javascript
+>>> y.price()
+7
+```
 
 Brauhaus.Recipe
 ---------------
