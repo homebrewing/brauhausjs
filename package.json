@@ -1,6 +1,6 @@
 {
   "name": "brauhaus",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A library for homebrew beer calculations, both in the browser and on the server",
   "homepage": "https://github.com/danielgtaylor/brauhausjs",
   "main": "lib/brauhaus.js",
