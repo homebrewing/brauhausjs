@@ -800,8 +800,8 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     batchSize: 20.0
     servingSize: 0.355
 
-    steepEfficiency: 0.5
-    mashEfficiency: 0.75
+    steepEfficiency: 50
+    mashEfficiency: 75
 
     style = null
 
@@ -955,9 +955,9 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
             efficiency = 1.0
             addition = fermentable.addition()
             if addition is 'steep'
-                efficiency = @steepEfficiency
+                efficiency = @steepEfficiency / 100.0
             else if addition is 'mash'
-                efficiency = @mashEfficiency
+                efficiency = @mashEfficiency / 100.0
 
             mcu += fermentable.color * fermentable.weightLb() / @batchSizeGallons()
 
