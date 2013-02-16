@@ -837,8 +837,6 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
             recipe = new Brauhaus.Recipe()
 
-            console.log recipeNode.nodeName
-
             for recipeProperty in recipeNode.childNodes or []
                 switch recipeProperty.nodeName.toLowerCase()
                     when 'name'
