@@ -237,6 +237,40 @@ Convert a color in &deg;SRM to a human-readable color.
 'deep gold'
 ```
 
+Beer Styles
+-----------
+Brauhaus ships with many pre-defined beer styles from BJCP.
+
+### Brauhaus.getStyleCategories ()
+Get a list of BJCP style categories supported by Brauhaus.
+
+```javascript
+>>> Brauhaus.getStyleCategories()
+['Light Lager', 'Pilsner', 'Bock', ...]
+```
+
+### Brauhaus.getStyles (string)
+Get a list of styles for a particular category
+
+```javascript
+>>> Brauhaus.getStyles('Bock')
+['Maibock / Helles Bock', 'DoppelBock', ...]
+```
+
+### Brauhaus.getStyle (category, style)
+Get the various ranges for a particular style.
+
+```javascript
+>>> Brauhaus.getStyle('Bock', 'Doppelbock')
+{
+    gu: [1.072, 1.112]
+    fg: [1.016, 1.024]
+    srm: [6, 25]
+    ibu: [16, 26]
+    abv: [7, 10]
+}
+```
+
 Brauhaus Objects
 ----------------
 The following list of objects are available within Brauhaus:
@@ -258,7 +292,7 @@ A fermentable is some kind of a sugar that yeast can metabolize into CO2 and alc
 | weight   | number | 1.0             | Weight in kilograms     |
 | yield    | number | 75.0            | Percentage yield        |
 
-### Fermentable.addition ()
+### Fermentable.prototype.addition ()
 Get the addition type of fermentable, one of `mash`, `steep`, or `boil`.
 
 ```javascript
@@ -266,7 +300,7 @@ Get the addition type of fermentable, one of `mash`, `steep`, or `boil`.
 'steep'
 ```
 
-### Fermentable.colorRgb ()
+### Fermentable.prototype.colorRgb ()
 Get the color triplet for this fermentable. Shortcut for `Brauhaus.srmToRgb(f.color)`.
 
 ```javascript
@@ -274,7 +308,7 @@ Get the color triplet for this fermentable. Shortcut for `Brauhaus.srmToRgb(f.co
 [233, 157, 63]
 ```
 
-### Fermentable.colorCss ()
+### Fermentable.prototype.colorCss ()
 Get the CSS-friendly color string for this fermentable. Shortcut for `Brauhaus.srmToCss(f.color)`.
 
 ```javascript
@@ -282,7 +316,7 @@ Get the CSS-friendly color string for this fermentable. Shortcut for `Brauhaus.s
 'rgb(233, 157, 63)'
 ```
 
-### Fermentable.colorName ()
+### Fermentable.prototype.colorName ()
 Get the human-readable name for the color of this fermentable. Shortcut for `Brauhaus.srmToName(f.color)`.
 
 ```javascript
@@ -290,7 +324,7 @@ Get the human-readable name for the color of this fermentable. Shortcut for `Bra
 'deep gold'
 ```
 
-### Fermentable.gu (number)
+### Fermentable.prototype.gu (number)
 Get the gravity units of this fermentable for a number of liters, based on the weight and yield. These units make the original gravity when divided by 1000 and added to one.
 
 ```javascript
@@ -298,7 +332,7 @@ Get the gravity units of this fermentable for a number of liters, based on the w
 32
 ```
 
-### Fermentable.plato (number)
+### Fermentable.prototype.plato (number)
 Get the gravity in degrees plato for this fermentable for a number of liters, based on the weight and yield.
 
 ```javascript
@@ -306,7 +340,7 @@ Get the gravity in degrees plato for this fermentable for a number of liters, ba
 7.5301
 ```
 
-### Fermentable.ppg ()
+### Fermentable.prototype.ppg ()
 Get the parts per gallon from the yield percentage.
 
 ```javascript
@@ -314,7 +348,7 @@ Get the parts per gallon from the yield percentage.
 36
 ```
 
-### Fermentable.price ()
+### Fermentable.prototype.price ()
 Guess the price in USD per kilogram of this fermentable, based on the name. Prices are an approximation based on multiple online homebrew supply store prices. You should use `toFixed(2)` to display these.
 
 ```javascript
@@ -322,7 +356,7 @@ Guess the price in USD per kilogram of this fermentable, based on the name. Pric
 13.5025
 ```
 
-### Fermentable.type ()
+### Fermentable.prototype.type ()
 Get the type of fermentable, either `extract` or `grain`.
 
 ```javascript
@@ -330,7 +364,7 @@ Get the type of fermentable, either `extract` or `grain`.
 'grain'
 ```
 
-### Fermentable.weightLb ()
+### Fermentable.prototype.weightLb ()
 A shortcut for `Brauhaus.kgToLb(f.weight)` to get the weight in pounds.
 
 ```javascript
@@ -338,7 +372,7 @@ A shortcut for `Brauhaus.kgToLb(f.weight)` to get the weight in pounds.
 2.2
 ```
 
-### Fermentable.weightLbOz ()
+### Fermentable.prototype.weightLbOz ()
 A shortcut for `Brauhaus.kgToLbOz(f.weight)` to get the weight in pounds and ounces.
 
 ```javascript
@@ -362,7 +396,7 @@ A spice is some kind of substance added to flavor or protect a brew. Spices can 
 | use      | string | boil      | When to use the spice (mash, boil, primary, etc) |
 | weight   | number | 1.0       | Weight in kilograms                              |
 
-### Spice.price ()
+### Spice.prototype.price ()
 Guess the price in USD per kilogram of this spice, based on the name. Prices are an approximation based on multiple online homebrew supply store prices. You should use `toFixed(2)` to display these.
 
 ```javascript
@@ -370,7 +404,7 @@ Guess the price in USD per kilogram of this spice, based on the name. Prices are
 2.5318
 ```
 
-### Spice.weightLb ()
+### Spice.prototype.weightLb ()
 A shortcut for `Brauhaus.kgToLb(s.weight)` to get the weight in pounds.
 
 ```javascript
@@ -378,7 +412,7 @@ A shortcut for `Brauhaus.kgToLb(s.weight)` to get the weight in pounds.
 0.0625
 ```
 
-### Spice.weightLbOz ()
+### Spice.prototype.weightLbOz ()
 A shortcut for `Brauhaus.kgToLbOz(s.weight)` to get the weight in pounds and ounces.
 
 ```javascript
@@ -400,7 +434,7 @@ Yeast are the biological workhorse that transform sugars into alcohol. Yeast can
 | name        | string | New yeast | Name of the yeast                          |
 | type        | string | ale       | Ale, lager, or other                       |
 
-### Spice.price ()
+### Yeast.prototype.price ()
 Guess the price in USD per packet of this yeast, based on the name. Prices are an approximation based on multiple online homebrew supply store prices. You should use `toFixed(2)` to display these.
 
 ```javascript
@@ -410,7 +444,92 @@ Guess the price in USD per packet of this yeast, based on the name. Prices are a
 
 Brauhaus.Recipe
 ---------------
-Coming soon!
+A beer recipe, containing ingredients like fermentables, spices, and yeast. Calculations can be made for bitterness, alcohol content, color, and more. Many values are unset by default and will be calculated when the `Recipe.prototype.calculate()` method is called.
+
+| Property        | Type   | Default            | Description                                  |
+| --------------- | ------ | ------------------ | -------------------------------------------- |
+| abv             | number | unset              | Alcohol percentage by volume                 |
+| abw             | number | unset              | Alcohol percentage by weight                 |
+| author          | string | Anonymous Brewer   | Recipe author                                |
+| batchSize       | number | 20.0               | Total size of batch in liters                |
+| boilSize        | number | 10.0               | Size of wort that will be boiled in liters   |
+| calories        | number | unset              | Calories per serving (kcal)                  |
+| color           | number | unset              | Color in &deg;SRM                            |
+| description     | string | Recipe description | Recipe description text                      |
+| fermentables    | array  | []                 | Array of `Brauhaus.Fermentable` objects      |
+| fg              | number | unset              | Final gravity (e.g. 1.012)                   |
+| fgPlato         | number | unset              | Final gravity in &deg;Plato                  |
+| ibu             | number | unset              | Bitterness in IBU                            |
+| ibuMethod       | string | tinseth            | IBU calculation method, `tinseth` or `rager` |
+| mashEfficiency  | number | 75.0               | Efficiency percentage for the mash           |
+| name            | number | New recipe         | Recipe name text                             |
+| og              | number | unset              | Original gravity (e.g. 1.048)                |
+| ogPlato         | number | unset              | Original gravity in &deg;Plato               |
+| price           | number | unset              | Approximate price in USD                     |
+| realExtract     | number | unset              | Real extract of the recipe                   |
+| servingSize     | number | 0.355              | Serving size in liters                       |
+| spices          | array  | []                 | Array of `Brauhaus.Spice` objects            |
+| steepEfficiency | number | 50.0               | Efficiency percentage for steeping           |
+| style           | object | null               | Recipe style (see `Brauhaus.STYLES`)         |
+| yeast           | array  | []                 | Array of `Brauhaus.Yeast` objects            |
+
+### Recipe.fromBeerXml (xml)
+Get a list of recipes from BeerXML loaded as a string.
+
+```javascript
+>>> xml = '<recipes><recipe><name>Test Recipe</name>...</recipe></recipes>'
+>>> recipe = Brauhaus.Recipe.fromBeerXml(xml)[0]
+<Brauhaus.Recipe object 'Test Recipe'>
+```
+
+---
+
+### Recipe.prototype.add (type, data)
+Add a new ingredient to the recipe. `type` can be one of `fermentable`, `spice`, or `yeast`. The data is what will be sent to the constructor of the ingredient defined by `type`.
+
+```javascript
+>>> r.add('fermentable', {
+    name: 'Pale malt'
+    weight: 4.0
+    yield: 75
+    color: 3.5
+});
+>>> r.fermentables
+[<Brauhaus.Fermentable object 'Pale malt'>]
+```
+
+### Recipe.prototype.batchSizeGallons ()
+Get the recipe batch size in gallons. Shortcut for `Brauhaus.litersToGallons(r.batchSize)`.
+
+```javascript
+>>> r.batchSizeGallons()
+5.025
+```
+
+### Recipe.prototype.boilSizeGallons ()
+Get the recipe boil size in gallons. Shortcut for `Brauhaus.litersToGallons(r.boilSize)`.
+
+```javascript
+>>> r.boilSizeGallons()
+3.125
+```
+
+### Recipe.prototype.calculate ()
+Calculate alcohol, bitterness, color, gravities, etc. This method must be called before trying to access those values.
+
+```javascript
+>>> r.calculate()
+>>> r.ibu
+28.5
+```
+
+### Recipe.prototype.toBeerXml ()
+Convert this recipe into BeerXML for export. Returns a BeerXML string.
+
+```javascript
+>>> r.toBeerXml()
+'<?xml version="1.0"><recipes><recipe>...</recipe></recipes>'
+```
 
 License
 -------
