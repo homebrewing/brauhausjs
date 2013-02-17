@@ -61,6 +61,9 @@ describe 'Recipe', ->
         it 'Should cost $30.85', ->
             assert.equal 30.85, recipe.price.toFixed(2)
 
+        it 'Should convert to BeerXML', ->
+            assert.equal '<?xml version="1.0" encoding="utf-8"?><recipes><recipe><version>1</version><name>New Recipe</name><brewer>Anonymous Brewer</brewer><batch_size>20</batch_size><boil_size>10</boil_size><efficiency>75</efficiency><fermentables><fermentable><version>1</version><name>Pale liquid extract</name><type>extract</name><weight>3.5</weight><yield>75.0</yield><color>3.5</color></fermentable></fermentables><hops><hop><name>Cascade hops</name><time>60</time><amount>0.02835</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop><hop><name>Cascade hops</name><time>10</time><amount>0.014</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop></hops><yeasts><yeast><name>Wyeast 3724 - Belgian Saison</name><type>ale</type><form>liquid</form><attenuation>80</attenuation></yeast></yeasts><miscs></miscs></recipe></recipes>', recipe.toBeerXml()
+
     describe 'Steep', ->
         recipe = new Brauhaus.Recipe
             batchSize: 20.0
@@ -358,6 +361,9 @@ describe 'Recipe', ->
         it 'Should have an author of Brad Smith', ->
             assert.equal 'Brad Smith', recipe.author
 
+        it 'Should have a mash efficiency of 72%', ->
+            assert.equal 72, recipe.mashEfficiency
+
         it 'Should contain 3 fermentables', ->
             assert.equal 3, recipe.fermentables.length
 
@@ -366,3 +372,9 @@ describe 'Recipe', ->
 
         it 'Should contain 1 yeast', ->
             assert.equal 1, recipe.yeast.length
+
+        it 'Should have an OG of 1.039', ->
+            assert.equal 1.039, recipe.og.toFixed 3
+
+        it 'Should have a FG of 1.011', ->
+            assert.equal 1.011, recipe.fg.toFixed 3

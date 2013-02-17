@@ -24,15 +24,15 @@ Global constants -------------------------------------------------------------
 Brauhaus.COLOR_NAMES = [
     [2, 'pale straw'],
     [3, 'straw'],
-    [4, 'pale gold'],
-    [6, 'deep gold'],
-    [9, 'pale amber'],
-    [12, 'medium amber'],
-    [15, 'deep amber'],
-    [18, 'amber brown'],
-    [20, 'brown'],
-    [24, 'ruby brown'],
-    [30, 'deep brown'],
+    [4, 'yellow'],
+    [6, 'gold'],
+    [9, 'amber'],
+    [14, 'deep amber'],
+    [17, 'copper'],
+    [18, 'deep copper'],
+    [22, 'brown'],
+    [30, 'dark brown'],
+    [35, 'very dark brown'],
     [40, 'black']
 ]
 

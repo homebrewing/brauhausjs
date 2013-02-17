@@ -1,6 +1,6 @@
 {
   "name": "brauhaus",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A library for homebrew beer calculations, both in the browser and on the server",
   "homepage": "https://github.com/danielgtaylor/brauhausjs",
   "main": "lib/brauhaus.js",
@@ -13,6 +13,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/danielgtaylor/brauhausjs"
+  },
+  "bugs": {
+    "url": "https://github.com/danielgtaylor/brauhausjs/issues"
   },
   "keywords": [
     "beer",
@@ -37,15 +40,21 @@
     "calculation",
     "recipe"
   ],
-  "author": "Daniel G. Taylor",
+  "author": {
+    "name": "Daniel G. Taylor",
+    "email": "danielgtaylor@gmail.com",
+    "url": "http://programmer-art.org/"
+  },
   "license": "MIT",
+  "dependencies": {
+    "xmldom": "0.1.x"
+  },
   "devDependencies": {
-    "coffee-script": "*",
-    "mocha": "*",
-    "mocha-phantomjs": "*",
-    "chai": "*",
-    "uglify-js": "*",
-    "xmldom": "*"
+    "coffee-script": "1.4.x",
+    "mocha": "1.8.x",
+    "mocha-phantomjs": "2.0.x",
+    "chai": "1.5.x",
+    "uglify-js": "2.2.x"
   },
   "engines": {
     "node": ">=0.6"

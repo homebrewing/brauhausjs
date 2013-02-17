@@ -1,8 +1,10 @@
 Brauhaus.js [![Build Status](https://travis-ci.org/danielgtaylor/brauhausjs.png)](https://travis-ci.org/danielgtaylor/brauhausjs)
 ===========
-A library for homebrew beer calculations both in the browser and on the server. Features:
+A javascript library for homebrew beer calculations both in the browser and on the server. Features include:
 
- * Supports multiple Javascript runtimes (web browsers, Node.js, etc)
+ * Support for multiple Javascript runtimes
+   * Node.js 0.6.x, 0.8.x, 0.9.x
+   * Chrome, Firefox, Internet Explorer 9+, Safari, Opera, etc
  * BeerXML import / export
  * Calculate estimated OG, FG, IBU, ABV, SRM color, calories, and more
  * Tinseth and Rager IBU calculation formula support
@@ -10,15 +12,15 @@ A library for homebrew beer calculations both in the browser and on the server. 
    * Late addition boil support
    * Dry hopping support
  * Automatically generated recipe instructions and timeline
- * Estimate monetary recipe cost based on ingredients
+ * Estimate monetary recipe cost in USD based on ingredients
  * Built-in unit conversions (kg <-> lb/oz, liter <-> gallon, temps, etc)
- * Color to RGB conversions, CSS color support, etc
+ * Color in &deg;SRM to name, RGB conversions, CSS color support, etc
 
-Brauhaus.js was developed with and for [Malt.io](http://www.malt.io/), a community website for homebrewers to create and share recipes.
+Brauhaus.js was developed with and for [Malt.io](http://www.malt.io/), a community website for homebrewers to create recipes and share their love of homebrewing beer.
 
 Installation
 ------------
-There are two ways to use Brauhaus.js - either in a web browser (client-side) or on Node.js (server-side).
+There are two ways to use Brauhaus.js - either in a web browser (client-side) or on e.g. Node.js (server-side).
 
 ### Web Browser (client-side use)
 To use Brauhaus.js in a web browser, simply download the following file and include it as you would any other script:
@@ -515,7 +517,7 @@ Get the recipe boil size in gallons. Shortcut for `Brauhaus.litersToGallons(r.bo
 ```
 
 ### Recipe.prototype.calculate ()
-Calculate alcohol, bitterness, color, gravities, etc. This method must be called before trying to access those values.
+Calculate alcohol, bitterness, color, gravities, etc. This method must be called before trying to access those values. See the quick examples above for a more complete example of `calculate()` usage.
 
 ```javascript
 >>> r.calculate()
@@ -530,6 +532,38 @@ Convert this recipe into BeerXML for export. Returns a BeerXML string.
 >>> r.toBeerXml()
 '<?xml version="1.0"><recipes><recipe>...</recipe></recipes>'
 ```
+
+Contributing
+------------
+Contributions are welcome - just fork the project and submit a pull request when you are ready!
+
+### Getting Started
+First, create a fork on GitHub. Then:
+
+```bash
+git clone ...
+cd brauhausjs
+npm install
+```
+
+### Unit Tests
+Before submitting a pull request, please add any relevant tests and run them via:
+
+```bash
+npm test
+```
+
+If you have PhantomJS installed and on your path then you can use:
+
+```bash
+CI=true npm test
+```
+
+Pull requests will automatically be tested by Travis CI both in Node.js 0.6/0.8/0.9 and in a headless webkit environment (PhantomJS). Changes that cause tests to fail will not be accepted.
+
+New tests can be added in the `test` directory. If you add a new file there, please don't forget to update the `test.html` to include it!
+
+Please note that all contributions will be licensed under the MIT license in the following section.
 
 License
 -------

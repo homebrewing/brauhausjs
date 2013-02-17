@@ -17,11 +17,11 @@ describe 'Color', ->
     it 'Should convert 1 SRM to pale straw', ->
         assert.equal 'pale straw', Brauhaus.srmToName(1.0)
 
-    it 'Should convert 7.2 SRM to deep gold', ->
-        assert.equal 'deep gold', Brauhaus.srmToName(7.2)
+    it 'Should convert 7.2 SRM to gold', ->
+        assert.equal 'gold', Brauhaus.srmToName(7.2)
 
-    it 'Should convert 25 SRM to ruby brown', ->
-        assert.equal 'ruby brown', Brauhaus.srmToName(25)
+    it 'Should convert 25 SRM to brown', ->
+        assert.equal 'brown', Brauhaus.srmToName(25)
 
     it 'Should convert 50 SRM to black', ->
         assert.equal 'black', Brauhaus.srmToName(50)
