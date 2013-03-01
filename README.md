@@ -1,5 +1,7 @@
 ![Brauhaus.js](https://raw.github.com/danielgtaylor/brauhausjs/master/img/logo.png)
+
 [![Dependency Status](https://gemnasium.com/danielgtaylor/brauhausjs.png)](https://gemnasium.com/danielgtaylor/brauhausjs) [![Build Status](https://travis-ci.org/danielgtaylor/brauhausjs.png)](https://travis-ci.org/danielgtaylor/brauhausjs)
+
 A javascript library for homebrew beer calculations both in the browser and on the server. Features include:
 
  * Support for multiple Javascript runtimes
