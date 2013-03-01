@@ -2,4 +2,5 @@
 .git
 test
 node_modules
+img
 npm-debug.log
