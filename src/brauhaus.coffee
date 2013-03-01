@@ -851,6 +851,18 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     realExtract: 0.0
     calories: 0.0
 
+    bottlingTemp: 0.0
+    bottlingPressure: 0.0
+
+    primaryDays: 14.0
+    primaryTemp: 20.0
+    secondaryDays: 0.0
+    secondaryTemp: 0.0
+    tertiaryDays: 0.0
+    tertiaryTemp: 0.0
+    agingDays: 14
+    agingTemp: 20.0
+
     # Get a list of parsed recipes from BeerXML input
     @fromBeerXml: (xml) ->
         recipes = []
@@ -875,6 +887,26 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
                         recipe.boilSize = parseFloat recipeProperty.textContent
                     when 'efficiency'
                         recipe.mashEfficiency = parseFloat recipeProperty.textContent
+                    when 'primary_age'
+                        recipe.primaryDays = parseFloat recipeProperty.textContent
+                    when 'primary_temp'
+                        recipe.primaryTemp = parseFloat recipeProperty.textContent
+                    when 'secondary_age'
+                        recipe.secondaryDays = parseFloat recipeProperty.textContent
+                    when 'secondary_temp'
+                        recipe.secondaryTemp = parseFloat recipeProperty.textContent
+                    when 'tertiary_age'
+                        recipe.tertiaryDays = parseFloat recipeProperty.textContent
+                    when 'tertiary_temp'
+                        recipe.tertiaryTemp = parseFloat recipeProperty.textContent
+                    when 'carbonation'
+                        recipe.bottlingPressure = parseFloat recipeProperty.textContent
+                    when 'carbonation_temp'
+                        recipe.bottlingTemp = parseFloat recipeProperty.textContent
+                    when 'age'
+                        recipe.agingDays = parseFloat recipeProperty.textContent
+                    when 'age_temp'
+                        recipe.agingTemp = parseFloat recipeProperty.textContent
                     when 'style'
                         recipe.style =
                             og: [1.000, 1.150]
@@ -1084,6 +1116,31 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         xml += "<batch_size>#{@batchSize}</batch_size>"
         xml += "<boil_size>#{@boilSize}</boil_size>"
         xml += "<efficiency>#{@mashEfficiency}</efficiency>"
+
+        if @primaryDays
+            xml += "<primary_age>#{@primaryDays}</primary_age>"
+        if @primaryTemp
+            xml += "<primary_temp>#{@primaryTemp}</primary_temp>"
+
+        if @secondaryDays
+            xml += "<secondary_age>#{@secondaryDays}</secondary_age>"
+        if @secondaryTemp
+            xml += "<secondary_temp>#{@secondaryTemp}</secondary_temp>"
+
+        if @tertiaryDays
+            xml += "<tertiary_age>#{@tertiaryDays}</tertiary_age>"
+        if @tertiaryTemp
+            xml += "<tertiary_temp>#{@tertiaryTemp}</tertiary_temp>"
+
+        if @agingDays
+            xml += "<age>#{@agingDays}</age>"
+        if @agingTemp
+            xml += "<age_temp>#{@agingTemp}</age_temp>"
+
+        if @bottlingTemp
+            xml += "<carbonation_temp>#{@bottlingTemp}</carbonation_temp>"
+        if @bottlingPressure
+            xml += "<carbonation>#{@bottlingPressure}</carbonation>"
 
         if @style
             xml += '<style><version>1</version>'
