@@ -371,6 +371,26 @@ describe 'Recipe', ->
         it 'Should have a mash efficiency of 72%', ->
             assert.equal 72, recipe.mashEfficiency
 
+        it 'Should have a style OG of [1.035, 1.050]', ->
+            assert.equal 1.035, recipe.style.og[0]
+            assert.equal 1.050, recipe.style.og[1]
+
+        it 'Should have a style FG of [1.007, 1.011]', ->
+            assert.equal 1.007, recipe.style.fg[0]
+            assert.equal 1.011, recipe.style.fg[1]
+
+        it 'Should have a style IBU of [30, 50]', ->
+            assert.equal 30, recipe.style.ibu[0]
+            assert.equal 50, recipe.style.ibu[1]
+
+        it 'Should have a style color of [35, 200]', ->
+            assert.equal 35, recipe.style.color[0]
+            assert.equal 200, recipe.style.color[1]
+
+        it 'Should have a style ABV of [3.2, 5.5]', ->
+            assert.equal 3.2, recipe.style.abv[0]
+            assert.equal 5.5, recipe.style.abv[1]
+
         it 'Should contain 3 fermentables', ->
             assert.equal 3, recipe.fermentables.length
 

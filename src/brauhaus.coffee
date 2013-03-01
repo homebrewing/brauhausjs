@@ -875,6 +875,35 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
                         recipe.boilSize = parseFloat recipeProperty.textContent
                     when 'efficiency'
                         recipe.mashEfficiency = parseFloat recipeProperty.textContent
+                    when 'style'
+                        recipe.style =
+                            og: [1.000, 1.150]
+                            fg: [1.000, 1.150]
+                            ibu: [0, 150]
+                            color: [0, 500]
+                            abv: [0, 14]
+                        for styleNode in recipeProperty.childNodes or []
+                            switch styleNode.nodeName.toLowerCase()
+                                when 'og_min'
+                                    recipe.style.og[0] = parseFloat styleNode.textContent
+                                when 'og_max'
+                                    recipe.style.og[1] = parseFloat styleNode.textContent
+                                when 'fg_min'
+                                    recipe.style.fg[0] = parseFloat styleNode.textContent
+                                when 'fg_max'
+                                    recipe.style.fg[1] = parseFloat styleNode.textContent
+                                when 'ibu_min'
+                                    recipe.style.ibu[0] = parseFloat styleNode.textContent
+                                when 'ibu_max'
+                                    recipe.style.ibu[1] = parseFloat styleNode.textContent
+                                when 'color_min'
+                                    recipe.style.color[0] = parseFloat styleNode.textContent
+                                when 'color_max'
+                                    recipe.style.color[1] = parseFloat styleNode.textContent
+                                when 'abv_min'
+                                    recipe.style.abv[0] = parseFloat styleNode.textContent
+                                when 'abv_max'
+                                    recipe.style.abv[1] = parseFloat styleNode.textContent
                     when 'fermentables'
                         for fermentableNode in recipeProperty.childNodes or []
                             if fermentableNode.nodeName.toLowerCase() isnt 'fermentable'
