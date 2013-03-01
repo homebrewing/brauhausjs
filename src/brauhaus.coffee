@@ -1056,6 +1056,15 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         xml += "<boil_size>#{@boilSize}</boil_size>"
         xml += "<efficiency>#{@mashEfficiency}</efficiency>"
 
+        if @style
+            xml += '<style><version>1</version>'
+            xml += "<og_min>#{@style.og[0]}</og_min><og_max>#{@style.og[1]}</og_max>"
+            xml += "<fg_min>#{@style.fg[0]}</fg_min><fg_max>#{@style.fg[1]}</fg_max>"
+            xml += "<ibu_min>#{@style.ibu[0]}</ibu_min><ibu_max>#{@style.ibu[1]}</ibu_max>"
+            xml += "<color_min>#{@style.color[0]}</color_min><color_max>#{@style.color[1]}</color_max>"
+            xml += "<abv_min>#{@style.abv[0]}</abv_min><abv_max>#{@style.abv[1]}</abv_max>"
+            xml += '</style>'
+
         xml += '<fermentables>'
         for fermentable in @fermentables
             xml += '<fermentable><version>1</version>'
