@@ -37,7 +37,7 @@ describe 'Recipe', ->
             time: 10
             form: 'pellet'
 
-        recipe.add 'yeast'
+        recipe.add 'yeast',
             name: 'Wyeast 3724 - Belgian Saison'
             type: 'ale'
             form: 'liquid'
@@ -78,13 +78,13 @@ describe 'Recipe', ->
             ibuMethod: 'rager'
 
         # Add some ingredients
-        recipe.add 'fermentable'
+        recipe.add 'fermentable',
             name: 'Extra pale LME'
             weight: 2.5
             yield: 75.0
             color: 2.0
 
-        recipe.add 'fermentable'
+        recipe.add 'fermentable',
             name: 'Caramel 60L'
             weight: 0.5
             yield: 73.0
@@ -114,7 +114,7 @@ describe 'Recipe', ->
             time: 5
             form: 'pellet'
 
-        recipe.add 'yeast'
+        recipe.add 'yeast',
             name: 'Wyeast 1214 - Belgian Abbey'
             type: 'ale'
             form: 'liquid'
@@ -149,7 +149,7 @@ describe 'Recipe', ->
             boilSize: 10.0
 
         # Add some ingredients
-        recipe.add 'fermentable'
+        recipe.add 'fermentable',
             name: 'Pilsner malt'
             weight: 4.5
             yield: 74.0
@@ -163,7 +163,7 @@ describe 'Recipe', ->
             time: 45
             form: 'pellet'
 
-        recipe.add 'yeast'
+        recipe.add 'yeast',
             name: 'Wyeast 1728 - Scottish Ale'
             type: 'ale'
             form: 'liquid'
