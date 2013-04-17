@@ -845,6 +845,11 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     abv: 0.0
     price: 0.0
 
+    # Bitterness to gravity ratio
+    buToGu: 0.0
+    # Balance value (http://klugscheisserbrauerei.wordpress.com/beer-balance/)
+    bv: 0.0
+
     ogPlato: 0.0
     fgPlato: 0.0
     abw: 0.0
@@ -1106,6 +1111,13 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
             # Update recipe price with spice
             @price += spice.price()
+
+        # Calculate bitterness to gravity ratios
+        @buToGu = @ibu / (@og - 1.000) / 1000.0
+
+        # http://klugscheisserbrauerei.wordpress.com/beer-balance/
+        rte = (0.82 * (@fg - 1.000) + 0.18 * (@og - 1.000)) * 1000.0
+        @bv = 0.8 * @ibu / rte
 
     toBeerXml: ->
         xml = '<?xml version="1.0" encoding="utf-8"?><recipes><recipe>'

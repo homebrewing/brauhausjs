@@ -65,6 +65,12 @@ describe 'Recipe', ->
         it 'Should calculate IBU (tinseth) as 22.0', ->
             assert.equal 22.0, recipe.ibu.toFixed(1)
 
+        it 'Should calculate BU:GU as 0.44', ->
+            assert.equal 0.44, recipe.buToGu.toFixed(2)
+
+        it 'Should calculate BV as 1.01', ->
+            assert.equal 1.01, recipe.bv.toFixed(2)
+
         it 'Should cost $30.85', ->
             assert.equal 30.85, recipe.price.toFixed(2)
 
@@ -140,6 +146,12 @@ describe 'Recipe', ->
         it 'Should calculate IBU (rager) as 31.6', ->
             assert.equal 31.6, recipe.ibu.toFixed(1)
 
+        it 'Should calculate BU:GU as 0.80', ->
+            assert.equal 0.80, recipe.buToGu.toFixed(2)
+
+        it 'Should calculate BV as 1.77', ->
+            assert.equal 1.77, recipe.bv.toFixed(2)
+
         it 'Should cost $26.69', ->
             assert.equal 26.69, recipe.price.toFixed(2)
 
@@ -188,6 +200,12 @@ describe 'Recipe', ->
 
         it 'Should calculate IBU (tinseth) as 17.5', ->
             assert.equal 17.5, recipe.ibu.toFixed(1)
+
+        it 'Should calculate BU:GU as 0.36', ->
+            assert.equal 0.36, recipe.buToGu.toFixed(2)
+
+        it 'Should calculate BV as 0.73', ->
+            assert.equal 0.73, recipe.bv.toFixed(2)
 
         it 'Should cost $27.30', ->
             assert.equal 27.30, recipe.price.toFixed(2)
