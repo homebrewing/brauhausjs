@@ -5,7 +5,7 @@
 A javascript library for homebrew beer calculations both in the browser and on the server. Features include:
 
  * Support for multiple Javascript runtimes
-   * Node.js 0.6.x, 0.8.x, 0.9.x
+   * Node.js 0.6.x, 0.8.x, 0.10.x
    * Chrome, Firefox, Internet Explorer 9+, Safari, Opera, etc
  * BeerXML import / export
  * Calculate estimated OG, FG, IBU, ABV, SRM color, calories, and more
