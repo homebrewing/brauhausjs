@@ -456,7 +456,9 @@ A beer recipe, containing ingredients like fermentables, spices, and yeast. Calc
 | abw             | number | unset              | Alcohol percentage by weight                 |
 | author          | string | Anonymous Brewer   | Recipe author                                |
 | batchSize       | number | 20.0               | Total size of batch in liters                |
+| bv              | number | unset              | Balance value (bitterness / sweetness ratio) |
 | boilSize        | number | 10.0               | Size of wort that will be boiled in liters   |
+| buToGu          | number | unset              | Bitterness units to gravity units ratio      |
 | calories        | number | unset              | Calories per serving (kcal)                  |
 | color           | number | unset              | Color in &deg;SRM                            |
 | description     | string | Recipe description | Recipe description text                      |
