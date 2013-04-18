@@ -267,11 +267,12 @@ Get the various ranges for a particular style.
 ```javascript
 >>> Brauhaus.getStyle('Bock', 'Doppelbock')
 {
-    gu: [1.072, 1.112]
-    fg: [1.016, 1.024]
-    srm: [6, 25]
-    ibu: [16, 26]
-    abv: [7, 10]
+    gu: [1.072, 1.112],
+    fg: [1.016, 1.024],
+    srm: [6, 25],
+    ibu: [16, 26],
+    abv: [7, 10],
+    carb: [1.6, 2.4]
 }
 ```
 
