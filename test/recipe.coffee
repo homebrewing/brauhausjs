@@ -8,6 +8,8 @@ describe 'Recipe', ->
             boilSize: 10.0
 
         recipe.style =
+            name: 'Saison'
+            category: 'Belgian and French Ale'
             og: [1.060, 1.080]
             fg: [1.010, 1.016]
             ibu: [32, 38]
@@ -76,7 +78,7 @@ describe 'Recipe', ->
             assert.equal 30.85, recipe.price.toFixed(2)
 
         it 'Should convert to BeerXML', ->
-            assert.equal '<?xml version="1.0" encoding="utf-8"?><recipes><recipe><version>1</version><name>New Recipe</name><brewer>Anonymous Brewer</brewer><batch_size>20</batch_size><boil_size>10</boil_size><efficiency>75</efficiency><primary_age>14</primary_age><primary_temp>20</primary_temp><age>14</age><age_temp>20</age_temp><style><version>1</version><og_min>1.06</og_min><og_max>1.08</og_max><fg_min>1.01</fg_min><fg_max>1.016</fg_max><ibu_min>32</ibu_min><ibu_max>38</ibu_max><color_min>3.5</color_min><color_max>8.5</color_max><abv_min>4.5</abv_min><abv_max>6</abv_max><carb_min>1.6</carb_min><carb_max>2.4</carb_max></style><fermentables><fermentable><version>1</version><name>Pale liquid extract</name><type>extract</name><weight>3.5</weight><yield>75.0</yield><color>3.5</color></fermentable></fermentables><hops><hop><name>Cascade hops</name><time>60</time><amount>0.02835</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop><hop><name>Cascade hops</name><time>10</time><amount>0.014</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop></hops><yeasts><yeast><name>Wyeast 3724 - Belgian Saison</name><type>ale</type><form>liquid</form><attenuation>80</attenuation></yeast></yeasts><miscs></miscs></recipe></recipes>', recipe.toBeerXml()
+            assert.equal '<?xml version="1.0" encoding="utf-8"?><recipes><recipe><version>1</version><name>New Recipe</name><brewer>Anonymous Brewer</brewer><batch_size>20</batch_size><boil_size>10</boil_size><efficiency>75</efficiency><primary_age>14</primary_age><primary_temp>20</primary_temp><age>14</age><age_temp>20</age_temp><style><version>1</version><name>Saison</name><category>Belgian and French Ale</category><og_min>1.06</og_min><og_max>1.08</og_max><fg_min>1.01</fg_min><fg_max>1.016</fg_max><ibu_min>32</ibu_min><ibu_max>38</ibu_max><color_min>3.5</color_min><color_max>8.5</color_max><abv_min>4.5</abv_min><abv_max>6</abv_max><carb_min>1.6</carb_min><carb_max>2.4</carb_max></style><fermentables><fermentable><version>1</version><name>Pale liquid extract</name><type>extract</name><weight>3.5</weight><yield>75.0</yield><color>3.5</color></fermentable></fermentables><hops><hop><name>Cascade hops</name><time>60</time><amount>0.02835</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop><hop><name>Cascade hops</name><time>10</time><amount>0.014</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop></hops><yeasts><yeast><name>Wyeast 3724 - Belgian Saison</name><type>ale</type><form>liquid</form><attenuation>80</attenuation></yeast></yeasts><miscs></miscs></recipe></recipes>', recipe.toBeerXml()
 
     describe 'Steep', ->
         recipe = new Brauhaus.Recipe
@@ -418,6 +420,12 @@ describe 'Recipe', ->
             assert.equal 20.0, recipe.primaryTemp
             assert.equal 20.0, recipe.bottlingTemp
             assert.equal 2.1, recipe.bottlingPressure
+
+        it 'Should load style name', ->
+            assert.equal 'Dry Stout', recipe.style.name
+
+        it 'Should load style category', ->
+            assert.equal 'Stout', recipe.style.category
 
         it 'Should contain 3 fermentables', ->
             assert.equal 3, recipe.fermentables.length
