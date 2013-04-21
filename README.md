@@ -262,11 +262,13 @@ Get a list of styles for a particular category
 ```
 
 ### Brauhaus.getStyle (category, style)
-Get the various ranges for a particular style.
+Get an object representing a particular style.
 
 ```javascript
 >>> Brauhaus.getStyle('Bock', 'Doppelbock')
 {
+    name: 'Doppelbock',
+    category: 'Bock',
     gu: [1.072, 1.112],
     fg: [1.016, 1.024],
     srm: [6, 25],

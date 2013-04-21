@@ -622,6 +622,11 @@ Brauhaus.STYLES =
             abv: [0, 14]
             carb: [1.0, 4.0]
 
+for own categoryName, categoryStyles of Brauhaus.STYLES
+    for own styleName, style of categoryStyles
+        style.name = styleName
+        style.category = categoryName
+
 ###
 Style functions --------------------------------------------------------------
 ###
@@ -1002,6 +1007,10 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
                             carb: [1.0, 4.0]
                         for styleNode in recipeProperty.childNodes or []
                             switch styleNode.nodeName.toLowerCase()
+                                when 'name'
+                                    recipe.style.name = styleNode.textContent
+                                when 'category'
+                                    recipe.style.category = styleNode.textContent
                                 when 'og_min'
                                     recipe.style.og[0] = parseFloat styleNode.textContent
                                 when 'og_max'
@@ -1241,6 +1250,9 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
         if @style
             xml += '<style><version>1</version>'
+            
+            xml += "<name>#{@style.name}</name>" if @style.name
+            xml += "<category>#{@style.category}</category>" if @style.category
             xml += "<og_min>#{@style.og[0]}</og_min><og_max>#{@style.og[1]}</og_max>"
             xml += "<fg_min>#{@style.fg[0]}</fg_min><fg_max>#{@style.fg[1]}</fg_max>"
             xml += "<ibu_min>#{@style.ibu[0]}</ibu_min><ibu_max>#{@style.ibu[1]}</ibu_max>"
