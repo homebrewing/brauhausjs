@@ -1,14 +1,14 @@
 {
   "name": "brauhaus",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A javascript library for homebrew beer calculations, both in the browser and on the server",
   "homepage": "https://github.com/danielgtaylor/brauhausjs",
   "main": "lib/brauhaus.js",
   "ender": "lib/brauhaus.js",
   "scripts": {
-    "pretest": "cake build",
-    "prepublish": "cake build",
-    "test": "cake test"
+    "pretest": "./node_modules/coffee-script/bin/cake build",
+    "prepublish": "./node_modules/coffee-script/bin/cake build",
+    "test": "./node_modules/coffee-script/bin/cake test"
   },
   "repository": {
     "type": "git",
