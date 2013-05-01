@@ -1280,7 +1280,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         for fermentable in @fermentables
             xml += '<fermentable><version>1</version>'
             xml += "<name>#{ fermentable.name }</name>"
-            xml += "<type>#{ fermentable.type() }</name>"
+            xml += "<type>#{ fermentable.type() }</type>"
             xml += "<weight>#{ fermentable.weight.toFixed 1 }</weight>"
             xml += "<yield>#{ fermentable.yield.toFixed 1 }</yield>"
             xml += "<color>#{ fermentable.color.toFixed 1 }</color>"
@@ -1289,7 +1289,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
         xml += '<hops>'
         for hop in @spices.filter((item) -> item.aa > 0)
-            xml += '<hop>'
+            xml += '<hop><version>1</version>'
             xml += "<name>#{ hop.name }</name>"
             xml += "<time>#{ hop.time }</time>"
             xml += "<amount>#{ hop.weight }</amount>"
@@ -1301,7 +1301,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
         xml += '<yeasts>'
         for yeast in @yeast
-            xml += '<yeast>'
+            xml += '<yeast><version>1</version>'
             xml += "<name>#{ yeast.name }</name>"
             xml += "<type>#{ yeast.type }</type>"
             xml += "<form>#{ yeast.form }</form>"
@@ -1311,7 +1311,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
         xml += '<miscs>'
         for misc in @spices.filter((item) -> item.aa is 0)
-            xml += '<misc>'
+            xml += '<misc><version>1</version>'
             xml += "<name>#{ misc.name }</name>"
             xml += "<time>#{ misc.time }</time>"
             xml += "<amount>#{ misc.weight }</amount>"
