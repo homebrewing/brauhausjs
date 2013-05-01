@@ -197,6 +197,22 @@ Convert gallons to liters.
 20.0
 ```
 
+### Brauhaus.litersPerKgToQuartsPerLb (number)
+Convert l/kg to qt/lb.
+
+```javascript
+>>> Brauhaus.litersPerKgToQuartsPerLb(5.0)
+2.3965285450000002
+```
+
+### Brauhaus.quartsPerLbToLitersPerKg (number)
+Convert qt/lb to l/kg.
+
+```javascript
+>>> Brauhaus.quartsPerLbToLitersPerKg(2.3965285450000002)
+5.0
+```
+
 ### Brauhaus.cToF (number)
 Convert a temperature from celcius to fahrenheit.
 

@@ -681,6 +681,12 @@ Brauhaus.litersToGallons = (liters) ->
 Brauhaus.gallonsToLiters = (gallons) ->
     gallons / 0.264172
 
+Brauhaus.litersPerKgToQuartsPerLb = (litersPerKg) ->
+    litersPerKg * 0.479305709
+
+Brauhaus.quartsPerLbToLitersPerKg = (quartsPerLb) ->
+    quartsPerLb / 0.479305709
+
 # Celcius <=> Fahrenheit
 Brauhaus.cToF = (celcius) ->
     celcius * 1.8 + 32
