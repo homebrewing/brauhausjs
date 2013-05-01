@@ -1130,6 +1130,15 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         else if type is 'yeast'
             @yeast.push new Brauhaus.Yeast(values)
 
+    # Get the total weight of grains in kg
+    grainWeight: ->
+        weight = 0.0
+
+        for fermentable in @fermentables
+            weight += fermentable.weight if fermentable.type() is 'grain'
+
+        weight
+
     calculate: ->
         @og = 1.0
         @fg = 0.0

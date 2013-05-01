@@ -548,6 +548,14 @@ Calculate alcohol, bitterness, color, gravities, etc. This method must be called
 28.5
 ```
 
+### Recipe.prototype.grainWeight ()
+Get the total grain weight in kg. Note that this only includes fermentables that are mashed or steeped. Things like malt extract syrup are excluded.
+
+```javascript
+>>> r.grainWeight()
+4.0
+```
+
 ### Recipe.prototype.toBeerXml ()
 Convert this recipe into BeerXML for export. Returns a BeerXML string.
 
