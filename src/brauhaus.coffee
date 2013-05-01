@@ -1046,7 +1046,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     steepEfficiency: 50
     mashEfficiency: 75
 
-    style = null
+    style: null
 
     # The IBU calculation method (tinseth or rager)
     ibuMethod: 'tinseth'
