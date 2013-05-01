@@ -197,6 +197,22 @@ Convert gallons to liters.
 20.0
 ```
 
+### Brauhaus.litersPerKgToQuartsPerLb (number)
+Convert l/kg to qt/lb.
+
+```javascript
+>>> Brauhaus.litersPerKgToQuartsPerLb(5.0)
+2.3965285450000002
+```
+
+### Brauhaus.quartsPerLbToLitersPerKg (number)
+Convert qt/lb to l/kg.
+
+```javascript
+>>> Brauhaus.quartsPerLbToLitersPerKg(2.3965285450000002)
+5.0
+```
+
 ### Brauhaus.cToF (number)
 Convert a temperature from celcius to fahrenheit.
 
@@ -285,6 +301,8 @@ The following list of objects are available within Brauhaus:
  * Fermentable
  * Spice
  * Yeast
+ * MashStep
+ * Mash
  * Recipe
 
 Brauhaus.Fermentable
@@ -449,6 +467,109 @@ Guess the price in USD per packet of this yeast, based on the name. Prices are a
 7
 ```
 
+Brauhaus.MashStep
+-----------------
+A single step in a multi-step mash, such as infusing water, changing the temperature, or decocting mash to boil.
+
+| Property    | Type   | Default          | Description                                                  |
+| ----------- | ------ | ---------------- | ------------------------------------------------------------ |
+| endTemp     | number | unset            | Temperature in degrees C after this step                     |
+| name        | string | Saccharification | A name to give this step                                     |
+| rampTime    | number | unset            | Time in minutes to ramp to the given temperature             |
+| temp        | number | 68               | Temperature in degrees C to hold the mash                    |
+| time        | number | 60               | Duration of this step in minutes                             |
+| type        | string | Infusion         | Type of mash step: `Infusion`, `Temperature`, or `Decoction` |
+| waterRatio  | number | 3.0              | Ratio in liters per kg of water to infuse or decoct          |
+
+### MashStep.types
+An array of available mash step types: `Infusion`, `Temperature`, and `Decoction`. They can generally be broken down as follows:
+
+ * `Infusion`: adding hot water to the mash to raise its overall temperature
+ * `Temperature`: usually adding heat via some source, like a stovetop or gas burner
+ * `Decoction`: removing and boiling some of the mash, then adding it back to raise the overall temperature
+
+---
+
+### MashStep.prototype.description ([boolean], [number])
+An automatically generated description of the step. If the first argument is `true`, then use SI units (liters, kilograms, celcius). If it is `false`, then use quarts, pounds and fahrenheit. If a second argument is passed, then it is used as the total grain weight of the recipe to determine the exact amount of water or mash to add/remove.
+
+```javascript
+>>> mashStep.description()
+'Infuse 3.0l per kg of grain for 60 minutes at 68C'
+>>> mashStep.description(false)
+'Infuse 1.44qt per lb of grain for 60 minutes at 154.4F'
+>>> mashStep.description(true, 3.3)
+'Infuse 10.0l for 60 minutes at 68C'
+>>> mashStep.description(false, 3.3)
+'Infuse 10.57qt for 60 minutes at 154.4F'
+```
+
+### MashStep.prototype.endTempF ()
+Get the step end temperature in degrees F. Shortcut for `Brauhaus.cToF(mashStep.endTemp)`.
+
+```javascript
+>>> mashStep.endTempF()
+150.0
+```
+
+### MashStep.prototype.tempF ()
+Get the step temperature in degrees F. Shortcut for `Brauhaus.cToF(mashStep.temp)`.
+
+```javascript
+>>> mashStep.tempF()
+154.0
+```
+
+### MashStep.prototype.waterRatioQtPerLb ()
+Get the water ratio in quarts per pound of grain. Shortcut for `Brauhaus.litersPerKgToQtPerLb(mashStep.waterRatio)`.
+
+```javascript
+>>> mashStep.waterRatioQtPerLb()
+1.5
+```
+
+Brauhaus.Mash
+-------------
+A recipe mash description for all-grain or partial-mash recipes. The mash includes information like a name, notes for the brewer, grain temperature, PH, etc.
+
+| Property   | Type   | Default | Description                                        |
+| ---------- | ------ | ------- | -------------------------------------------------- |
+| grainTemp  | number | 23      | Grain temperature in degrees C                     |
+| name       | string | unset   | Name of the mash, e.g. `Single step infusion @68C` |
+| notes      | string | unset   | Notes for the brewer                               |
+| ph         | number | unset   | Target PH of the mash                              |
+| spargeTemp | number | 76      | Sparge temperature in degrees C                    |
+| steps      | array  | []      | A list of `Brauhaus.MashStep` objects              |
+
+### Mash.prototype.addStep (object)
+Add a new mash step with the passed options.
+
+```javascript
+>>> mash.prototype.addStep({
+    name: 'Test step',
+    type: 'Infusion',
+    waterRatio: 3.0,
+    temp: 68,
+    time: 60
+})
+```
+
+### Mash.prototype.grainTempF ()
+Get the grain temperature in degrees F. Shortcut for `Brauhaus.cToF(mash.grainTemp)`.
+
+```javascript
+>>> mash.grainTempF()
+75.0
+```
+
+### Mash.prototype.spargeTempF ()
+Get the sparge temperature in degrees F. Shortcut for `Brauhaus.cToF(mash.spargeTemp)`.
+
+```javascript
+>>> mash.spargeTempF()
+170.0
+```
+
 Brauhaus.Recipe
 ---------------
 A beer recipe, containing ingredients like fermentables, spices, and yeast. Calculations can be made for bitterness, alcohol content, color, and more. Many values are unset by default and will be calculated when the `Recipe.prototype.calculate()` method is called.
@@ -530,6 +651,14 @@ Calculate alcohol, bitterness, color, gravities, etc. This method must be called
 >>> r.calculate()
 >>> r.ibu
 28.5
+```
+
+### Recipe.prototype.grainWeight ()
+Get the total grain weight in kg. Note that this only includes fermentables that are mashed or steeped. Things like malt extract syrup are excluded.
+
+```javascript
+>>> r.grainWeight()
+4.0
 ```
 
 ### Recipe.prototype.toBeerXml ()
