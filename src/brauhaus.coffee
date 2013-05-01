@@ -901,6 +901,132 @@ class Brauhaus.Yeast extends Brauhaus.Ingredient
         ]
 
 ###
+Mashing ----------------------------------------------------------------------
+###
+
+###
+A mash step, which contains information about a specific step during the mash
+process, such as the amount of water to add, temperature to raise or lower
+the mash to, etc.
+###
+class Brauhaus.MashStep extends Brauhaus.OptionConstructor
+    # Mash step types
+    @types = [
+        # Infuse an amount of water into the mash
+        'Infusion',
+        # Modify the temperature of the mash
+        'Temperature',
+        # Decoct an amount of liquid to boil
+        'Decoction'
+    ]
+
+    # Step name
+    name: 'Saccharification'
+
+    # The type of mash step, defined above
+    type: 'Infusion'
+
+    # Optional ratio of liquid in liters per kg of grain to either infuse
+    # or decoct, depending on the `type` of the mash step.
+    waterRatio: 3.0
+
+    # Step temperature and ending temperature after the step has been
+    # completed in degrees C.
+    temp: 68.0
+    endTemp: null
+
+    # Total time of this step in minutes
+    time: 60
+
+    # Time to ramp up to the step temperature in minutes
+    rampTime: null
+
+    # Generated description based on the type and parameters of this step
+    # If siUnits is true, then use SI units (liters and kilograms), otherwise
+    # use quarts per pound when describing the liquid amounts.
+    description: (siUnits = true, totalGrainWeight) ->
+        if siUnits
+            absoluteUnits = 'l'
+            relativeUnits = 'l per kg'
+            temp = "#{@temp}C"
+            waterRatio = @waterRatio
+        else
+            absoluteUnits = 'qt'
+            relativeUnits = 'qt per lb'
+            temp = "#{@tempF()}F"
+            waterRatio = @waterRatioQtPerLb()
+
+        if totalGrainWeight?
+            if not siUnits
+                totalGrainWeight = Brauhaus.kgToLb totalGrainWeight
+
+            waterAmount = "#{(waterRatio * totalGrainWeight).toFixed 1}#{absoluteUnits}"
+        else
+            waterAmount = "#{waterRatio.toFixed 1}#{relativeUnits} of grain"
+
+        switch @type
+            when 'Infusion'
+                return "Infuse #{waterAmount} for #{@time} minutes at #{temp}"
+            when 'Temperature'
+                return "Heat to #{temp} over #{@rampTime or @time} minutes"
+            when 'Decoction'
+                return "Decoct and boil #{waterAmount} to reach #{temp}"
+            else
+                return "Unknown mash step type '#{@type}'!"
+
+    # Water ratio in quarts / pound of grain
+    waterRatioQtPerLb: ->
+        Brauhaus.litersPerKgToQuartsPerLb @waterRatio
+
+    # Step temperature in degrees F
+    tempF: ->
+        Brauhaus.cToF @temp
+
+    # Step end temperature in degrees F
+    endTempF: ->
+        Brauhaus.cToF @endTemp
+
+###
+A mash profile, which contains information about a mash along with a list
+of steps to be taken.
+###
+class Brauhaus.Mash extends Brauhaus.OptionConstructor
+    constructor: (options) ->
+        # Set default mash step list to a new empty list
+        @steps = []
+
+        super(options)
+
+    # The mash name / description
+    name: ''
+
+    # Temperature of the grain in degrees C
+    grainTemp: 23
+
+    # Temperature of the sparge water in degrees C
+    spargeTemp: 76
+
+    # Target PH of the mash
+    ph = null
+
+    # Any notes useful for another brewer when mashing
+    notes: ''
+
+    # A list of steps to complete
+    steps: null
+
+    # Temperature of the grain in degrees F
+    grainTempF: ->
+        Brauhaus.cToF @grainTemp
+
+    spargeTempF: ->
+        Brauhaus.cToF @spargeTemp
+
+    # Shortcut to add a step to the mash
+    addStep: (options) ->
+        @steps.push new Brauhaus.MashStep(options)
+
+###
 Recipe -----------------------------------------------------------------------
 ###
 
@@ -928,6 +1054,8 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     fermentables: null
     spices: null
     yeast: null
+
+    mash: null
 
     og: 0.0
     fg: 0.0
@@ -1102,6 +1230,46 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
                                         yeast.attenuation = parseFloat yeastProperty.textContent
 
                             recipe.yeast.push yeast
+                    when 'mash'
+                        mash = recipe.mash = new Brauhaus.Mash()
+
+                        for mashProperty in recipeProperty.childNodes or []
+                            switch mashProperty.nodeName.toLowerCase()
+                                when 'name'
+                                    mash.name = mashProperty.textContent
+                                when 'grain_temp'
+                                    mash.grainTemp = parseFloat mashProperty.textContent
+                                when 'sparge_temp'
+                                    mash.spargeTemp = parseFloat mashProperty.textContent
+                                when 'ph'
+                                    mash.ph = parseFloat mashProperty.textContent
+                                when 'notes'
+                                    mash.notes = mashProperty.textContent
+                                when 'mash_steps'
+                                    for stepNode in mashProperty.childNodes or []
+                                        if stepNode.nodeName.toLowerCase() isnt 'mash_step'
+                                            continue
+
+                                        step = new Brauhaus.MashStep()
+
+                                        for stepProperty in stepNode.childNodes or []
+                                            switch stepProperty.nodeName.toLowerCase()
+                                                when 'name'
+                                                    step.name = stepProperty.textContent
+                                                when 'type'
+                                                    step.type = stepProperty.textContent
+                                                when 'infuse_amount'
+                                                    step.waterRatio = parseFloat(stepProperty.textContent) / recipe.grainWeight()
+                                                when 'step_temp'
+                                                    step.temp = parseFloat stepProperty.textContent
+                                                when 'end_temp'
+                                                    step.endTemp = parseFloat stepProperty.textContent
+                                                when 'step_time'
+                                                    step.time = parseFloat stepProperty.textContent
+                                                when 'decoction_amt'
+                                                    step.waterRatio = parseFloat(stepProperty.textContent) / recipe.grainWeight()
+
+                                        mash.steps.push step
 
             recipes.push recipe
 
@@ -1318,5 +1486,33 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
             xml += "<use>#{ misc.use }</use>"
             xml += '</misc>'
         xml += '</miscs>'
+
+        if @mash
+            xml += '<mash><version>1</version>'
+            xml += "<name>#{@mash.name}</name>"
+            xml += "<grain_temp>#{@mash.grainTemp}</grain_temp>"
+            xml += "<sparge_temp>#{@mash.spargeTemp}</sparge_temp>"
+            xml += "<ph>#{@mash.ph}</ph>"
+            xml += "<notes>#{@mash.notes}</notes>"
+
+            xml += '<mash_steps>'
+            for step in @mash.steps
+                xml += '<mash_step><version>1</version>'
+                xml += "<name>#{step.name}</name>"
+                xml += "<description>#{step.description(true, @grainWeight())}</description>"
+                xml += "<step_time>#{step.time}</step_time>"
+                xml += "<step_temp>#{step.temp}</step_temp>"
+                xml += "<end_temp>#{step.endTemp}</end_temp>"
+                xml += "<ramp_time>#{step.rampTime}</ramp_time>"
+
+                if step.type is 'Decoction'
+                    xml += "<decoction_amt>#{step.waterRatio * @grainWeight()}</decoction_amt>"
+                else
+                    xml += "<infuse_amount>#{step.waterRatio * @grainWeight()}</infuse_amount>"
+
+                xml += '</mash_step>'
+            xml += '</mash_steps>'
+
+            xml += '</mash>'
 
         xml += '</recipe></recipes>'

@@ -46,6 +46,16 @@ describe 'Recipe', ->
             form: 'liquid'
             attenuation: 80
 
+        recipe.mash = new Brauhaus.Mash
+            name: 'My Mash'
+            ph: 5.4
+
+        recipe.mash.addStep
+            name: 'Saccharification'
+            time: 60
+            temp: 68
+            endTemp: 60
+
         # Calculate recipe values like og, fg, ibu
         recipe.calculate()
 
@@ -78,7 +88,7 @@ describe 'Recipe', ->
             assert.equal 30.85, recipe.price.toFixed(2)
 
         it 'Should convert to BeerXML', ->
-            assert.equal '<?xml version="1.0" encoding="utf-8"?><recipes><recipe><version>1</version><name>New Recipe</name><brewer>Anonymous Brewer</brewer><batch_size>20</batch_size><boil_size>10</boil_size><efficiency>75</efficiency><primary_age>14</primary_age><primary_temp>20</primary_temp><age>14</age><age_temp>20</age_temp><style><version>1</version><name>Saison</name><category>Belgian and French Ale</category><og_min>1.06</og_min><og_max>1.08</og_max><fg_min>1.01</fg_min><fg_max>1.016</fg_max><ibu_min>32</ibu_min><ibu_max>38</ibu_max><color_min>3.5</color_min><color_max>8.5</color_max><abv_min>4.5</abv_min><abv_max>6</abv_max><carb_min>1.6</carb_min><carb_max>2.4</carb_max></style><fermentables><fermentable><version>1</version><name>Pale liquid extract</name><type>extract</name><weight>3.5</weight><yield>75.0</yield><color>3.5</color></fermentable></fermentables><hops><hop><name>Cascade hops</name><time>60</time><amount>0.02835</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop><hop><name>Cascade hops</name><time>10</time><amount>0.014</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop></hops><yeasts><yeast><name>Wyeast 3724 - Belgian Saison</name><type>ale</type><form>liquid</form><attenuation>80</attenuation></yeast></yeasts><miscs></miscs></recipe></recipes>', recipe.toBeerXml()
+            assert.equal '<?xml version="1.0" encoding="utf-8"?><recipes><recipe><version>1</version><name>New Recipe</name><brewer>Anonymous Brewer</brewer><batch_size>20</batch_size><boil_size>10</boil_size><efficiency>75</efficiency><primary_age>14</primary_age><primary_temp>20</primary_temp><age>14</age><age_temp>20</age_temp><style><version>1</version><name>Saison</name><category>Belgian and French Ale</category><og_min>1.06</og_min><og_max>1.08</og_max><fg_min>1.01</fg_min><fg_max>1.016</fg_max><ibu_min>32</ibu_min><ibu_max>38</ibu_max><color_min>3.5</color_min><color_max>8.5</color_max><abv_min>4.5</abv_min><abv_max>6</abv_max><carb_min>1.6</carb_min><carb_max>2.4</carb_max></style><fermentables><fermentable><version>1</version><name>Pale liquid extract</name><type>extract</type><weight>3.5</weight><yield>75.0</yield><color>3.5</color></fermentable></fermentables><hops><hop><version>1</version><name>Cascade hops</name><time>60</time><amount>0.02835</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop><hop><version>1</version><name>Cascade hops</name><time>10</time><amount>0.014</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop></hops><yeasts><yeast><version>1</version><name>Wyeast 3724 - Belgian Saison</name><type>ale</type><form>liquid</form><attenuation>80</attenuation></yeast></yeasts><miscs></miscs><mash><version>1</version><name>My Mash</name><grain_temp>23</grain_temp><sparge_temp>76</sparge_temp><ph>5.4</ph><notes></notes><mash_steps><mash_step><version>1</version><name>Saccharification</name><description>Infuse 0.0l for 60 minutes at 68C</description><step_time>60</step_time><step_temp>68</step_temp><end_temp>60</end_temp><ramp_time>null</ramp_time><infuse_amount>0</infuse_amount></mash_step></mash_steps></mash></recipe></recipes>', recipe.toBeerXml()
 
     describe 'Steep', ->
         recipe = new Brauhaus.Recipe
@@ -183,6 +193,17 @@ describe 'Recipe', ->
             type: 'ale'
             form: 'liquid'
             attenuation: 73
+
+        recipe.mash = new Brauhaus.Mash
+            name: 'Test mash'
+            ph: 5.4
+
+        recipe.mash.addStep
+            name: 'Saccharification'
+            type: 'Infusion'
+            temp: 70
+            time: 60
+            waterRatio: 2.75
 
         recipe.calculate()
 
@@ -441,3 +462,20 @@ describe 'Recipe', ->
 
         it 'Should have a FG of 1.011', ->
             assert.equal 1.011, recipe.fg.toFixed 3
+
+        it 'Should have a mash object', ->
+            assert.ok recipe.mash.steps
+
+        it 'Should have one mash step (60 min @ 68C / 10l)', ->
+            assert.equal 1, recipe.mash.steps.length
+            assert.equal 60, recipe.mash.steps[0].time
+            assert.equal 68, recipe.mash.steps[0].temp
+
+        it 'Should have converted absolute volume to water ratio of 2.75', ->
+            assert.equal 2.75, recipe.mash.steps[0].waterRatio.toFixed 2
+
+        it 'Should auto-generate a mash step description (si)', ->
+            assert.equal 'Infuse 10.0l for 60 minutes at 68C', recipe.mash.steps[0].description(true, recipe.grainWeight())
+
+        it 'Should auto-generate a mash step description (imperial)', ->
+            assert.equal 'Infuse 10.6qt for 60 minutes at 154.4F', recipe.mash.steps[0].description(false, recipe.grainWeight())
