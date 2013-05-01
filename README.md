@@ -695,7 +695,7 @@ If you have PhantomJS installed and on your path then you can use:
 CI=true npm test
 ```
 
-Pull requests will automatically be tested by Travis CI both in Node.js 0.6/0.8/0.9 and in a headless webkit environment (PhantomJS). Changes that cause tests to fail will not be accepted.
+Pull requests will automatically be tested by Travis CI both in Node.js 0.6/0.8/0.10 and in a headless webkit environment (PhantomJS). Changes that cause tests to fail will not be accepted. New features should be tested to be accepted.
 
 New tests can be added in the `test` directory. If you add a new file there, please don't forget to update the `test.html` to include it!
 
