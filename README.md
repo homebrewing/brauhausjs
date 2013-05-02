@@ -61,7 +61,7 @@ r = new Brauhaus.Recipe
 
 # Add ingredients
 r.add 'fermentable',
-    name: 'Extra pale liquid extract'
+    name: 'Extra pale malt'
     color: 2.5
     weight: 4.2
     yield: 78.0
@@ -78,6 +78,18 @@ r.add 'yeast'
     type: 'ale'
     form: 'liquid'
     attenuation: 80
+
+# Set up a simple infusion mash
+r.mash = new Brauhaus.Mash
+    name: 'My mash'
+    ph: 5.4
+
+r.mash.addStep
+    name: 'Saccharification'
+    type: 'Infusion'
+    time: 60
+    temp: 68
+    waterRatio: 2.75
 
 # Calculate values
 r.calculate()
@@ -109,7 +121,7 @@ var r = new Brauhaus.Recipe({
 
 // Add ingredients
 r.add('fermentable', {
-    name: 'Extra pale liquid extract',
+    name: 'Extra pale malt',
     color: 2.5,
     weight: 4.2,
     yield: 78.0
@@ -128,6 +140,20 @@ r.add('yeast', {
     type: 'ale',
     form: 'liquid',
     attenuation: 80
+});
+
+// Set up a simple infusion mash
+r.mash = new Brauhaus.Mash({
+    name: 'My mash',
+    ph: 5.4
+});
+
+r.mash.addStep({
+    name: 'Saccharification',
+    type: 'Infusion',
+    time: 60,
+    temp: 68,
+    waterRatio: 2.75
 });
 
 // Calculate values
