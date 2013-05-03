@@ -1368,7 +1368,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         # Calculate bitterness
         for spice in @spices
             bitterness = 0.0
-            if spice.aa and spice.use is 'boil'
+            if spice.aa and spice.use.toLowerCase() is 'boil'
                 # Account for better utilization from pellets vs. whole
                 utilizationFactor = 1.0
                 if spice.form is 'pellet'
