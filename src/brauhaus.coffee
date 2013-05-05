@@ -654,6 +654,38 @@ Brauhaus.getStyle = (category, name) ->
     return Brauhaus.STYLES[category][name]
 
 ###
+Simple parsing functions -----------------------------------------------------
+###
+
+# Time string to number of minutes. This will convert strings like '1 hour'
+# into 60.0 or '35 min' into 35.0.
+Brauhaus.parseDuration = (value) ->
+    conversions =
+        w: 7 * 60 * 24
+        week: 7 * 60 * 24
+        weeks: 7 * 60 * 24
+        d: 60 * 24
+        day: 60 * 24
+        days: 60 * 24
+        h: 60
+        hr: 60
+        hrs: 60
+        hour: 60
+        hours: 60
+        m: 1
+        min: 1
+        mins: 1
+        s: 1 / 60.0
+        sec: 1 / 60.0
+        seconds: 1 / 60.0
+
+    for own unit, factor of conversions
+        if unit in value
+            return parseFloat(value) * factor
+
+    return parseFloat(value)
+
+###
 Conversion functions ---------------------------------------------------------
 ###
 

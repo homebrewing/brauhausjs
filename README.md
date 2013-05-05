@@ -168,6 +168,22 @@ console.log('Alcohol: ' + r.abv.toFixed(1) + '% by volume');
 console.log('Calories: ' + Math.round(r.calories) + ' kcal');
 ```
 
+Duration Functions
+------------------
+The following functions are available to parse and display durations of time:
+
+### Brauhaus.parseDuration (value)
+Parse a string value into a duration in minutes. Supports many optional suffixes like `w`, `week`, `weeks`, `d`, `day`, `days`, `h`, `hr`, `hrs`, `hour`, `hours`, `m`, `min`, `mins`, `minute`, `minutes`, `s`, `sec`, `second`, and `seconds`.
+
+```javascript
+>>> Brauhaus.parseDuration('2 days')
+2880
+>>> Brauhaus.parseDuration('1h')
+60
+>>> Brauhaus.parseDuration('12')
+12
+```
+
 Conversion Functions
 --------------------
 The following functions are available to convert between various forms:
@@ -724,6 +740,17 @@ CI=true npm test
 Pull requests will automatically be tested by Travis CI both in Node.js 0.6/0.8/0.10 and in a headless webkit environment (PhantomJS). Changes that cause tests to fail will not be accepted. New features should be tested to be accepted.
 
 New tests can be added in the `test` directory. If you add a new file there, please don't forget to update the `test.html` to include it!
+
+### Code Coverage
+You can generate a unit test code coverage report for unit tests using the following:
+
+```bash
+cake coverage
+```
+
+You can find an HTML report in the `coverage` directory that is created. This report will show line-by-line code coverage information.
+
+---
 
 Please note that all contributions will be licensed under the MIT license in the following section.
 

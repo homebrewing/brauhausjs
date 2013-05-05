@@ -63,7 +63,8 @@
     "mocha": "1.x",
     "mocha-phantomjs": "2.x",
     "chai": "1.x",
-    "uglify-js": "2.x"
+    "uglify-js": "2.x",
+    "istanbul": ">=0.1.34 <0.2"
   },
   "engines": {
     "node": ">=0.6"

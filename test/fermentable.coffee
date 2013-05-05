@@ -24,12 +24,30 @@ describe 'Fermentible', ->
                 assert.equal data[0], f.type()
                 assert.equal data[1], f.addition()
 
+    it 'Should calculate 1kg as 2 lb, 3 oz', ->
+        f.weight = 1.0
+        weight = f.weightLbOz()
+        assert.equal 2, parseInt(weight.lb)
+        assert.equal 3, parseInt(weight.oz)
+
     it 'Should calculate GU of 1kg @ 75% yield as 76.4 per gallon', ->
         f.weight = 1.0
         f.yield = 75.0
         assert.equal 76.4, f.gu(Brauhaus.gallonsToLiters(1.0)).toFixed(1)
 
-    it 'Should calculate 3.5 SRM as rgb(233, 157, 63)', ->
+    it 'Should calculate degrees Plato of 1kg @ 75% yield as 58 per liter', ->
+        f.weight = 1.0
+        f.yield = 75.0
+        assert.equal 58, parseInt(f.plato())
+
+    it 'Should calculate 3.5 SRM as RGB [233, 157, 63]', ->
+        f.color = 3.5
+        rgb = f.colorRgb()
+        assert.equal 233, rgb[0]
+        assert.equal 157, rgb[1]
+        assert.equal 63, rgb[2]
+
+    it 'Should calculate 3.5 SRM as CSS rgb(233, 157, 63)', ->
         f.color = 3.5
         assert.equal 'rgb(233, 157, 63)', f.colorCss()
 

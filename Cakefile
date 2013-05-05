@@ -23,3 +23,12 @@ task 'test', 'Run library tests', ->
         exec 'node_modules/mocha-phantomjs/bin/mocha-phantomjs test/test.html', (err, stdout) ->
             console.log stdout
             throw err if err
+
+task 'coverage', 'Determine unit test code coverage', ->
+    exec './node_modules/istanbul/lib/cli.js cover -v ./node_modules/mocha/bin/_mocha -- test/*.js', (err, stdout) ->
+        console.log stdout
+        throw err if err
+
+        exec './node_modules/istanbul/lib/cli.js report html', (err, stdout) ->
+            console.log stdout
+            throw err if err
