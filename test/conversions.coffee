@@ -32,6 +32,9 @@ describe 'Time conversions', ->
     it 'Should parse no units into minutes', ->
         assert.equal 1, Brauhaus.parseDuration('1')
 
+    it 'Should parse number into minutes', ->
+        assert.equal 1, Brauhaus.parseDuration(1)
+
 describe 'Unit conversions', ->
     it 'Should convert 1 kg to 2.2 lb', ->
         assert.equal 2.2, Brauhaus.kgToLb(1.0).toFixed(1)
