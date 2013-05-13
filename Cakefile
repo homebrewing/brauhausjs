@@ -26,17 +26,17 @@ task 'test', 'Run library tests', ->
 
             # Tests have passed - push coverage info to coveralls
             exec './node_modules/istanbul/lib/cli.js cover -v ./node_modules/mocha/bin/_mocha -- test/*.js', (err, stdout) ->
-            console.log stdout
-            throw err if err
-
-            exec './node_modules/istanbul/lib/cli.js report lcovonly', (err, stdout) ->
                 console.log stdout
                 throw err if err
 
-                console.log 'Trying to send coverage information to coveralls...'
-                exec './node_modules/coveralls/bin/coveralls.js <coverage/lcov.info', (err, stdout) ->
+                exec './node_modules/istanbul/lib/cli.js report lcovonly', (err, stdout) ->
                     console.log stdout
                     throw err if err
+
+                    console.log 'Trying to send coverage information to coveralls...'
+                    exec './node_modules/coveralls/bin/coveralls.js <coverage/lcov.info', (err, stdout) ->
+                        console.log stdout
+                        throw err if err
 
 
 task 'coverage', 'Determine unit test code coverage', ->
