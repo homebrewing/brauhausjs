@@ -1,6 +1,6 @@
 ![Brauhaus.js](https://raw.github.com/danielgtaylor/brauhausjs/master/img/logo.png)
 
-[![Dependency Status](https://gemnasium.com/danielgtaylor/brauhausjs.png)](https://gemnasium.com/danielgtaylor/brauhausjs) [![Build Status](https://travis-ci.org/danielgtaylor/brauhausjs.png)](https://travis-ci.org/danielgtaylor/brauhausjs) [![Coverage Status](https://coveralls.io/repos/danielgtaylor/brauhausjs/badge.png?branch=master)](https://coveralls.io/r/danielgtaylor/brauhausjs?branch=master)
+[![Dependency Status](https://gemnasium.com/danielgtaylor/brauhausjs.png)](https://gemnasium.com/danielgtaylor/brauhausjs) [![Build Status](https://travis-ci.org/danielgtaylor/brauhausjs.png)](https://travis-ci.org/danielgtaylor/brauhausjs) [![Coverage Status](https://coveralls.io/repos/danielgtaylor/brauhausjs/badge.png?branch=master)](https://coveralls.io/r/danielgtaylor/brauhausjs?branch=master) [![NPM version](https://badge.fury.io/js/brauhaus.png)](http://badge.fury.io/js/brauhaus)
 
 A javascript library for homebrew beer calculations both in the browser and on the server. Features include:
 
