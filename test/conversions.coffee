@@ -29,11 +29,29 @@ describe 'Time conversions', ->
         assert.equal 2, Brauhaus.parseDuration('2 mins')
         assert.equal 2, Brauhaus.parseDuration('2 minutes')
 
+    it 'Should parse compound durations into minutes', ->
+        assert.equal 1561, Brauhaus.parseDuration('1day 2 hrs 1 m')
+
     it 'Should parse no units into minutes', ->
         assert.equal 1, Brauhaus.parseDuration('1')
 
     it 'Should parse number into minutes', ->
         assert.equal 1, Brauhaus.parseDuration(1)
+
+    it 'Should convert minutes to display strings', ->
+        assert.equal '1 minute', Brauhaus.displayDuration(1)
+        assert.equal '2 minutes', Brauhaus.displayDuration(2)
+        assert.equal '1 hour', Brauhaus.displayDuration(60)
+        assert.equal '2 hours', Brauhaus.displayDuration(120)
+        assert.equal '1 day', Brauhaus.displayDuration(1440)
+        assert.equal '2 days', Brauhaus.displayDuration(2880)
+        assert.equal '1 day 2 hours 35 minutes', Brauhaus.displayDuration(1595)
+
+    it 'Should convert minutes to approximate strings', ->
+        assert.equal '2 hours', Brauhaus.displayDuration(110, 1)
+        assert.equal '1 hour 5 minutes', Brauhaus.displayDuration(64.5, 2)
+        assert.equal '1 day 23 hours', Brauhaus.displayDuration(2833, 2)
+        assert.equal '1 week', Brauhaus.displayDuration(10080, 3)
 
 describe 'Unit conversions', ->
     it 'Should convert 1 kg to 2.2 lb', ->

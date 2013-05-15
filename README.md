@@ -178,10 +178,24 @@ Parse a string value into a duration in minutes. Supports many optional suffixes
 ```javascript
 >>> Brauhaus.parseDuration('2 days')
 2880
->>> Brauhaus.parseDuration('1h')
-60
+>>> Brauhaus.parseDuration('1hr 3 minutes')
+63
 >>> Brauhaus.parseDuration('12')
 12
+```
+
+### Brauhaus.displayDuration (minutes, [approximate])
+Generates a human-friendly display string from a number of minutes. Approximate, if set, determines the maximum number of units to return, rounding the last unit. For example, a setting of `2` would return days and hours; or hours and minutes; but never days, hours, and minutes.
+
+```javascript
+>>> Brauhaus.displayDuration(65)
+'1 hour 5 minutes'
+>>> Brauhaus.displayDuration(2833)
+'1 day 23 hours 13 minutes'
+>>> Brauhaus.displayDuration(2833, 2)
+'1 day 23 hours'
+>>> Brauhaus.displayDuration(2833, 1)
+'2 days'
 ```
 
 Conversion Functions
