@@ -16,7 +16,7 @@ A javascript library for homebrew beer calculations both in the browser and on t
  * Automatically generated recipe instructions and timeline
  * Estimate monetary recipe cost in USD based on ingredients
  * Built-in unit conversions (kg <-> lb/oz, liter <-> gallon, temps, etc)
- * Color in &deg;SRM to name, RGB conversions, CSS color support, etc
+ * Color in &deg;SRM to name, &deg;EBC, &deg;Lovibond, RGB conversions, CSS color, etc
 
 Brauhaus.js was developed with and for [Malt.io](http://www.malt.io/), a community website for homebrewers to create recipes and share their love of homebrewing beer.
 
@@ -288,6 +288,38 @@ Convert a temperature from fahrenheit to celcius.
 Color Conversions
 -----------------
 Colors can be easily converted into various useful formats for the screen and web.
+
+### Brauhaus.srmToEbc (number)
+Convert a color in &deg;SRM to &deg;EBC.
+
+```javascript
+>>> Brauhaus.srmToEbc(10)
+19.7
+```
+
+### Brauhaus.ebcToSrm (number)
+Convert a color in &deg;EBC to &deg;SRM.
+
+```javascript
+>>> Brauhaus.ebcToSrm (20)
+10.16
+```
+
+### Brauhaus.srmToLovibond (number)
+Convert a color in &deg;SRM to &deg;Lovibond.
+
+```javascript
+>>> Brauhaus.srmToLovibond(10)
+7.9433042964712826
+```
+
+### Brauhaus.lovibondToSrm (number)
+Convert a color in &deg;Lovibond to &deg;SRM.
+
+```javascript
+>>> Brauhaus.lovibondToSrm(3.5)
+3.9811000000000005
+```
 
 ### Brauhaus.srmToRgb (number)
 Convert a color in &deg;SRM to a RGB triplet.

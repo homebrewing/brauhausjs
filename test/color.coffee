@@ -2,6 +2,18 @@ Brauhaus = Brauhaus ? require '../lib/brauhaus'
 assert = assert ? require 'assert'
 
 describe 'Color', ->
+    it 'Should convert 5 SRM to 10 EBC', ->
+        assert.equal 10, Math.round Brauhaus.srmToEbc(5)
+
+    it 'Should convert 10 EBC to 5 SRM', ->
+        assert.equal 5, Math.round Brauhaus.ebcToSrm(10)
+
+    it 'Should convert 12.7 SRM to 10 Lovibond', ->
+        assert.equal 10, Math.round Brauhaus.srmToLovibond(12.7)
+
+    it 'Should convert 10 Lovibond to 12.8 SRM', ->
+        assert.equal 12.8, Brauhaus.lovibondToSrm(10).toFixed 1
+
     it 'Should convert -5 SRM to rgb(255, 255, 255)', ->
         assert.equal 'rgb(255, 255, 255)', Brauhaus.srmToCss(-5.0)
 

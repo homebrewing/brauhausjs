@@ -762,6 +762,22 @@ Brauhaus.fToC = (fahrenheit) ->
 Color functions --------------------------------------------------------------
 ###
 
+# Convert SRM to EBC
+Brauhaus.srmToEbc = (srm) ->
+    srm * 1.97
+
+# Convert EBC to SRM
+Brauhaus.ebcToSrm = (ebc) ->
+    ebc * 0.508
+
+# Convert SRM to Lovibond
+Brauhaus.srmToLovibond = (srm) ->
+    (srm + 0.76) / 1.3546
+
+# Convert Lovibond to SRM
+Brauhaus.lovibondToSrm = (lovibond) ->
+    1.3546 * lovibond - 0.76
+
 # Convert SRM color values to [r, g, b] triplets
 Brauhaus.srmToRgb = (srm) ->
     r = Math.round(Math.min(255, Math.max(0, 255 * Math.pow(0.975, srm))))
