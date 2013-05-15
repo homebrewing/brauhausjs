@@ -40,6 +40,14 @@ describe 'Recipe', ->
             time: 10
             form: 'pellet'
 
+        recipe.add 'spice',
+            name: 'Cascade hops'
+            weight: 0.014
+            aa: 5.0
+            use: 'primary'
+            time: 2880
+            form: 'whole'
+
         recipe.add 'yeast',
             name: 'Wyeast 3724 - Belgian Saison'
             type: 'ale'
@@ -60,6 +68,9 @@ describe 'Recipe', ->
         recipe.calculate()
 
         # Run tests
+        it 'Should include a single dry hop step', ->
+            assert.equal 1, (recipe.spices.filter (x) -> x.dry()).length
+
         it 'Should calculate OG as 1.051', ->
             assert.equal 1.051, recipe.og.toFixed(3)
 
@@ -84,11 +95,11 @@ describe 'Recipe', ->
         it 'Should calculate BV as 1.01', ->
             assert.equal 1.01, recipe.bv.toFixed(2)
 
-        it 'Should cost $30.85', ->
-            assert.equal 30.85, recipe.price.toFixed(2)
+        it 'Should cost $31.09', ->
+            assert.equal 31.09, recipe.price.toFixed(2)
 
         it 'Should convert to BeerXML', ->
-            assert.equal '<?xml version="1.0" encoding="utf-8"?><recipes><recipe><version>1</version><name>New Recipe</name><brewer>Anonymous Brewer</brewer><batch_size>20</batch_size><boil_size>10</boil_size><efficiency>75</efficiency><primary_age>14</primary_age><primary_temp>20</primary_temp><age>14</age><age_temp>20</age_temp><style><version>1</version><name>Saison</name><category>Belgian and French Ale</category><og_min>1.06</og_min><og_max>1.08</og_max><fg_min>1.01</fg_min><fg_max>1.016</fg_max><ibu_min>32</ibu_min><ibu_max>38</ibu_max><color_min>3.5</color_min><color_max>8.5</color_max><abv_min>4.5</abv_min><abv_max>6</abv_max><carb_min>1.6</carb_min><carb_max>2.4</carb_max></style><fermentables><fermentable><version>1</version><name>Pale liquid extract</name><type>extract</type><weight>3.5</weight><yield>75.0</yield><color>3.5</color></fermentable></fermentables><hops><hop><version>1</version><name>Cascade hops</name><time>60</time><amount>0.02835</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop><hop><version>1</version><name>Cascade hops</name><time>10</time><amount>0.014</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop></hops><yeasts><yeast><version>1</version><name>Wyeast 3724 - Belgian Saison</name><type>ale</type><form>liquid</form><attenuation>80</attenuation></yeast></yeasts><miscs></miscs><mash><version>1</version><name>My Mash</name><grain_temp>23</grain_temp><sparge_temp>76</sparge_temp><ph>5.4</ph><notes></notes><mash_steps><mash_step><version>1</version><name>Saccharification</name><description>Infuse 0.0l for 60 minutes at 68C</description><step_time>60</step_time><step_temp>68</step_temp><end_temp>60</end_temp><ramp_time>null</ramp_time><infuse_amount>0</infuse_amount></mash_step></mash_steps></mash></recipe></recipes>', recipe.toBeerXml()
+            assert.equal '<?xml version="1.0" encoding="utf-8"?><recipes><recipe><version>1</version><name>New Recipe</name><brewer>Anonymous Brewer</brewer><batch_size>20</batch_size><boil_size>10</boil_size><efficiency>75</efficiency><primary_age>14</primary_age><primary_temp>20</primary_temp><age>14</age><age_temp>20</age_temp><style><version>1</version><name>Saison</name><category>Belgian and French Ale</category><og_min>1.06</og_min><og_max>1.08</og_max><fg_min>1.01</fg_min><fg_max>1.016</fg_max><ibu_min>32</ibu_min><ibu_max>38</ibu_max><color_min>3.5</color_min><color_max>8.5</color_max><abv_min>4.5</abv_min><abv_max>6</abv_max><carb_min>1.6</carb_min><carb_max>2.4</carb_max></style><fermentables><fermentable><version>1</version><name>Pale liquid extract</name><type>extract</type><weight>3.5</weight><yield>75.0</yield><color>3.5</color></fermentable></fermentables><hops><hop><version>1</version><name>Cascade hops</name><time>60</time><amount>0.02835</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop><hop><version>1</version><name>Cascade hops</name><time>10</time><amount>0.014</amount><alpha>5.00</alpha><use>boil</use><form>pellet</form></hop><hop><version>1</version><name>Cascade hops</name><time>2880</time><amount>0.014</amount><alpha>5.00</alpha><use>primary</use><form>whole</form></hop></hops><yeasts><yeast><version>1</version><name>Wyeast 3724 - Belgian Saison</name><type>ale</type><form>liquid</form><attenuation>80</attenuation></yeast></yeasts><miscs></miscs><mash><version>1</version><name>My Mash</name><grain_temp>23</grain_temp><sparge_temp>76</sparge_temp><ph>5.4</ph><notes></notes><mash_steps><mash_step><version>1</version><name>Saccharification</name><description>Infuse 0.0l for 60 minutes at 68C</description><step_time>60</step_time><step_temp>68</step_temp><end_temp>60</end_temp><ramp_time>null</ramp_time><infuse_amount>0</infuse_amount></mash_step></mash_steps></mash></recipe></recipes>', recipe.toBeerXml()
 
     describe 'Steep', ->
         recipe = new Brauhaus.Recipe

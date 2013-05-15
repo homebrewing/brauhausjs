@@ -509,6 +509,14 @@ A spice is some kind of substance added to flavor or protect a brew. Spices can 
 | use      | string | boil      | When to use the spice (mash, boil, primary, etc) |
 | weight   | number | 1.0       | Weight in kilograms                              |
 
+### Spice.prototype.dry ()
+True if the spice is added after the boil, otherwise false. This is useful for determining if dry hopping is taking place.
+
+```javascript
+>>> s.dry()
+false
+```
+
 ### Spice.prototype.price ()
 Guess the price in USD per kilogram of this spice, based on the name. Prices are an approximation based on multiple online homebrew supply store prices. You should use `toFixed(2)` to display these.
 
