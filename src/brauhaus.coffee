@@ -657,33 +657,65 @@ Brauhaus.getStyle = (category, name) ->
 Simple parsing functions -----------------------------------------------------
 ###
 
-# Time string to number of minutes. This will convert strings like '1 hour'
-# into 60.0 or '35 min' into 35.0.
+# Duration string to number of minutes. This will convert strings like
+# '1 hour' into 60.0 or '35 min' into 35.0. Compound strings also work,
+# for example '1 hour 5 minutes' will become 65.0.
 Brauhaus.parseDuration = (value) ->
-    conversions =
-        w: 7 * 60 * 24
-        week: 7 * 60 * 24
-        weeks: 7 * 60 * 24
-        d: 60 * 24
-        day: 60 * 24
-        days: 60 * 24
-        h: 60
-        hr: 60
-        hrs: 60
-        hour: 60
-        hours: 60
-        m: 1
-        min: 1
-        mins: 1
-        s: 1 / 60.0
-        sec: 1 / 60.0
-        seconds: 1 / 60.0
+    duration = 0
 
-    for own unit, factor of conversions
-        if unit in value
-            return parseFloat(value) * factor
+    return value if not isNaN value
 
-    return parseFloat(value)
+    weeks = value.match /(\d+)\s*w/i
+    days = value.match /(\d+)\s*d/i
+    hours = value.match /(\d+)\s*h/i
+    min = value.match /(\d+)\s*m/i
+    sec = value.match /(\d+)\s*s/i
+
+    factors = [
+        [weeks, 7 * 60 * 24],
+        [days, 60 * 24],
+        [hours, 60],
+        [min, 1],
+        [sec, 1.0 / 60]
+    ]
+
+    for [unit, factor] in factors
+        duration += parseInt(unit[1]) * factor if unit
+
+    return duration
+
+# Return a human-friendly duration like '2 weeks' or '3 hours 12 minutes'
+# from a number of minutes. If approximate is given, then only the two
+# largest factors are included (e.g. weeks & days or days & hours) rather
+# than all possible pieces. For example '1 day 2 hours 5 minutes' would
+# become '1 day 2 hours'
+Brauhaus.displayDuration = (minutes, approximate) ->
+    durations = []
+
+    factors = [
+        ['month', 30 * 60 * 24],
+        ['week', 7 * 60 * 24],
+        ['day', 60 * 24],
+        ['hour', 60],
+        ['minute', 1]
+    ]
+
+    count = 0
+    for [label, factor] in factors
+        if approximate? and count is approximate - 1
+            amount = Math.round minutes / factor
+        else
+            amount = Math.floor minutes / factor
+
+        minutes = minutes % factor
+
+        if amount > 0
+            count++
+            if approximate? and count > approximate
+                break
+            durations.push "#{amount} #{label}#{('s' if amount isnt 1) ? ''}"
+
+    return durations.join ' '
 
 ###
 Conversion functions ---------------------------------------------------------
