@@ -740,6 +740,14 @@ Get the recipe boil size in gallons. Shortcut for `Brauhaus.litersToGallons(r.bo
 3.125
 ```
 
+### Recipe.prototype.bottleCount ()
+Get the total number of whole bottles (i.e. servings) for this recipe. This is a shortcut that is equivalent to `Math.floor(r.batchSize / r.servingSize)`.
+
+```javascript
+>>> r.bottleCount()
+56
+```
+
 ### Recipe.prototype.calculate ()
 Calculate alcohol, bitterness, color, gravities, etc. This method must be called before trying to access those values. See the quick examples above for a more complete example of `calculate()` usage.
 

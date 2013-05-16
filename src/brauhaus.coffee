@@ -1394,6 +1394,10 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
         weight
 
+    # Get the total number of whole bottles (i.e. servings)
+    bottleCount: ->
+        Math.floor(@batchSize / @servingSize)
+
     calculate: ->
         @og = 1.0
         @fg = 0.0

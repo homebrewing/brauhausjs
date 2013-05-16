@@ -71,6 +71,9 @@ describe 'Recipe', ->
         it 'Should include a single dry hop step', ->
             assert.equal 1, (recipe.spices.filter (x) -> x.dry()).length
 
+        it 'Should have a bottle count of 56', ->
+            assert.equal 56, recipe.bottleCount()
+
         it 'Should calculate OG as 1.051', ->
             assert.equal 1.051, recipe.og.toFixed(3)
 
