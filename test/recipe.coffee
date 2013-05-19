@@ -182,6 +182,14 @@ describe 'Recipe', ->
         it 'Should cost $26.69', ->
             assert.equal 26.69, recipe.price.toFixed(2)
 
+        it 'Should generate a metric unit timeline', ->
+            timeline = recipe.timeline()
+            assert.ok timeline
+
+        it 'Should generate an imperial unit timeline', ->
+            timeline = recipe.timeline(false)
+            assert.ok timeline
+
     describe 'Mash', ->
         recipe = new Brauhaus.Recipe
             batchSize: 20.0
@@ -213,8 +221,15 @@ describe 'Recipe', ->
             ph: 5.4
 
         recipe.mash.addStep
-            name: 'Saccharification'
+            name: 'Rest'
             type: 'Infusion'
+            temp: 60
+            time: 30
+            waterRatio: 2.75
+
+        recipe.mash.addStep
+            name: 'Saccharification'
+            type: 'Temperature'
             temp: 70
             time: 60
             waterRatio: 2.75
@@ -247,6 +262,14 @@ describe 'Recipe', ->
 
         it 'Should cost $27.30', ->
             assert.equal 27.30, recipe.price.toFixed(2)
+
+        it 'Should generate a metric unit timeline', ->
+            timeline = recipe.timeline()
+            assert.ok timeline
+
+        it 'Should generate an imperial unit timeline', ->
+            timeline = recipe.timeline(false)
+            assert.ok timeline
 
     describe 'BeerXML', ->
         recipe =  Brauhaus.Recipe.fromBeerXml('<?xml version="1.0" encoding="ISO-8859-1"?>

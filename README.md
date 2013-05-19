@@ -168,6 +168,16 @@ console.log('Alcohol: ' + r.abv.toFixed(1) + '% by volume');
 console.log('Calories: ' + Math.round(r.calories) + ' kcal');
 ```
 
+Brauhaus Configuration
+----------------------
+The following values may be configured and will apply to all recipes, ingredients, etc.
+
+| Property       | Type   | Default | Description                                       |
+| -------------- | ------ | ------- | ------------------------------------------------- |
+| BURNER_ENERGY  | number | 9000    | Heat source output in kilojoules per hour         |
+| COLOR_NAMES    | array  | ...     | An array of color names for &deg;SRM color ranges |
+| MASH_HEAT_LOSS | number | 5       | Degrees C lost per hour during mash               |
+
 Duration Functions
 ------------------
 The following functions are available to parse and display durations of time:
@@ -343,6 +353,17 @@ Convert a color in &deg;SRM to a human-readable color.
 ```javascript
 >>> Brauhaus.srmToName(8)
 'deep gold'
+```
+
+Other Utilities
+---------------
+
+### Brauhaus.timeToHeat (liters, degrees)
+Get the time in minutes to heat a volume of water in liters by a number of degrees C given the heat source defined by `Brauhaus.BURNER_ENERGY`.
+
+```javascript
+>>> Brauhaus.timeToHeat(10.0, 80.0)
+22.34666666666667
 ```
 
 Beer Styles
@@ -668,7 +689,7 @@ Get the sparge temperature in degrees F. Shortcut for `Brauhaus.cToF(mash.sparge
 
 Brauhaus.Recipe
 ---------------
-A beer recipe, containing ingredients like fermentables, spices, and yeast. Calculations can be made for bitterness, alcohol content, color, and more. Many values are unset by default and will be calculated when the `Recipe.prototype.calculate()` method is called.
+A beer recipe, containing ingredients like fermentables, spices, and yeast. Calculations can be made for bitterness, alcohol content, color, and more. Many values are unset by default and will be calculated when the `Recipe.prototype.calculate()` method is called. The `brewDayDuration` is unset until the `Recipe.prototype.timeline()` method is called.
 
 | Property        | Type   | Default            | Description                                  |
 | --------------- | ------ | ------------------ | -------------------------------------------- |
@@ -676,9 +697,10 @@ A beer recipe, containing ingredients like fermentables, spices, and yeast. Calc
 | abw             | number | unset              | Alcohol percentage by weight                 |
 | author          | string | Anonymous Brewer   | Recipe author                                |
 | batchSize       | number | 20.0               | Total size of batch in liters                |
-| bv              | number | unset              | Balance value (bitterness / sweetness ratio) |
 | boilSize        | number | 10.0               | Size of wort that will be boiled in liters   |
+| brewDayDuration | number | unset              | Duration in minutes for the brew day         |
 | buToGu          | number | unset              | Bitterness units to gravity units ratio      |
+| bv              | number | unset              | Balance value (bitterness / sweetness ratio) |
 | calories        | number | unset              | Calories per serving (kcal)                  |
 | color           | number | unset              | Color in &deg;SRM                            |
 | description     | string | Recipe description | Recipe description text                      |
@@ -694,9 +716,11 @@ A beer recipe, containing ingredients like fermentables, spices, and yeast. Calc
 | price           | number | unset              | Approximate price in USD                     |
 | realExtract     | number | unset              | Real extract of the recipe                   |
 | servingSize     | number | 0.355              | Serving size in liters                       |
+| steepTime       | number | 20                 | Time in minutes to steep ingredients         |
 | spices          | array  | []                 | Array of `Brauhaus.Spice` objects            |
 | steepEfficiency | number | 50.0               | Efficiency percentage for steeping           |
 | style           | object | null               | Recipe style (see `Brauhaus.STYLES`)         |
+| timelineMap     | object | null               | Map used to generate a brew timeline         |
 | yeast           | array  | []                 | Array of `Brauhaus.Yeast` objects            |
 
 ### Recipe.fromBeerXml (xml)
@@ -763,6 +787,20 @@ Get the total grain weight in kg. Note that this only includes fermentables that
 ```javascript
 >>> r.grainWeight()
 4.0
+```
+
+### Recipe.prototype.timeline (siUnits=true)
+Generate a brew timeline from a recipe.
+
+```javascript
+>>> r.timeline()
+[
+    [0, 'Heat 10l of water to 68C (about 20 minutes)'],
+    [20, 'Add 1kg CaraMunich (10 GU) and steep for 20 minutes.'],
+    [40, 'Remove grains. This is now your wort. Top up to 10l and bring to a boil (about 12 minutes)'],
+    [62, 'Add 28g of Cascade hops (30 IBU)'],
+    ...
+]
 ```
 
 ### Recipe.prototype.toBeerXml ()

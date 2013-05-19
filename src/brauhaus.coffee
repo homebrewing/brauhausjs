@@ -20,6 +20,13 @@ Brauhaus = exports? and exports or @Brauhaus = {}
 Global constants -------------------------------------------------------------
 ###
 
+# Energy output of the stovetop or gas burner in kilojoules per hour. Default
+# is based on a large stovetop burner that would put out 2,500 watts.
+Brauhaus.BURNER_ENERGY = 9000
+
+# Average mash heat loss per hour in degrees C
+Brauhaus.MASH_HEAT_LOSS = 5.0
+
 # Friendly beer color names and their respective SRM values
 Brauhaus.COLOR_NAMES = [
     [2, 'pale straw'],
@@ -801,6 +808,19 @@ Brauhaus.srmToName = (srm) ->
     color
 
 ###
+Other Utilities --------------------------------------------------------------
+###
+
+# Get the approximate time to change a volume of liquid in liters by a
+# number of degrees celcius. Degrees defaults to 80 which is about
+# the temperature difference between tap water and boiling.
+# Input energy is set via `Brauhaus.BURNER_ENERGY` and is measured in
+# kilojoules per hour. It defaults to an average stovetop burner.
+Brauhaus.timeToHeat = (liters, degrees=80) ->
+    kj = 4.19 * liters * degrees
+    minutes = kj / Brauhaus.BURNER_ENERGY * 60
+
+###
 Base objects -----------------------------------------------------------------
 ###
 
@@ -1032,6 +1052,8 @@ class Brauhaus.MashStep extends Brauhaus.OptionConstructor
     # If siUnits is true, then use SI units (liters and kilograms), otherwise
     # use quarts per pound when describing the liquid amounts.
     description: (siUnits = true, totalGrainWeight) ->
+        desc = ''
+
         if siUnits
             absoluteUnits = 'l'
             relativeUnits = 'l per kg'
@@ -1053,13 +1075,15 @@ class Brauhaus.MashStep extends Brauhaus.OptionConstructor
 
         switch @type
             when 'Infusion'
-                return "Infuse #{waterAmount} for #{@time} minutes at #{temp}"
+                desc = "Infuse #{waterAmount} for #{@time} minutes at #{temp}"
             when 'Temperature'
-                return "Heat to #{temp} over #{@rampTime or @time} minutes"
+                desc = "Stop heating and hold for #{@time} minutes at #{temp}"
             when 'Decoction'
-                return "Decoct and boil #{waterAmount} to reach #{temp}"
+                desc = "Add #{waterAmount} boiled water to reach #{temp} and hold for #{@time} minutes"
             else
-                return "Unknown mash step type '#{@type}'!"
+                desc = "Unknown mash step type '#{@type}'!"
+
+        return desc
 
     # Water ratio in quarts / pound of grain
     waterRatioQtPerLb: ->
@@ -1131,6 +1155,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     servingSize: 0.355
 
     steepEfficiency: 50
+    steepTime: 20
     mashEfficiency: 75
 
     style: null
@@ -1173,6 +1198,11 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     tertiaryTemp: 0.0
     agingDays: 14
     agingTemp: 20.0
+
+    brewDayDuration: null
+
+    # A mapping of values used to build a recipe timeline / instructions
+    timelineMap: null
 
     # Get a list of parsed recipes from BeerXML input
     @fromBeerXml: (xml) ->
@@ -1407,6 +1437,18 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         earlyOg = 1.0
         mcu = 0.0
         attenuation = 0.0
+
+        # A map of various ingredient values used to generate the timeline
+        # steps below.
+        @timelineMap =
+            fermentables:
+                mash: []
+                steep: []
+                boil: []
+                boilEnd: []
+            times: {}
+            drySpice: {}
+            yeast: []
         
         # Calculate gravities and color from fermentables
         for fermentable in @fermentables
@@ -1420,7 +1462,8 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
             mcu += fermentable.color * fermentable.weightLb() / @batchSizeGallons()
 
             # Update gravities
-            gravity = fermentable.gu(@batchSize) * efficiency / 1000.0
+            gu = fermentable.gu(@batchSize) * efficiency
+            gravity = gu / 1000.0
             @og += gravity
 
             if not fermentable.late
@@ -1428,6 +1471,18 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
             # Update recipe price with fermentable
             @price += fermentable.price()
+
+            # Add fermentable info into the timeline map
+            switch addition
+                when 'boil'
+                    if not fermentable.late
+                        @timelineMap.fermentables.boil.push [fermentable, gu]
+                    else
+                        @timelineMap.fermentables.boilEnd.push [fermentable, gu]
+                when 'steep'
+                    @timelineMap.fermentables.steep.push [fermentable, gu]
+                when 'mash'
+                    @timelineMap.fermentables.mash.push [fermentable, gu]
 
         @color = 1.4922 * Math.pow(mcu, 0.6859)
 
@@ -1437,6 +1492,9 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
             # Update recipe price with yeast
             @price += yeast.price()
+
+            # Add yeast info into the timeline map
+            @timelineMap.yeast.push yeast
 
         attenuation = 75.0 if attenuation is 0
 
@@ -1459,6 +1517,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         # Calculate bitterness
         for spice in @spices
             bitterness = 0.0
+            time = spice.time
             if spice.aa and spice.use.toLowerCase() is 'boil'
                 # Account for better utilization from pellets vs. whole
                 utilizationFactor = 1.0
@@ -1480,12 +1539,234 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
             # Update recipe price with spice
             @price += spice.price()
 
+            # Update timeline map with hop information
+            if spice.dry()
+                @timelineMap['drySpice'][time] ?= []
+                @timelineMap['drySpice'][time].push([spice, bitterness])
+            else
+                @timelineMap['times'][time] ?= []
+                @timelineMap['times'][time].push([spice, bitterness])
+
         # Calculate bitterness to gravity ratios
         @buToGu = @ibu / (@og - 1.000) / 1000.0
 
         # http://klugscheisserbrauerei.wordpress.com/beer-balance/
         rte = (0.82 * (@fg - 1.000) + 0.18 * (@og - 1.000)) * 1000.0
         @bv = 0.8 * @ibu / rte
+
+    # Get a timeline as a list of [[time, description], ...] that can be put
+    # into a list or table. If siUnits is true, then use metric units,
+    # otherwise use imperial units.
+    # You MUST call `calculate()` on this recipe before this method.
+    timeline: (siUnits = true) ->
+        timeline = []
+
+        boilName = 'water'
+        totalTime = 0
+        currentTemp = 22
+        liquidVolume = 0
+
+        # Get a list of fermentable descriptions taking siUnits into account
+        fermentableList = (items) ->
+            ingredients = []
+
+            for [fermentable, gravity] in items
+                if siUnits
+                    weight = "#{fermentable.weight.toFixed 1}kg"
+                else
+                    lboz = fermentable.weightLbOz()
+                    weight = "#{parseInt(lboz.lb)}lb #{parseInt(lboz.oz)}oz"
+
+                ingredients.push "#{weight} of #{fermentable.name} (#{gravity.toFixed 1} GU)"
+
+            return ingredients
+
+        # Get a list of spice descriptions taking siUnits into account
+        spiceList = (items) ->
+            ingredients = []
+
+            for [spice, ibu] in items
+                if siUnits
+                    weight = "#{parseInt(spice.weight * 1000)}g"
+                else
+                    weight = "#{(spice.weightLb() * 16.0).toFixed 2}oz"
+
+                extra = ''
+                if ibu
+                    extra = " (#{ibu.toFixed 1} IBU)"
+
+                ingredients.push "#{weight} of #{spice.name}#{extra}"
+
+            return ingredients
+
+        if @timelineMap.fermentables.mash.length
+            boilName = 'wort'
+
+            mash = @mash
+            mash ?= new Brauhaus.Mash()
+
+            ingredients = fermentableList @timelineMap.fermentables.mash
+            timeline.push [totalTime, "Begin #{mash.name} mash. Add #{ingredients.join ', '}."]
+
+            steps = @mash.steps or [
+                # Default to a basic 60 minute single-infustion mash at 68C
+                new Brauhaus.MashStep
+                    name: 'Saccharification'
+                    type: 'Infusion'
+                    time: 60
+                    rampTime: Brauhaus.timeToHeat @grainWeight(), 68 - currentTemp
+                    temp: 68
+                    waterRatio: 2.75
+            ]
+
+            for step in steps
+                strikeVolume = (step.waterRatio * @grainWeight()) - liquidVolume
+                if step.temp != currentTemp and strikeVolume > 0
+                    # We are adding hot or cold water!
+                    strikeTemp = ((step.temp - currentTemp) * (0.4184 * @grainWeight()) / strikeVolume) + step.temp
+                    timeToHeat = Brauhaus.timeToHeat strikeVolume, strikeTemp - currentTemp
+
+                    if siUnits
+                        strikeVolumeDesc = "#{strikeVolume.toFixed 1}l"
+                        strikeTempDesc = "#{Math.round strikeTemp}C"
+                    else
+                        strikeVolumeDesc = "#{(Brauhaus.litersToGallons(strikeVolume) * 4).toFixed 1}qts"
+                        strikeTempDesc = "#{Math.round Brauhaus.cToF(strikeTemp)}F"
+
+                    timeline.push [totalTime, "Heat #{strikeVolumeDesc} to #{strikeTempDesc} (about #{Math.round timeToHeat} minutes)"]
+                    liquidVolume += strikeVolume
+                    totalTime += timeToHeat
+                else if step.temp != currentTemp
+                    timeToHeat = Brauhaus.timeToHeat liquidVolume, step.temp - currentTemp
+
+                    if siUnits
+                        heatTemp = "#{Math.round step.temp}C"
+                    else
+                        heatTemp = "#{Math.round Brauhaus.cToF(step.temp)}F"
+
+                    timeline.push [totalTime, "Heat the mash to #{heatTemp} (about #{Math.round timeToHeat} minutes)"]
+                    totalTime += timeToHeat
+
+                timeline.push [totalTime, "#{step.name}: #{step.description(siUnits, @grainWeight())}."]
+                totalTime += step.time
+                currentTemp = step.temp - (step.time * Brauhaus.MASH_HEAT_LOSS / 60.0)
+
+            timeline.push [totalTime, 'Remove grains from mash. This is now your wort.']
+            totalTime += 5
+        
+        if @timelineMap.fermentables.steep.length
+            boilName = 'wort'
+            steepWeight = (fermentable.weight for [fermentable, gravity] in @timelineMap.fermentables.steep).reduce (x, y) -> x + y
+            steepHeatTime = Brauhaus.timeToHeat steepWeight * 2.75, 68 - currentTemp
+            currentTemp = 68
+            liquidVolume += steepWeight * 2.75
+
+            if siUnits
+                steepVolume = "#{(steepWeight * 2.75).toFixed 1}l"
+                steepTemp = "#{68}C"
+            else
+                steepVolume = "#{Brauhaus.litersToGallons(steepWeight * 2.75).toFixed 1}gal"
+                steepTemp = "#{Brauhaus.cToF(68).toFixed 1}F"
+
+            timeline.push [totalTime, "Heat #{steepVolume} to #{steepTemp} (about #{Math.round steepHeatTime} minutes)"]
+            totalTime += steepHeatTime
+
+            ingredients = fermentableList @timelineMap.fermentables.steep
+            timeline.push [totalTime, "Add #{ingredients.join ', '} and steep for #{@steepTime} minutes."]
+            totalTime += 20
+        
+        # Adjust temperature based on added water
+        waterChangeRatio = Math.min(1, liquidVolume / @boilSize)
+        currentTemp = (currentTemp * waterChangeRatio) + (22 * (1.0 - waterChangeRatio))
+
+        if siUnits
+            boilVolume = "#{@boilSize.toFixed 1}l"
+        else
+            boilVolume = "#{@boilSizeGallons().toFixed 1}gal"
+
+        boilTime = parseInt(Brauhaus.timeToHeat @boilSize, 100 - currentTemp)
+        timeline.push [totalTime, "Top up the #{boilName} to #{boilVolume} and heat to a rolling boil (about #{boilTime} minutes)."]
+        totalTime += boilTime
+
+        if @timelineMap.fermentables.boil.length
+            ingredients = fermentableList @timelineMap.fermentables.boil
+            timeline.push [totalTime, "Add #{ingredients.join ' '}"]
+
+        timesStart = totalTime
+
+        times = (parseInt(key) for own key, value of @timelineMap.times)
+
+        # If we have late additions and no late addition time, add it
+        if @timelineMap.fermentables.boilEnd.length and 5 not in times
+            @timelineMap.times[5] = []
+            times.push(5)
+
+        previousSpiceTime = 0
+        for time, i in times.sort((x, y) -> y - x)
+            if i is 0
+                previousSpiceTime = time
+
+            totalTime += previousSpiceTime - time
+
+            previousSpiceTime = time
+
+            ingredients = spiceList @timelineMap.times[time]
+
+            if i is 5 and @timelineMap.fermentables.boilEnd.length
+                ingredients.concat(fermentableList @timelineMap.fermentables.boilEnd)
+
+            timeline.push [totalTime, "Add #{ingredients.join ' '}"]
+
+        totalTime += previousSpiceTime
+
+        if siUnits
+            chillTemp = "#{@primaryTemp}C"
+        else
+            chillTemp = "#{Brauhaus.cToF @primaryTemp}F"
+
+        timeline.push [totalTime, "Flame out. Begin chilling to #{chillTemp} and aerate the cooled wort (about 20 minutes)."]
+        totalTime += 20
+
+        yeasts = (yeast.name for yeast in @yeast)
+
+        if not yeasts.length and @primaryDays
+            # No yeast given, but primary fermentation should happen...
+            # Let's just use a generic "yeast" to pitch.
+            yeasts = ['yeast']
+
+        if yeasts.length
+            timeline.push [totalTime, "Pitch #{yeasts.join ', '} and seal the fermenter. You should see bubbles in the airlock within 24 hours."]
+
+        # The brew day is over! Fermenting starts now.
+        @brewDayDuration = totalTime
+
+        if not @primaryDays and not @secondaryDays and not @tertiaryDays
+            timeline.push [totalTime, 'Drink immediately.']
+            return timeline
+        else if @tertiaryDays
+            totalTime += @primaryDays * 1440
+            timeline.push [totalTime, '']
+        else if @secondaryDays
+            false
+        else
+            totalTime += @primaryDays * 1440
+        
+        primeMsg = "Prime and bottle about #{@bottleCount()} bottles."
+
+        if @agingDays
+            if siUnits
+                ageTemp = "#{@agingTemp}C"
+            else
+                ageTemp = "#{Brauhaus.cToF @agingTemp}F"
+
+            primeMsg += " Age at #{ageTemp} for #{@agingDays} days."
+
+        timeline.push [totalTime, primeMsg]
+        totalTime += @agingDays * 1440
+
+        timeline.push [totalTime, 'Relax, don\'t worry and have a homebrew!']
+
+        return timeline
 
     toBeerXml: ->
         xml = '<?xml version="1.0" encoding="utf-8"?><recipes><recipe>'
