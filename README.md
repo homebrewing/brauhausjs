@@ -177,6 +177,7 @@ The following values may be configured and will apply to all recipes, ingredient
 | BURNER_ENERGY  | number | 9000    | Heat source output in kilojoules per hour         |
 | COLOR_NAMES    | array  | ...     | An array of color names for &deg;SRM color ranges |
 | MASH_HEAT_LOSS | number | 5       | Degrees C lost per hour during mash               |
+| ROOM_TEMP      | number | 23      | Room temperature in degrees C                     |
 
 Duration Functions
 ------------------

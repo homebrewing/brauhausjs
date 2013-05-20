@@ -20,6 +20,9 @@ Brauhaus = exports? and exports or @Brauhaus = {}
 Global constants -------------------------------------------------------------
 ###
 
+# Room temperature in degrees C
+Brauhaus.ROOM_TEMP = 23
+
 # Energy output of the stovetop or gas burner in kilojoules per hour. Default
 # is based on a large stovetop burner that would put out 2,500 watts.
 Brauhaus.BURNER_ENERGY = 9000
@@ -1112,7 +1115,7 @@ class Brauhaus.Mash extends Brauhaus.OptionConstructor
     name: ''
 
     # Temperature of the grain in degrees C
-    grainTemp: 23
+    grainTemp: Brauhaus.ROOM_TEMP
 
     # Temperature of the sparge water in degrees C
     spargeTemp: 76
@@ -1563,7 +1566,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
         boilName = 'water'
         totalTime = 0
-        currentTemp = 22
+        currentTemp = Brauhaus.ROOM_TEMP
         liquidVolume = 0
 
         # Get a list of fermentable descriptions taking siUnits into account
@@ -1677,7 +1680,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         
         # Adjust temperature based on added water
         waterChangeRatio = Math.min(1, liquidVolume / @boilSize)
-        currentTemp = (currentTemp * waterChangeRatio) + (22 * (1.0 - waterChangeRatio))
+        currentTemp = (currentTemp * waterChangeRatio) + (Brauhaus.ROOM_TEMP * (1.0 - waterChangeRatio))
 
         if siUnits
             boilVolume = "#{@boilSize.toFixed 1}l"
