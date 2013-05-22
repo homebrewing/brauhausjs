@@ -29,6 +29,9 @@ describe 'Time conversions', ->
         assert.equal 2, Brauhaus.parseDuration('2 mins')
         assert.equal 2, Brauhaus.parseDuration('2 minutes')
 
+    it 'Should parse start into minutes', ->
+        assert.equal 0, Brauhaus.parseDuration('start')
+
     it 'Should parse compound durations into minutes', ->
         assert.equal 1561, Brauhaus.parseDuration('1day 2 hrs 1 m')
 
@@ -39,6 +42,7 @@ describe 'Time conversions', ->
         assert.equal 1, Brauhaus.parseDuration(1)
 
     it 'Should convert minutes to display strings', ->
+        assert.equal 'start', Brauhaus.displayDuration(0)
         assert.equal '1 minute', Brauhaus.displayDuration(1)
         assert.equal '2 minutes', Brauhaus.displayDuration(2)
         assert.equal '1 hour', Brauhaus.displayDuration(60)
@@ -50,6 +54,7 @@ describe 'Time conversions', ->
     it 'Should convert minutes to approximate strings', ->
         assert.equal '2 hours', Brauhaus.displayDuration(110, 1)
         assert.equal '1 hour 5 minutes', Brauhaus.displayDuration(64.5, 2)
+        assert.equal '1 day', Brauhaus.displayDuration(1441, 2)
         assert.equal '1 day 23 hours', Brauhaus.displayDuration(2833, 2)
         assert.equal '1 week', Brauhaus.displayDuration(10080, 3)
 

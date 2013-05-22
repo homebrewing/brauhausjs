@@ -713,17 +713,25 @@ Brauhaus.displayDuration = (minutes, approximate) ->
     count = 0
     for [label, factor] in factors
         if approximate? and count is approximate - 1
+            # Round the last item
             amount = Math.round minutes / factor
         else
+            # Get the biggest whole number (e.g. 1 day)
             amount = Math.floor minutes / factor
 
+        # Set the remaining minutes
         minutes = minutes % factor
 
+        # Increment count of factors seen
+        count++ if amount > 0 or count > 0
+
+        if approximate? and count > approximate
+            break
+
         if amount > 0
-            count++
-            if approximate? and count > approximate
-                break
             durations.push "#{amount} #{label}#{('s' if amount isnt 1) ? ''}"
+
+    durations = ['start'] if not durations.length
 
     return durations.join ' '
 
