@@ -1581,7 +1581,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         fermentableList = (items) ->
             ingredients = []
 
-            for [fermentable, gravity] in items
+            for [fermentable, gravity] in items or []
                 if siUnits
                     weight = "#{fermentable.weight.toFixed 1}kg"
                 else
@@ -1596,7 +1596,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         spiceList = (items) ->
             ingredients = []
 
-            for [spice, ibu] in items
+            for [spice, ibu] in items or []
                 if siUnits
                     weight = "#{parseInt(spice.weight * 1000)}g"
                 else
@@ -1695,13 +1695,14 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         else
             boilVolume = "#{@boilSizeGallons().toFixed 1}gal"
 
-        boilTime = parseInt(Brauhaus.timeToHeat @boilSize, 100 - currentTemp)
-        timeline.push [totalTime, "Top up the #{boilName} to #{boilVolume} and heat to a rolling boil (about #{boilTime} minutes)."]
-        totalTime += boilTime
+        if @boilSize - liquidVolume
+            action = "Top up the #{boilName} to #{boilVolume} and heat to a rolling boil"
+        else
+            action = "Bring #{boilVolume} to a rolling boil"
 
-        if @timelineMap.fermentables.boil.length
-            ingredients = fermentableList @timelineMap.fermentables.boil
-            timeline.push [totalTime, "Add #{ingredients.join ' '}"]
+        boilTime = parseInt(Brauhaus.timeToHeat @boilSize, 100 - currentTemp)
+        timeline.push [totalTime, "#{action} (about #{boilTime} minutes)."]
+        totalTime += boilTime
 
         timesStart = totalTime
 
@@ -1710,23 +1711,24 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         # If we have late additions and no late addition time, add it
         if @timelineMap.fermentables.boilEnd.length and 5 not in times
             @timelineMap.times[5] = []
-            times.push(5)
+            times.push 5
 
         previousSpiceTime = 0
         for time, i in times.sort((x, y) -> y - x)
+            ingredients = spiceList @timelineMap.times[time]
+
             if i is 0
+                ingredients = fermentableList(@timelineMap.fermentables.boil).concat ingredients
                 previousSpiceTime = time
 
             totalTime += previousSpiceTime - time
 
             previousSpiceTime = time
 
-            ingredients = spiceList @timelineMap.times[time]
+            if time is 5 and @timelineMap.fermentables.boilEnd.length
+                ingredients = fermentableList(@timelineMap.fermentables.boilEnd).concat ingredients
 
-            if i is 5 and @timelineMap.fermentables.boilEnd.length
-                ingredients.concat(fermentableList @timelineMap.fermentables.boilEnd)
-
-            timeline.push [totalTime, "Add #{ingredients.join ' '}"]
+            timeline.push [totalTime, "Add #{ingredients.join ', '}"]
 
         totalTime += previousSpiceTime
 
