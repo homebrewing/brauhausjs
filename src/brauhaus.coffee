@@ -1695,7 +1695,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         else
             boilVolume = "#{@boilSizeGallons().toFixed 1}gal"
 
-        if @boilSize - liquidVolume
+        if @boilSize - liquidVolume < @boilSize
             action = "Top up the #{boilName} to #{boilVolume} and heat to a rolling boil"
         else
             action = "Bring #{boilVolume} to a rolling boil"
