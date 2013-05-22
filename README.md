@@ -184,7 +184,7 @@ Duration Functions
 The following functions are available to parse and display durations of time:
 
 ### Brauhaus.parseDuration (value)
-Parse a string value into a duration in minutes. Supports many optional suffixes like `w`, `week`, `weeks`, `d`, `day`, `days`, `h`, `hr`, `hrs`, `hour`, `hours`, `m`, `min`, `mins`, `minute`, `minutes`, `s`, `sec`, `second`, and `seconds`.
+Parse a string value into a duration in minutes. Supports many optional suffixes like `w`, `wk`, `wks`, `week`, `weeks`, `d`, `day`, `days`, `h`, `hr`, `hrs`, `hour`, `hours`, `m`, `min`, `mins`, `minute`, `minutes`, `s`, `sec`, `second`, and `seconds`.
 
 ```javascript
 >>> Brauhaus.parseDuration('2 days')
