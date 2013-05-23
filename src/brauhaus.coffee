@@ -712,7 +712,7 @@ Brauhaus.displayDuration = (minutes, approximate) ->
 
     count = 0
     for [label, factor] in factors
-        if approximate? and count is approximate - 1
+        if factor is 1 or (approximate? and count is approximate - 1)
             # Round the last item
             amount = Math.round minutes / factor
         else
