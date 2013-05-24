@@ -1754,15 +1754,18 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         @brewDayDuration = totalTime
 
         if not @primaryDays and not @secondaryDays and not @tertiaryDays
-            timeline.push [totalTime, 'Drink immediately.']
+            timeline.push [totalTime, "Drink immediately (about #{@bottleCount()} bottles)."]
             return timeline
+
+        totalTime += @primaryDays * 1440
+
+        if @secondaryDays
+            timeline.push [totalTime, "Move to secondary fermenter for #{Brauhaus.displayDuration(@secondaryDays * 1440, 2)}."]
+            totalTime += @secondaryDays * 1440
+
         else if @tertiaryDays
-            totalTime += @primaryDays * 1440
-            timeline.push [totalTime, '']
-        else if @secondaryDays
-            false
-        else
-            totalTime += @primaryDays * 1440
+            timeline.push [totalTime, "Move to tertiary fermenter for #{Brauhaus.displayDuration(@tertiaryDays * 1440, 2)}."]
+            totalTime += @tertiaryDays * 1440
         
         primeMsg = "Prime and bottle about #{@bottleCount()} bottles."
 
