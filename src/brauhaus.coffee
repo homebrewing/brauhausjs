@@ -1639,10 +1639,10 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
                     if siUnits
                         strikeVolumeDesc = "#{strikeVolume.toFixed 1}l"
-                        strikeTempDesc = "#{Math.round strikeTemp}C"
+                        strikeTempDesc = "#{Math.round strikeTemp}°C"
                     else
                         strikeVolumeDesc = "#{(Brauhaus.litersToGallons(strikeVolume) * 4).toFixed 1}qts"
-                        strikeTempDesc = "#{Math.round Brauhaus.cToF(strikeTemp)}F"
+                        strikeTempDesc = "#{Math.round Brauhaus.cToF(strikeTemp)}°F"
 
                     timeline.push [totalTime, "Heat #{strikeVolumeDesc} to #{strikeTempDesc} (about #{Math.round timeToHeat} minutes)"]
                     liquidVolume += strikeVolume
@@ -1651,9 +1651,9 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
                     timeToHeat = Brauhaus.timeToHeat liquidVolume, step.temp - currentTemp
 
                     if siUnits
-                        heatTemp = "#{Math.round step.temp}C"
+                        heatTemp = "#{Math.round step.temp}°C"
                     else
-                        heatTemp = "#{Math.round Brauhaus.cToF(step.temp)}F"
+                        heatTemp = "#{Math.round Brauhaus.cToF(step.temp)}°F"
 
                     timeline.push [totalTime, "Heat the mash to #{heatTemp} (about #{Math.round timeToHeat} minutes)"]
                     totalTime += timeToHeat
@@ -1674,10 +1674,10 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
 
             if siUnits
                 steepVolume = "#{(steepWeight * 2.75).toFixed 1}l"
-                steepTemp = "#{68}C"
+                steepTemp = "#{68}°C"
             else
                 steepVolume = "#{Brauhaus.litersToGallons(steepWeight * 2.75).toFixed 1}gal"
-                steepTemp = "#{Brauhaus.cToF(68).toFixed 1}F"
+                steepTemp = "#{Brauhaus.cToF(68).toFixed 1}°F"
 
             timeline.push [totalTime, "Heat #{steepVolume} to #{steepTemp} (about #{Math.round steepHeatTime} minutes)"]
             totalTime += steepHeatTime
@@ -1733,9 +1733,9 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         totalTime += previousSpiceTime
 
         if siUnits
-            chillTemp = "#{@primaryTemp}C"
+            chillTemp = "#{@primaryTemp}°C"
         else
-            chillTemp = "#{Brauhaus.cToF @primaryTemp}F"
+            chillTemp = "#{Brauhaus.cToF @primaryTemp}°F"
 
         timeline.push [totalTime, "Flame out. Begin chilling to #{chillTemp} and aerate the cooled wort (about 20 minutes)."]
         totalTime += 20
