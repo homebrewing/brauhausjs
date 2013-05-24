@@ -791,17 +791,33 @@ Get the total grain weight in kg. Note that this only includes fermentables that
 ```
 
 ### Recipe.prototype.timeline (siUnits=true)
-Generate a brew timeline from a recipe.
+Generate a brew timeline from a recipe. If `siUnits` is `true`, then generate the timeline in metric units, otherwise output imperial units. Returns a list of `[duration, description]` items where `duration` is a time in minutes from the start of the recipe and `description` is the step description text.
 
 ```javascript
 >>> r.timeline()
 [
     [0, 'Heat 10l of water to 68C (about 20 minutes)'],
-    [20, 'Add 1kg CaraMunich (10 GU) and steep for 20 minutes.'],
-    [40, 'Remove grains. This is now your wort. Top up to 10l and bring to a boil (about 12 minutes)'],
-    [62, 'Add 28g of Cascade hops (30 IBU)'],
+    [20, 'Add 1kg CaraMunich (10 GU) and steep for 20 minutes'],
+    [40.16, 'Remove grains. This is now your wort. Top up to 10l and bring to a boil (about 12 minutes)'],
+    [62.52, 'Add 28g of Cascade hops (30 IBU)'],
     ...
 ]
+```
+
+It's possible to display a human-friendly version of this information with some utility methods used in a loop. For example:
+
+```javascript
+>>> timeline = r.timeline()
+>>> for (var x = 0; x < timeline.length; x++) {
+>>>     var duration = timeline[x][0];
+>>>     var description = timeline[x][1];
+>>>     console.log(Brauhaus.displayDuration(duration, 2) + ': ' + description);
+>>> }
+start: Heat 10l of water to 68C (about 20 minutes)
+20 minutes: Add 1kg CaraMunich (10 GU) and steep for 20 minutes
+40 minutes: Remove grains. This is now your wort. Top up to 10l and bring to a boil (about 12 minutes)
+63 minutes: Add 28g of Cascade hops (30 IBU)
+...
 ```
 
 ### Recipe.prototype.toBeerXml ()
