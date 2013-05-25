@@ -20,7 +20,7 @@ task 'test', 'Run library tests', ->
 
     # Run headless web browser tests on continuous integration hosts
     if process.env.CI
-        exec 'node_modules/mocha-phantomjs/bin/mocha-phantomjs test/test.html', (err, stdout) ->
+        exec './node_modules/mocha-phantomjs/bin/mocha-phantomjs test/test.html', (err, stdout) ->
             console.log stdout
             throw err if err
 
