@@ -1419,12 +1419,13 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         Brauhaus.litersToGallons @boilSize
 
     add: (type, values) ->
-        if type is 'fermentable'
-            @fermentables.push new Brauhaus.Fermentable(values)
-        else if type is 'spice'
-            @spices.push new Brauhaus.Spice(values)
-        else if type is 'yeast'
-            @yeast.push new Brauhaus.Yeast(values)
+        switch type
+            when 'fermentable'
+                @fermentables.push new Brauhaus.Fermentable(values)
+            when 'spice', 'hop'
+                @spices.push new Brauhaus.Spice(values)
+            when 'yeast'
+                @yeast.push new Brauhaus.Yeast(values)
 
     # Get the total weight of grains in kg
     grainWeight: ->

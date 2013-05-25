@@ -66,7 +66,7 @@ r.add 'fermentable',
     weight: 4.2
     yield: 78.0
 
-r.add 'spice',
+r.add 'hop',
     name: 'Cascade hops'
     weight: 0.028
     aa: 5.0
@@ -127,7 +127,7 @@ r.add('fermentable', {
     yield: 78.0
 });
 
-r.add('spice', {
+r.add('hop', {
     name: 'Cascade hops',
     weight: 0.028,
     aa: 5.0,
@@ -736,17 +736,39 @@ Get a list of recipes from BeerXML loaded as a string.
 ---
 
 ### Recipe.prototype.add (type, data)
-Add a new ingredient to the recipe. `type` can be one of `fermentable`, `spice`, or `yeast`. The data is what will be sent to the constructor of the ingredient defined by `type`.
+Add a new ingredient to the recipe. `type` can be one of `fermentable`, `hop`, `spice`, or `yeast`. The data is what will be sent to the constructor of the ingredient defined by `type`.
 
 ```javascript
 >>> r.add('fermentable', {
-    name: 'Pale malt'
-    weight: 4.0
-    yield: 75
+    name: 'Pale malt',
+    weight: 4.0,
+    yield: 75,
     color: 3.5
 });
 >>> r.fermentables
 [<Brauhaus.Fermentable object 'Pale malt'>]
+
+>>> r.add('hop', {
+   name: 'Cascade',
+   weight: 0.028,
+   time: 60,
+   aa: 5.3,
+   form: 'pellet'
+});
+
+>>> r.add('spice', {
+    name: 'Coriander',
+    weight: 0.014
+    time: 5
+    form: 'ground'
+});
+
+>>> r.add('yeast', {
+   name: 'Wyeast 3056'
+   type: 'ale'
+   form: 'liquid'
+   attenuation: 75
+});
 ```
 
 ### Recipe.prototype.batchSizeGallons ()
