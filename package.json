@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "coffee-script": "1.x",
-    "mocha": "1.x",
+    "mocha": "1.9.x",
     "mocha-phantomjs": "2.x",
     "chai": "1.x",
     "uglify-js": "2.x",
