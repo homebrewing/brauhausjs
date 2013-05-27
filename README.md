@@ -20,6 +20,14 @@ A javascript library for homebrew beer calculations both in the browser and on t
 
 Brauhaus.js was developed with and for [Malt.io](http://www.malt.io/), a community website for homebrewers to create recipes and share their love of homebrewing beer.
 
+Interactive Examples
+--------------------
+
+ * [Basic Example (Javascript)](http://jsfiddle.net/danielgtaylor/wPYGw/)
+ * [Basic Example (Coffeescript)](http://jsfiddle.net/danielgtaylor/47Uqu/)
+ * [Recipe Timeline (Coffeescript)](http://jsfiddle.net/danielgtaylor/3FEBX/)
+ * [BeerXML import (Coffeescript)](http://jsfiddle.net/danielgtaylor/6cj3N/)
+
 Installation
 ------------
 There are two ways to use Brauhaus.js - either in a web browser (client-side) or on e.g. Node.js (server-side).
