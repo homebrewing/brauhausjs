@@ -3,3 +3,4 @@ lib/brauhaus.js
 test/*.js
 node_modules
 npm-debug.log
+coverage
