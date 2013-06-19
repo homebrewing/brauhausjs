@@ -1,5 +1,5 @@
 .DS_Store
-lib/brauhaus.js
+lib/*.js
 test/*.js
 node_modules
 npm-debug.log
