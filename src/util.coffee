@@ -162,6 +162,6 @@ Other Utilities --------------------------------------------------------------
 # the temperature difference between tap water and boiling.
 # Input energy is set via `Brauhaus.BURNER_ENERGY` and is measured in
 # kilojoules per hour. It defaults to an average stovetop burner.
-Brauhaus.timeToHeat = (liters, degrees=80) ->
+Brauhaus.timeToHeat = (liters, degrees = 80) ->
     kj = 4.19 * liters * degrees
     minutes = kj / Brauhaus.BURNER_ENERGY * 60

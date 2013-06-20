@@ -392,7 +392,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
                     bitterness = spice.weight * 100 * utilization * utilizationFactor * spice.aa / (@batchSize * (1 + adjustment))
                     @ibu += bitterness
                 else
-                    throw "Unknown IBU method '#{@ibuMethod}'!"
+                    throw new Error("Unknown IBU method '#{@ibuMethod}'!")
 
             # Update recipe price with spice
             @price += spice.price()

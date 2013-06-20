@@ -37,6 +37,6 @@ class Brauhaus.Ingredient extends Brauhaus.OptionConstructor
                 else if typeof item is 'string'
                     result = item.exec(@name)
                 else
-                    throw 'Invalid regex input!'
+                    throw new Error('Invalid regex input!')
 
         result

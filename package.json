@@ -1,6 +1,6 @@
 {
   "name": "brauhaus",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "A javascript library for homebrew beer calculations, both in the browser and on the server",
   "homepage": "https://github.com/danielgtaylor/brauhausjs",
   "main": "lib/brauhaus.js",
@@ -60,6 +60,7 @@
   },
   "devDependencies": {
     "coffee-script": ">=1.6.2 <2",
+    "coffeelint": ">=0.5.6 <1",
     "mocha": "1.9.x",
     "mocha-phantomjs": "2.x",
     "chai": "1.x",

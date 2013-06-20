@@ -871,6 +871,14 @@ cd brauhausjs
 npm install
 ```
 
+### Style Guide
+Brauhaus uses the [CoffeeScript Style Guide](https://github.com/polarmobile/coffeescript-style-guide) with the following exceptions:
+
+ 1. Indent 4 spaces
+ 1. Maximum line length is 120 characters
+
+When building `brauhaus.js` with `cake build` or `npm test` you will see the output of [CoffeeLint](http://www.coffeelint.org/), a static analysis code quality tool for CoffeeScript. Please adhere to the warnings and errors to ensure your changes will build.
+
 ### Unit Tests
 Before submitting a pull request, please add any relevant tests and run them via:
 
