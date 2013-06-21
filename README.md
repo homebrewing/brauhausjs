@@ -1,4 +1,4 @@
-![Brauhaus.js](https://raw.github.com/danielgtaylor/brauhausjs/master/img/logo.png)
+![Brauhaus.js](https://raw.github.com/homebrewing/brauhausjs/master/img/logo.png)
 
 [![Dependency Status](https://gemnasium.com/danielgtaylor/brauhausjs.png)](https://gemnasium.com/danielgtaylor/brauhausjs) [![Build Status](https://travis-ci.org/danielgtaylor/brauhausjs.png)](https://travis-ci.org/danielgtaylor/brauhausjs) [![Coverage Status](https://coveralls.io/repos/danielgtaylor/brauhausjs/badge.png?branch=master)](https://coveralls.io/r/danielgtaylor/brauhausjs?branch=master) [![NPM version](https://badge.fury.io/js/brauhaus.png)](http://badge.fury.io/js/brauhaus)
 
@@ -35,7 +35,7 @@ There are two ways to use Brauhaus.js - either in a web browser (client-side) or
 ### Web Browser (client-side use)
 To use Brauhaus.js in a web browser, simply download the following file and include it as you would any other script:
 
- * [Download the latest brauhaus.min.js](https://raw.github.com/danielgtaylor/brauhausjs/master/dist/brauhaus.min.js)
+ * [Download the latest brauhaus.min.js](https://raw.github.com/homebrewing/brauhausjs/master/dist/brauhaus.min.js)
 
 ```html
 <script type="text/javascript" src="/scripts/brauhaus.min.js"></script>

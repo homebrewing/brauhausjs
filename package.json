@@ -2,7 +2,7 @@
   "name": "brauhaus",
   "version": "0.5.4",
   "description": "A javascript library for homebrew beer calculations, both in the browser and on the server",
-  "homepage": "https://github.com/danielgtaylor/brauhausjs",
+  "homepage": "https://github.com/homebrewing/brauhausjs",
   "main": "lib/brauhaus.js",
   "ender": "lib/brauhaus.js",
   "scripts": {
@@ -12,10 +12,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/danielgtaylor/brauhausjs"
+    "url": "https://github.com/homebrewing/brauhausjs"
   },
   "bugs": {
-    "url": "https://github.com/danielgtaylor/brauhausjs/issues"
+    "url": "https://github.com/homebrewing/brauhausjs/issues"
   },
   "keywords": [
     "beer",
@@ -52,7 +52,7 @@
   "author": {
     "name": "Daniel G. Taylor",
     "email": "danielgtaylor@gmail.com",
-    "url": "http://programmer-art.org/"
+    "url": "https://github.com/homebrewing"
   },
   "license": "MIT",
   "dependencies": {
