@@ -2,7 +2,7 @@
 @preserve
 Brauhaus.js Beer Calculator
 Copyright 2013 Daniel G. Taylor <danielgtaylor@gmail.com>
-https://github.com/danielgtaylor/brauhausjs
+https://github.com/homebrewing/brauhausjs
 ###
 
 # Hyperbolic tangent approximation

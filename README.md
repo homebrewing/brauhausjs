@@ -17,10 +17,12 @@ A javascript library for homebrew beer calculations both in the browser and on t
  * Built-in unit conversions (kg <-> lb/oz, liter <-> gallon, temps, etc)
  * Color in &deg;SRM to name, &deg;EBC, &deg;Lovibond, RGB conversions, CSS color, etc
  * Plugin support to add additional features
+ * Lightweight - about 24kb when minified
 
 Plugins provide the following features:
 
  * [BeerXML import / export (brauhaus-beerxml)](https://github.com/homebrewing/brauhaus-beerxml)
+ * [BJCP style catalog (brauhaus-styles)](https://github.com/homebrewing/brauhaus-styles)
 
 Brauhaus.js was developed with and for [Malt.io](http://www.malt.io/), a community website for homebrewers to create recipes and share their love of homebrewing beer.
 
@@ -31,6 +33,7 @@ Interactive Examples
  * [Basic Example (Coffeescript)](http://jsfiddle.net/danielgtaylor/47Uqu/)
  * [Recipe Timeline (Coffeescript)](http://jsfiddle.net/danielgtaylor/3FEBX/)
  * [BeerXML import (Coffeescript)](http://jsfiddle.net/danielgtaylor/6cj3N/)
+ * [BJCP Styles (Coffeescript)](http://jsfiddle.net/danielgtaylor/q5rHF/)
 
 Installation
 ------------
@@ -44,6 +47,7 @@ To use Brauhaus.js in a web browser, simply download the following file and incl
 Plugins:
 
  * [Download the latest brauhaus-beerxml.min.js](https://raw.github.com/homebrewing/brauhaus-beerxml/master/dist/brauhaus-beerxml.min.js)
+ * [Download the latest brauhaus-styles.min.js](https://raw.github.com/homebrewing/brauhaus-styles/master/dist/brauhaus-styles.min.js)
 
 ```html
 <script type="text/javascript" src="/scripts/brauhaus.min.js"></script>
@@ -388,43 +392,6 @@ Get the time in minutes to heat a volume of water in liters by a number of degre
 ```javascript
 >>> Brauhaus.timeToHeat(10.0, 80.0)
 22.34666666666667
-```
-
-Beer Styles
------------
-Brauhaus ships with many pre-defined beer styles from BJCP.
-
-### Brauhaus.getStyleCategories ()
-Get a list of BJCP style categories supported by Brauhaus.
-
-```javascript
->>> Brauhaus.getStyleCategories()
-['Light Lager', 'Pilsner', 'Bock', ...]
-```
-
-### Brauhaus.getStyles (string)
-Get a list of styles for a particular category
-
-```javascript
->>> Brauhaus.getStyles('Bock')
-['Maibock / Helles Bock', 'DoppelBock', ...]
-```
-
-### Brauhaus.getStyle (category, style)
-Get an object representing a particular style.
-
-```javascript
->>> Brauhaus.getStyle('Bock', 'Doppelbock')
-{
-    name: 'Doppelbock',
-    category: 'Bock',
-    gu: [1.072, 1.112],
-    fg: [1.016, 1.024],
-    srm: [6, 25],
-    ibu: [16, 26],
-    abv: [7, 10],
-    carb: [1.6, 2.4]
-}
 ```
 
 Brauhaus Objects

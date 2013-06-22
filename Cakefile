@@ -5,7 +5,6 @@
 compile =
     brauhaus: [
         'globals',
-        'style',
         'util',
         'base',
         'fermentable',
