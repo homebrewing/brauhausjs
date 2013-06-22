@@ -1,13 +1,12 @@
 ![Brauhaus.js](https://raw.github.com/homebrewing/brauhausjs/master/img/logo.png)
 
-[![Dependency Status](https://gemnasium.com/danielgtaylor/brauhausjs.png)](https://gemnasium.com/danielgtaylor/brauhausjs) [![Build Status](https://travis-ci.org/homebrewing/brauhausjs.png)](https://travis-ci.org/homebrewing/brauhausjs) [![Coverage Status](https://coveralls.io/repos/homebrewing/brauhausjs/badge.png?branch=master)](https://coveralls.io/r/homebrewing/brauhausjs?branch=master) [![NPM version](https://badge.fury.io/js/brauhaus.png)](http://badge.fury.io/js/brauhaus)
+[![Dependency Status](https://gemnasium.com/homebrewing/brauhausjs.png)](https://gemnasium.com/homebrewing/brauhausjs) [![Build Status](https://travis-ci.org/homebrewing/brauhausjs.png)](https://travis-ci.org/homebrewing/brauhausjs) [![Coverage Status](https://coveralls.io/repos/homebrewing/brauhausjs/badge.png?branch=master)](https://coveralls.io/r/homebrewing/brauhausjs?branch=master) [![NPM version](https://badge.fury.io/js/brauhaus.png)](http://badge.fury.io/js/brauhaus)
 
 A javascript library for homebrew beer calculations both in the browser and on the server. Features include:
 
  * Support for multiple Javascript runtimes
    * Node.js 0.6.x, 0.8.x, 0.10.x
    * Chrome, Firefox, Internet Explorer 9+, Safari, Opera, etc
- * BeerXML import / export
  * Calculate estimated OG, FG, IBU, ABV, SRM color, calories, and more
  * Tinseth and Rager IBU calculation formula support
    * Pellets vs. whole hops support
@@ -17,6 +16,11 @@ A javascript library for homebrew beer calculations both in the browser and on t
  * Estimate monetary recipe cost in USD based on ingredients
  * Built-in unit conversions (kg <-> lb/oz, liter <-> gallon, temps, etc)
  * Color in &deg;SRM to name, &deg;EBC, &deg;Lovibond, RGB conversions, CSS color, etc
+ * Plugin support to add additional features
+
+Plugins provide the following features:
+
+ * [BeerXML import / export (brauhaus-beerxml)](https://github.com/homebrewing/brauhaus-beerxml)
 
 Brauhaus.js was developed with and for [Malt.io](http://www.malt.io/), a community website for homebrewers to create recipes and share their love of homebrewing beer.
 
@@ -37,8 +41,13 @@ To use Brauhaus.js in a web browser, simply download the following file and incl
 
  * [Download the latest brauhaus.min.js](https://raw.github.com/homebrewing/brauhausjs/master/dist/brauhaus.min.js)
 
+Plugins:
+
+ * [Download the latest brauhaus-beerxml.min.js](https://raw.github.com/homebrewing/brauhaus-beerxml/master/dist/brauhaus-beerxml.min.js)
+
 ```html
 <script type="text/javascript" src="/scripts/brauhaus.min.js"></script>
+<!-- Plugins go here... -->
 <script type="text/javascript">
     // Your code goes here!
     // See below for an example...
@@ -46,7 +55,7 @@ To use Brauhaus.js in a web browser, simply download the following file and incl
 ```
 
 ### Node.js (server-side use)
-For Node.js, you can easily install Brauhaus.js using `npm`:
+For Node.js, you can easily install Brauhaus.js and plugins using `npm`:
 
 ```bash
 npm install brauhaus
@@ -58,7 +67,10 @@ Here is an example of how to use the library from CoffeeScript:
 
 ```coffeescript
 # The following line is NOT required for web browser use
-Brauhaus = Brauhaus ? require 'brauhaus'
+Brauhaus = require 'brauhaus'
+
+# Import plugins here, e.g.
+require 'brauhaus-beerxml'
 
 # Create a recipe
 r = new Brauhaus.Recipe
@@ -117,7 +129,10 @@ Here is an example of how to use the library form Javascript:
 
 ```javascript
 // The following line is NOT required for web browser use
-var Brauhaus = Brauhaus || require('brauhaus');
+var Brauhaus = require('brauhaus');
+
+// Import plugins here, e.g.
+require('brauhaus-beerxml');
 
 // Create a recipe
 var r = new Brauhaus.Recipe({
@@ -732,17 +747,6 @@ A beer recipe, containing ingredients like fermentables, spices, and yeast. Calc
 | timelineMap     | object | null               | Map used to generate a brew timeline         |
 | yeast           | array  | []                 | Array of `Brauhaus.Yeast` objects            |
 
-### Recipe.fromBeerXml (xml)
-Get a list of recipes from BeerXML loaded as a string.
-
-```javascript
->>> xml = '<recipes><recipe><name>Test Recipe</name>...</recipe></recipes>'
->>> recipe = Brauhaus.Recipe.fromBeerXml(xml)[0]
-<Brauhaus.Recipe object 'Test Recipe'>
-```
-
----
-
 ### Recipe.prototype.add (type, data)
 Add a new ingredient to the recipe. `type` can be one of `fermentable`, `hop`, `spice`, or `yeast`. The data is what will be sent to the constructor of the ingredient defined by `type`.
 
@@ -848,14 +852,6 @@ start: Heat 10l of water to 68C (about 20 minutes)
 40 minutes: Remove grains. This is now your wort. Top up to 10l and bring to a boil (about 12 minutes)
 63 minutes: Add 28g of Cascade hops (30 IBU)
 ...
-```
-
-### Recipe.prototype.toBeerXml ()
-Convert this recipe into BeerXML for export. Returns a BeerXML string.
-
-```javascript
->>> r.toBeerXml()
-'<?xml version="1.0"><recipes><recipe>...</recipe></recipes>'
 ```
 
 Contributing
