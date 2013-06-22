@@ -5,10 +5,6 @@ Copyright 2013 Daniel G. Taylor <danielgtaylor@gmail.com>
 https://github.com/danielgtaylor/brauhausjs
 ###
 
-# Import DOM parser if needed to process BeerXML input
-# Works in Node.js, Chrome, Firefox, IE9+, etc
-DOMParser = window?.DOMParser ? require('xmldom').DOMParser
-
 # Hyperbolic tangent approximation
 tanh = (number) ->
     (Math.exp(number) - Math.exp(-number)) / (Math.exp(number) + Math.exp(-number))
