@@ -19,7 +19,7 @@ class Brauhaus.Mash extends Brauhaus.OptionConstructor
     spargeTemp: 76
 
     # Target PH of the mash
-    ph = null
+    ph: null
 
     # Any notes useful for another brewer when mashing
     notes: ''
