@@ -61,12 +61,51 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     # A mapping of values used to build a recipe timeline / instructions
     timelineMap: null
 
+    # A mapping of parameter names to object constructors
+    _paramMap:
+        fermentables: Brauhaus.Fermentable
+        spices: Brauhaus.Spice
+        yeast: Brauhaus.Yeast
+        mash: Brauhaus.Mash
+
     constructor: (options) ->
         @fermentables = []
         @spices = []
         @yeast = []
 
         super(options)
+
+    # Export a recipe to JSON, which stores all values which are not
+    # easily computed via Recipe.prototype.calculate(). This method
+    # gets called when using JSON.stringify(recipe).
+    toJSON: ->
+        json = {
+            @name
+            @description
+            @author
+            @boilSize
+            @batchSize
+            @servingSize
+            @steepEfficiency
+            @steepTime
+            @mashEfficiency
+            @style
+            @ibuMethod
+            @fermentables
+            @spices
+            @yeast
+            @mash
+            @bottlingTemp
+            @bottlingPressure
+            @primaryDays
+            @primaryTemp
+            @secondaryDays
+            @secondaryTemp
+            @tertiaryDays
+            @tertiaryTemp
+            @agingDays
+            @agingTemp
+        }
 
     # Get the batch size in gallons
     batchSizeGallons: ->

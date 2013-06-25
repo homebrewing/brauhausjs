@@ -1,6 +1,8 @@
 Brauhaus = Brauhaus ? require '../lib/brauhaus'
 assert = assert ? require 'assert'
 
+json = '{"name":"New Recipe","description":"Recipe description","author":"Anonymous Brewer","boilSize":10,"batchSize":20,"servingSize":0.355,"steepEfficiency":50,"steepTime":20,"mashEfficiency":75,"style":null,"ibuMethod":"tinseth","fermentables":[{"name":"Test fermentable","weight":1,"yield":75,"color":2,"late":false}],"spices":[{"name":"Test hop","weight":0.025,"aa":3.5,"use":"boil","time":60,"form":"pellet"}],"yeast":[{"name":"Test yeast","type":"ale","form":"liquid","attenuation":75}],"mash":{"name":"Test mash","grainTemp":23,"spargeTemp":76,"ph":null,"notes":"","steps":[{"name":"Test step","type":"infusion","waterRatio":3,"temp":68,"endTemp":null,"time":60,"rampTime":null}]},"bottlingTemp":0,"bottlingPressure":0,"primaryDays":14,"primaryTemp":20,"secondaryDays":0,"secondaryTemp":0,"tertiaryDays":0,"tertiaryTemp":0,"agingDays":14,"agingTemp":20}'
+
 describe 'Recipe', ->
     describe 'Extract', ->
         recipe = new Brauhaus.Recipe
@@ -276,3 +278,37 @@ describe 'Recipe', ->
         it 'Should generate an imperial unit timeline', ->
             timeline = recipe.timeline(false)
             assert.ok timeline
+
+    describe 'JSON', ->
+        it 'Should load a recipe from a JSON string', ->
+            r = new Brauhaus.Recipe json
+
+            assert.equal 'Test fermentable', r.fermentables[0].name
+            assert.equal 2.2, r.fermentables[0].weightLb().toFixed(1)
+            assert.equal 'Test hop', r.spices[0].name
+            assert.equal 0.06, r.spices[0].weightLb().toFixed(2)
+            assert.equal 3.5, r.yeast[0].price()
+            assert.equal 73.4, r.mash.grainTempF()
+            assert.equal 154.4, r.mash.steps[0].tempF()
+
+        it 'Should convert a recipe to a JSON string', ->
+            r = new Brauhaus.Recipe()
+
+            r.add 'fermentable',
+                name: 'Test fermentable'
+
+            r.add 'hop',
+                name: 'Test hop'
+                aa: 3.5
+
+            r.add 'yeast',
+                name: 'Test yeast'
+
+            r.mash = new Brauhaus.Mash
+                name: 'Test mash'
+
+            r.mash.addStep
+                name: 'Test step'
+                type: 'infusion'
+
+            assert.equal json, JSON.stringify(r)

@@ -17,7 +17,7 @@ A javascript library for homebrew beer calculations both in the browser and on t
  * Built-in unit conversions (kg <-> lb/oz, liter <-> gallon, temps, etc)
  * Color in &deg;SRM to name, &deg;EBC, &deg;Lovibond, RGB conversions, CSS color, etc
  * Plugin support to add additional features
- * Lightweight - about 24kb when minified
+ * Lightweight - about 28kb when minified
 
 Plugins provide the following features:
 
@@ -404,6 +404,26 @@ The following list of objects are available within Brauhaus:
  * MashStep
  * Mash
  * Recipe
+
+Serialization
+-------------
+A Brauhaus object can be easily serialized and deserialized from a JSON format. Deserialization can be from a JSON string or an object (i.e. the value given by `JSON.parse(...)`). For example, to serialize and deserialize a recipe object:
+
+```javascript
+var r, serialized;
+
+// Serialize
+r = new Brauhaus.Recipe(...);
+serialized = JSON.stringify(r);
+
+// Deserialize from JSON string
+serialized = '...';
+r = new Brauhaus.Recipe(serialized);
+
+// Deserialize from parsed object
+serialized = JSON.parse('...');
+r = new Brauhaus.Recipe(serialized);
+```
 
 Brauhaus.Fermentable
 --------------------

@@ -35,6 +35,10 @@ class Brauhaus.MashStep extends Brauhaus.OptionConstructor
     # Time to ramp up to the step temperature in minutes
     rampTime: null
 
+    # Convert to JSON, storing only values that cannot be easily computed
+    toJSON: ->
+        json = {@name, @type, @waterRatio, @temp, @endTemp, @time, @rampTime}
+
     # Generated description based on the type and parameters of this step
     # If siUnits is true, then use SI units (liters and kilograms), otherwise
     # use quarts per pound when describing the liquid amounts.

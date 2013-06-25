@@ -14,6 +14,10 @@ class Brauhaus.Spice extends Brauhaus.Ingredient
     time: 60
     form: 'pellet'
 
+    # Convert to JSON, storing only values that cannot be easily computed
+    toJSON: ->
+        json = {@name, @weight, @aa, @use, @time, @form}
+
     # True if this is an ingredient added after the boil
     dry: ->
         Brauhaus.Spice.DRY_SPICE.exec(@use) or false

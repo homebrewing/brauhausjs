@@ -9,6 +9,10 @@ class Brauhaus.Yeast extends Brauhaus.Ingredient
     form: 'liquid'
     attenuation: 75.0
 
+    # Convert to JSON, storing only values that cannot be easily computed
+    toJSON: ->
+        json = {@name, @type, @form, @attenuation}
+
     # Get the price for this yeast in USD
     price: ->
         @nameRegex [

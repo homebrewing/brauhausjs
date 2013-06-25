@@ -4,10 +4,40 @@ Base objects -----------------------------------------------------------------
 
 # A base class which sets passed options as properties on itself.
 class Brauhaus.OptionConstructor
+    # A mapping of parameter names to objects. When an option is encountered
+    # with a matching param name, it is instantiated as that object if it
+    # is not already an instance of the object. If it is an array, then each
+    # item in the array is instantiated or copied.
+    _paramMap: {}
+
     constructor: (options) ->
+        # Convert JSON strings to objects
+        if typeof options is 'string'
+            options = JSON.parse options
+
         # Set any properties passed in
+        keys = Object.keys(@_paramMap)
         for own property of options
-            @[property] = options[property]
+            # Is this a property that requires a constructor?
+            if property in keys
+                # Is the property an arrary or a single object?
+                if options[property] instanceof Array
+                    # Set the property to a mapped array, calling the
+                    # constructor method to instantiate new objects
+                    # if they are not already instances
+                    @[property] = for item in options[property]
+                        if item instanceof @_paramMap[property]
+                            item
+                        else
+                            new @_paramMap[property](item)
+                else
+                    # Set the property to an instance of the constructor
+                    if options[property] instanceof @_paramMap[property]
+                        @[property] = options[property]
+                    else
+                        @[property] = new @_paramMap[property](options[property])
+            else
+                @[property] = options[property]
 
 ###
 Base class for new recipe ingredients. Each ingredient gets a name,

@@ -20,6 +20,10 @@ class Brauhaus.Fermentable extends Brauhaus.Ingredient
     color: 2.0
     late: false
 
+    # Convert to JSON, storing only values that cannot be easily computed
+    toJSON: ->
+        json = {@name, @weight, @yield, @color, @late}
+
     # Get the type of fermentable based on its name, either extract
     # or grain (steeping / mashing)
     type: ->
