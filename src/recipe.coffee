@@ -317,7 +317,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
             ingredients = fermentableList @timelineMap.fermentables.mash
             timeline.push [totalTime, "Begin #{mash.name} mash. Add #{ingredients.join ', '}."]
 
-            steps = @mash.steps or [
+            steps = @mash?.steps or [
                 # Default to a basic 60 minute single-infustion mash at 68C
                 new Brauhaus.MashStep
                     name: 'Saccharification'

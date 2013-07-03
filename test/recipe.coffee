@@ -57,16 +57,6 @@ describe 'Recipe', ->
             form: 'liquid'
             attenuation: 80
 
-        recipe.mash = new Brauhaus.Mash
-            name: 'My Mash'
-            ph: 5.4
-
-        recipe.mash.addStep
-            name: 'Saccharification'
-            time: 60
-            temp: 68
-            endTemp: 60
-
         # Calculate recipe values like og, fg, ibu
         recipe.calculate()
 
@@ -312,3 +302,12 @@ describe 'Recipe', ->
                 type: 'infusion'
 
             assert.equal json, JSON.stringify(r)
+
+    describe 'Missing Mash', ->
+        it 'Should calculate a timeline without error', ->
+            r = new Brauhaus.Recipe json
+
+            r.mash = undefined
+            r.calculate()
+
+            assert.ok r.timeline()
