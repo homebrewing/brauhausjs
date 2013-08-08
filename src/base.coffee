@@ -20,6 +20,9 @@ class Brauhaus.OptionConstructor
         for own property of options
             # Is this a property that requires a constructor?
             if property in keys
+                # Don't construct null values
+                if options[property] is null then continue
+
                 # Is the property an arrary or a single object?
                 if options[property] instanceof Array
                     # Set the property to a mapped array, calling the
