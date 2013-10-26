@@ -111,6 +111,13 @@ Brauhaus.cToF = (celcius) ->
 Brauhaus.fToC = (fahrenheit) ->
     (fahrenheit - 32) / 1.8
 
+# Yield <=> Parts per gallon
+Brauhaus.yieldToPpg = (yieldPercentage) ->
+    yieldPercentage * 0.46214
+
+Brauhaus.ppgToYield = (ppg) ->
+    ppg * 2.16385
+
 ###
 Color functions --------------------------------------------------------------
 ###

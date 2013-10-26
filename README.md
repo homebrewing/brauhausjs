@@ -323,6 +323,22 @@ Convert a temperature from fahrenheit to celcius.
 20.0
 ```
 
+### Brauhaus.yieldToPpg (number)
+Convert a yield percentage to parts per gallon.
+
+```javascript
+>>> Brauhaus.yieldToPpg(75)
+34.6605
+```
+
+### Brauhaus.ppgToYield (number)
+Convert parts per gallon to a yield percentage.
+
+```javascript
+>>> Brauhaus.ppgToYield(34.6605)
+75.0001
+```
+
 Color Conversions
 -----------------
 Colors can be easily converted into various useful formats for the screen and web.

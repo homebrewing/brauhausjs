@@ -90,3 +90,9 @@ describe 'Unit conversions', ->
 
     it 'Should convert 154.5F to 68C', ->
         assert.equal 68, parseInt(Brauhaus.fToC 154.5)
+
+    it 'Should convert 75% yield to about 35 PPG', ->
+        assert.equal 35, Math.round(Brauhaus.yieldToPpg 75)
+
+    it 'Should convert 35 PPG to about 76% yield', ->
+        assert.equal 76, Math.round(Brauhaus.ppgToYield 35)

@@ -55,7 +55,7 @@ class Brauhaus.Fermentable extends Brauhaus.Ingredient
 
     # Get the parts per gallon for this fermentable
     ppg: ->
-        @yield * 0.46214
+        Brauhaus.yieldToPpg @yield
 
     # Get the gravity for a specific liquid volume with 100% efficiency in degrees plato
     plato: (liters = 1.0) ->
