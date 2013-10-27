@@ -199,12 +199,13 @@ Brauhaus Configuration
 ----------------------
 The following values may be configured and will apply to all recipes, ingredients, etc.
 
-| Property       | Type   | Default | Description                                       |
-| -------------- | ------ | ------- | ------------------------------------------------- |
-| BURNER_ENERGY  | number | 9000    | Heat source output in kilojoules per hour         |
-| COLOR_NAMES    | array  | ...     | An array of color names for &deg;SRM color ranges |
-| MASH_HEAT_LOSS | number | 5       | Degrees C lost per hour during mash               |
-| ROOM_TEMP      | number | 23      | Room temperature in degrees C                     |
+| Property               | Type   | Default | Description                                          |
+| ---------------------- | ------ | ------- | ---------------------------------------------------- |
+| BURNER_ENERGY          | number | 9000    | Heat source output in kilojoules per hour            |
+| COLOR_NAMES            | array  | ...     | An array of color names for &deg;SRM color ranges    |
+| MASH_HEAT_LOSS         | number | 5       | Degrees C lost per hour during mash                  |
+| RELATIVE_SUGAR_DENSITY | object | ...     | Keys are types of sugar, values are relative density |
+| ROOM_TEMP              | number | 23      | Room temperature in degrees C                        |
 
 Duration Functions
 ------------------
@@ -747,6 +748,10 @@ A beer recipe, containing ingredients like fermentables, spices, and yeast. Calc
 | price            | number | unset              | Approximate price in USD                     |
 | primaryDays      | number | 14.0               | Number of days in primary fermenter          |
 | primaryTemp      | number | 20.0               | Temperature of primary fermenter in &deg;C   |
+| primingCornSugar | number | unset              | Kg of corn sugar to prime                    |
+| primingDme       | number | unset              | Kg of dry malt extract to prime              |
+| primingHoney     | number | unset              | Kg of honey to prime                         |
+| primingSugar     | number | unset              | Kg of (table) sugar to prime                 |
 | realExtract      | number | unset              | Real extract of the recipe                   |
 | secondaryDays    | number | 0.0                | Number of days in secondary fermenter        |
 | secondaryTemp    | number | 0.0                | Temperature of secondary fermenter in &deg;C |

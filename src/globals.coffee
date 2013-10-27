@@ -41,3 +41,10 @@ Brauhaus.COLOR_NAMES = [
     [35, 'very dark brown'],
     [40, 'black']
 ]
+
+# Relative sugar densities used to calculate volume from weights
+Brauhaus.RELATIVE_SUGAR_DENSITY =
+    cornSugar: 1.0
+    dme: 1.62
+    honey: 0.71
+    sugar: 0.88

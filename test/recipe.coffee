@@ -94,6 +94,12 @@ describe 'Recipe', ->
         it 'Should cost $31.09', ->
             assert.equal 31.09, recipe.price.toFixed(2)
 
+        it 'Should calculate priming sugar', ->
+            assert.equal 0.130, recipe.primingCornSugar.toFixed(3)
+            assert.equal 0.118, recipe.primingSugar.toFixed(3)
+            assert.equal 0.159, recipe.primingHoney.toFixed(3)
+            assert.equal 0.173, recipe.primingDme.toFixed(3)
+
         it 'Should generate a metric unit timeline', ->
             timeline = recipe.timeline()
             assert.ok timeline

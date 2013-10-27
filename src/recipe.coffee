@@ -47,6 +47,11 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     bottlingTemp: 0.0
     bottlingPressure: 0.0
 
+    primingCornSugar: 0.0
+    primingSugar: 0.0
+    primingHoney: 0.0
+    primingDme: 0.0
+
     primaryDays: 14.0
     primaryTemp: 20.0
     secondaryDays: 0.0
@@ -222,6 +227,14 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         @realExtract = (0.1808 * @ogPlato) + (0.8192 * @fgPlato)
         @abw = 0.79 * @abv / @fg
         @calories = Math.max(0, ((6.9 * @abw) + 4.0 * (@realExtract - 0.10)) * @fg * @servingSize * 10)
+
+        # Calculate bottle / keg priming amounts
+        v = @bottlingPressure or 2.5
+        t = Brauhaus.cToF(@bottlingTemp or Brauhaus.ROOM_TEMP)
+        @primingCornSugar = .015195 * 5 * (v - 3.0378 + (0.050062 * t) - (0.00026555 * t * t))
+        @primingSugar = @primingCornSugar * 0.90995
+        @primingHoney = @primingCornSugar * 1.22496
+        @primingDme = @primingCornSugar * 1.33249
 
         # Calculate bitterness
         for spice in @spices
