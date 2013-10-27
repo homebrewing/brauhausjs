@@ -718,37 +718,48 @@ Brauhaus.Recipe
 ---------------
 A beer recipe, containing ingredients like fermentables, spices, and yeast. Calculations can be made for bitterness, alcohol content, color, and more. Many values are unset by default and will be calculated when the `Recipe.prototype.calculate()` method is called. The `brewDayDuration` is unset until the `Recipe.prototype.timeline()` method is called.
 
-| Property        | Type   | Default            | Description                                  |
-| --------------- | ------ | ------------------ | -------------------------------------------- |
-| abv             | number | unset              | Alcohol percentage by volume                 |
-| abw             | number | unset              | Alcohol percentage by weight                 |
-| author          | string | Anonymous Brewer   | Recipe author                                |
-| batchSize       | number | 20.0               | Total size of batch in liters                |
-| boilSize        | number | 10.0               | Size of wort that will be boiled in liters   |
-| brewDayDuration | number | unset              | Duration in minutes for the brew day         |
-| buToGu          | number | unset              | Bitterness units to gravity units ratio      |
-| bv              | number | unset              | Balance value (bitterness / sweetness ratio) |
-| calories        | number | unset              | Calories per serving (kcal)                  |
-| color           | number | unset              | Color in &deg;SRM                            |
-| description     | string | Recipe description | Recipe description text                      |
-| fermentables    | array  | []                 | Array of `Brauhaus.Fermentable` objects      |
-| fg              | number | unset              | Final gravity (e.g. 1.012)                   |
-| fgPlato         | number | unset              | Final gravity in &deg;Plato                  |
-| ibu             | number | unset              | Bitterness in IBU                            |
-| ibuMethod       | string | tinseth            | IBU calculation method, `tinseth` or `rager` |
-| mashEfficiency  | number | 75.0               | Efficiency percentage for the mash           |
-| name            | number | New recipe         | Recipe name text                             |
-| og              | number | unset              | Original gravity (e.g. 1.048)                |
-| ogPlato         | number | unset              | Original gravity in &deg;Plato               |
-| price           | number | unset              | Approximate price in USD                     |
-| realExtract     | number | unset              | Real extract of the recipe                   |
-| servingSize     | number | 0.355              | Serving size in liters                       |
-| steepTime       | number | 20                 | Time in minutes to steep ingredients         |
-| spices          | array  | []                 | Array of `Brauhaus.Spice` objects            |
-| steepEfficiency | number | 50.0               | Efficiency percentage for steeping           |
-| style           | object | null               | Recipe style (see `Brauhaus.STYLES`)         |
-| timelineMap     | object | null               | Map used to generate a brew timeline         |
-| yeast           | array  | []                 | Array of `Brauhaus.Yeast` objects            |
+| Property         | Type   | Default            | Description                                  |
+| ---------------- | ------ | ------------------ | -------------------------------------------- |
+| abv              | number | unset              | Alcohol percentage by volume                 |
+| abw              | number | unset              | Alcohol percentage by weight                 |
+| agingDays        | number | 14.0               | Number of days to age keg/bottles            |
+| agingTemp        | number | 20.0               | Temperature during aging in &deg;C           |
+| author           | string | Anonymous Brewer   | Recipe author                                |
+| batchSize        | number | 20.0               | Total size of batch in liters                |
+| boilSize         | number | 10.0               | Size of wort that will be boiled in liters   |
+| bottlingPressure | number | 0.0                | Bottle pressure in volumes of CO2            |
+| bottlingTemp     | number | 0.0                | Bottling temperature in &deg;C               |
+| brewDayDuration  | number | unset              | Duration in minutes for the brew day         |
+| buToGu           | number | unset              | Bitterness units to gravity units ratio      |
+| bv               | number | unset              | Balance value (bitterness / sweetness ratio) |
+| calories         | number | unset              | Calories per serving (kcal)                  |
+| color            | number | unset              | Color in &deg;SRM                            |
+| description      | string | Recipe description | Recipe description text                      |
+| fermentables     | array  | []                 | Array of `Brauhaus.Fermentable` objects      |
+| fg               | number | unset              | Final gravity (e.g. 1.012)                   |
+| fgPlato          | number | unset              | Final gravity in &deg;Plato                  |
+| ibu              | number | unset              | Bitterness in IBU                            |
+| ibuMethod        | string | tinseth            | IBU calculation method, `tinseth` or `rager` |
+| mashEfficiency   | number | 75.0               | Efficiency percentage for the mash           |
+| name             | number | New recipe         | Recipe name text                             |
+| og               | number | unset              | Original gravity (e.g. 1.048)                |
+| ogPlato          | number | unset              | Original gravity in &deg;Plato               |
+| price            | number | unset              | Approximate price in USD                     |
+| primaryDays      | number | 14.0               | Number of days in primary fermenter          |
+| primaryTemp      | number | 20.0               | Temperature of primary fermenter in &deg;C   |
+| realExtract      | number | unset              | Real extract of the recipe                   |
+| secondaryDays    | number | 0.0                | Number of days in secondary fermenter        |
+| secondaryTemp    | number | 0.0                | Temperature of secondary fermenter in &deg;C |
+| servingSize      | number | 0.355              | Serving size in liters                       |
+| steepTime        | number | 20                 | Time in minutes to steep ingredients         |
+| spices           | array  | []                 | Array of `Brauhaus.Spice` objects            |
+| steepEfficiency  | number | 50.0               | Efficiency percentage for steeping           |
+| steepTime        | number | 20.0               | Time to steep in minutes                     |
+| style            | object | null               | Recipe style (see `Brauhaus.STYLES`)         |
+| tertiaryDays     | number | 0.0                | Number of days in tertiary fermenter         |
+| tertiaryTemp     | number | 0.0                | Temperature of tertiary fermenter in &deg;C  |
+| timelineMap      | object | null               | Map used to generate a brew timeline         |
+| yeast            | array  | []                 | Array of `Brauhaus.Yeast` objects            |
 
 ### Recipe.prototype.add (type, data)
 Add a new ingredient to the recipe. `type` can be one of `fermentable`, `hop`, `spice`, or `yeast`. The data is what will be sent to the constructor of the ingredient defined by `type`.
