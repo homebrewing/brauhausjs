@@ -62,6 +62,8 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     agingTemp: 20.0
 
     brewDayDuration: null
+    boilStartTime: null
+    boilEndTime: null
 
     # A mapping of values used to build a recipe timeline / instructions
     timelineMap: null
@@ -415,7 +417,7 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         timeline.push [totalTime, "#{action} (about #{boilTime} minutes)."]
         totalTime += boilTime
 
-        timesStart = totalTime
+        @boilStartTime = totalTime
 
         times = (parseInt(key) for own key, value of @timelineMap.times)
 
@@ -442,6 +444,8 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
             timeline.push [totalTime, "Add #{ingredients.join ', '}"]
 
         totalTime += previousSpiceTime
+
+        @boilEndTime = totalTime
 
         if siUnits
             chillTemp = "#{@primaryTemp}°C"

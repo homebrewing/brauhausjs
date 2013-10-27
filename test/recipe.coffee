@@ -108,6 +108,11 @@ describe 'Recipe', ->
             timeline = recipe.timeline(false)
             assert.ok timeline
 
+        it 'Should calculate brew day time, start and end of boil', ->
+            assert.equal 21.0, recipe.boilStartTime.toFixed(1)
+            assert.equal 81.0, recipe.boilEndTime.toFixed(1)
+            assert.equal 101.0, recipe.brewDayDuration.toFixed(1)
+
     describe 'Steep', ->
         recipe = new Brauhaus.Recipe
             batchSize: 20.0

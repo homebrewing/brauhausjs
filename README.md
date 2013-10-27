@@ -717,7 +717,7 @@ Get the sparge temperature in degrees F. Shortcut for `Brauhaus.cToF(mash.sparge
 
 Brauhaus.Recipe
 ---------------
-A beer recipe, containing ingredients like fermentables, spices, and yeast. Calculations can be made for bitterness, alcohol content, color, and more. Many values are unset by default and will be calculated when the `Recipe.prototype.calculate()` method is called. The `brewDayDuration` is unset until the `Recipe.prototype.timeline()` method is called.
+A beer recipe, containing ingredients like fermentables, spices, and yeast. Calculations can be made for bitterness, alcohol content, color, and more. Many values are unset by default and will be calculated when the `Recipe.prototype.calculate()` method is called. The `brewDayDuration`, `boilStartTime` and `boilEndTime` are unset until the `Recipe.prototype.timeline()` method is called.
 
 | Property         | Type   | Default            | Description                                  |
 | ---------------- | ------ | ------------------ | -------------------------------------------- |
@@ -728,6 +728,8 @@ A beer recipe, containing ingredients like fermentables, spices, and yeast. Calc
 | author           | string | Anonymous Brewer   | Recipe author                                |
 | batchSize        | number | 20.0               | Total size of batch in liters                |
 | boilSize         | number | 10.0               | Size of wort that will be boiled in liters   |
+| boilStartTime    | number | unset              | Time in minutes when the boil starts         |
+| boilEndTime      | number | unset              | Time in minutes when the boil ends           |
 | bottlingPressure | number | 0.0                | Bottle pressure in volumes of CO2            |
 | bottlingTemp     | number | 0.0                | Bottling temperature in &deg;C               |
 | brewDayDuration  | number | unset              | Duration in minutes for the brew day         |
@@ -871,6 +873,16 @@ start: Heat 10l of water to 68C (about 20 minutes)
 40 minutes: Remove grains. This is now your wort. Top up to 10l and bring to a boil (about 12 minutes)
 63 minutes: Add 28g of Cascade hops (30 IBU)
 ...
+```
+
+It is also possible to determine the hop additions relative to the start and end of the boil. This allows you to nicely display the boil additions as relative times (e.g. -60 minutes, -45 minutes, -5 minutes to the end of the boil). Anything before the `boilStartTime` is the mash, steep, or heating to boil, while anything after the `boilEndTime` is chilling, fermentation and bottling. The `brewDayDuration` ends when fermentation begins. The exact point of bottling can be determined with a combination of `brewDayDuration`, `primaryDays`, `secondaryDays`, and `tertiaryDays`.
+
+```javascript
+>>> timeline = r.timeline()
+>>> console.log(r.boilStartTime)
+62.52
+>>> console.log(r.boilEndTime)
+122.52
 ```
 
 Contributing
