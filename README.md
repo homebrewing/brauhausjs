@@ -23,6 +23,7 @@ Plugins provide the following features:
 
  * [BeerXML import / export (brauhaus-beerxml)](https://github.com/homebrewing/brauhaus-beerxml)
  * [BJCP style catalog (brauhaus-styles)](https://github.com/homebrewing/brauhaus-styles)
+ * [Recipe diffs (brauhaus-diff)](https://github.com/homebrewing/brauhaus-diff)
 
 Brauhaus.js was developed with and for [Malt.io](http://www.malt.io/), a community website for homebrewers to create recipes and share their love of homebrewing beer.
 
@@ -48,6 +49,7 @@ Plugins:
 
  * [Download the latest brauhaus-beerxml.min.js](https://raw.github.com/homebrewing/brauhaus-beerxml/master/dist/brauhaus-beerxml.min.js)
  * [Download the latest brauhaus-styles.min.js](https://raw.github.com/homebrewing/brauhaus-styles/master/dist/brauhaus-styles.min.js)
+ * [Download the latest brauhaus-diff.min.js](https://raw.github.com/homebrewing/brauhaus-diff/master/dist/brauhaus-diff.min.js)
 
 ```html
 <script type="text/javascript" src="/scripts/brauhaus.min.js"></script>
