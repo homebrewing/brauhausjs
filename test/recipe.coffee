@@ -82,14 +82,14 @@ describe 'Recipe', ->
         it 'Should calculate calories as 165 kcal', ->
             assert.equal 165, Math.round(recipe.calories)
 
-        it 'Should calculate IBU (tinseth) as 22.0', ->
-            assert.equal 22.0, recipe.ibu.toFixed(1)
+        it 'Should calculate IBU (tinseth) as 14.0', ->
+            assert.equal 14.0, recipe.ibu.toFixed(1)
 
-        it 'Should calculate BU:GU as 0.44', ->
-            assert.equal 0.44, recipe.buToGu.toFixed(2)
+        it 'Should calculate BU:GU as 0.28', ->
+            assert.equal 0.28, recipe.buToGu.toFixed(2)
 
-        it 'Should calculate BV as 1.01', ->
-            assert.equal 1.01, recipe.bv.toFixed(2)
+        it 'Should calculate BV as 0.64', ->
+            assert.equal 0.64, recipe.bv.toFixed(2)
 
         it 'Should cost $31.09', ->
             assert.equal 31.09, recipe.price.toFixed(2)
@@ -113,6 +113,16 @@ describe 'Recipe', ->
             assert.equal 81.0, recipe.boilEndTime.toFixed(1)
             assert.equal 101.0, recipe.brewDayDuration.toFixed(1)
 
+        it 'Should scale without changing gravity/bitterness', ->
+            recipe.scale 25, 20
+            recipe.calculate()
+
+            assert.equal 25, recipe.batchSize
+            assert.equal 20, recipe.boilSize
+            assert.equal 1.051, recipe.og.toFixed(3)
+            assert.equal 1.010, recipe.fg.toFixed(3)
+            assert.equal 14.0, recipe.ibu.toFixed(1)
+
     describe 'Steep', ->
         recipe = new Brauhaus.Recipe
             batchSize: 20.0
@@ -122,7 +132,7 @@ describe 'Recipe', ->
         # Add some ingredients
         recipe.add 'fermentable',
             name: 'Extra pale LME'
-            weight: 2.5
+            weight: 4.0
             yield: 75.0
             color: 2.0
 
@@ -164,32 +174,32 @@ describe 'Recipe', ->
 
         recipe.calculate()
 
-        it 'Should calculate OG as 1.040', ->
-            assert.equal 1.040, recipe.og.toFixed(3)
+        it 'Should calculate OG as 1.061', ->
+            assert.equal 1.061, recipe.og.toFixed(3)
 
-        it 'Should calculate FG as 1.009', ->
-            assert.equal 1.009, recipe.fg.toFixed(3)
+        it 'Should calculate FG as 1.014', ->
+            assert.equal 1.014, recipe.fg.toFixed(3)
 
-        it 'Should calculate ABV as 4.1 %', ->
-            assert.equal 4.1, recipe.abv.toFixed(1)
+        it 'Should calculate ABV as 6.3 %', ->
+            assert.equal 6.3, recipe.abv.toFixed(1)
 
-        it 'Should calculate color as 9.4 SRM', ->
-            assert.equal 9.4, recipe.color.toFixed(1)
+        it 'Should calculate color as 9.9 SRM', ->
+            assert.equal 9.9, recipe.color.toFixed(1)
 
-        it 'Should calculate calories as 129 kcal', ->
-            assert.equal 129, Math.round(recipe.calories)
+        it 'Should calculate calories as 200 kcal', ->
+            assert.equal 200, Math.round(recipe.calories)
 
-        it 'Should calculate IBU (rager) as 31.6', ->
-            assert.equal 31.6, recipe.ibu.toFixed(1)
+        it 'Should calculate IBU (rager) as 23.2', ->
+            assert.equal 23.2, recipe.ibu.toFixed(1)
 
-        it 'Should calculate BU:GU as 0.80', ->
-            assert.equal 0.80, recipe.buToGu.toFixed(2)
+        it 'Should calculate BU:GU as 0.38', ->
+            assert.equal 0.38, recipe.buToGu.toFixed(2)
 
-        it 'Should calculate BV as 1.77', ->
-            assert.equal 1.77, recipe.bv.toFixed(2)
+        it 'Should calculate BV as 0.84', ->
+            assert.equal 0.84, recipe.bv.toFixed(2)
 
-        it 'Should cost $26.69', ->
-            assert.equal 26.69, recipe.price.toFixed(2)
+        it 'Should cost $36.59', ->
+            assert.equal 36.59, recipe.price.toFixed(2)
 
         it 'Should generate a metric unit timeline', ->
             timeline = recipe.timeline()
@@ -198,6 +208,16 @@ describe 'Recipe', ->
         it 'Should generate an imperial unit timeline', ->
             timeline = recipe.timeline(false)
             assert.ok timeline
+
+        it 'Should scale without changing gravity/bitterness', ->
+            recipe.scale 10, 6
+            recipe.calculate()
+
+            assert.equal 10, recipe.batchSize
+            assert.equal 6, recipe.boilSize
+            assert.equal 1.061, recipe.og.toFixed(3)
+            assert.equal 1.014, recipe.fg.toFixed(3)
+            assert.equal 23.2, recipe.ibu.toFixed(1)
 
     describe 'Mash', ->
         recipe = new Brauhaus.Recipe
@@ -260,14 +280,14 @@ describe 'Recipe', ->
         it 'Should calculate calories as 158 kcal', ->
             assert.equal 158, Math.round(recipe.calories)
 
-        it 'Should calculate IBU (tinseth) as 17.5', ->
-            assert.equal 17.5, recipe.ibu.toFixed(1)
+        it 'Should calculate IBU (tinseth) as 11.4', ->
+            assert.equal 11.4, recipe.ibu.toFixed(1)
 
-        it 'Should calculate BU:GU as 0.36', ->
-            assert.equal 0.36, recipe.buToGu.toFixed(2)
+        it 'Should calculate BU:GU as 0.24', ->
+            assert.equal 0.24, recipe.buToGu.toFixed(2)
 
-        it 'Should calculate BV as 0.73', ->
-            assert.equal 0.73, recipe.bv.toFixed(2)
+        it 'Should calculate BV as 0.47', ->
+            assert.equal 0.47, recipe.bv.toFixed(2)
 
         it 'Should cost $27.30', ->
             assert.equal 27.30, recipe.price.toFixed(2)

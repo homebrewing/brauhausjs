@@ -444,6 +444,8 @@ serialized = JSON.parse('...');
 r = new Brauhaus.Recipe(serialized);
 ```
 
+Note: there is also a [BeerXML plugin](https://github.com/homebrewing/brauhaus-beerxml) available which can serialize / deserialize BeerXML 1.0.
+
 Brauhaus.Fermentable
 --------------------
 A fermentable is some kind of a sugar that yeast can metabolize into CO2 and alcohol. Fermentables can be malts, malt extracts, honey, sugar, etc. Each fermentable can have the following properties:
@@ -560,6 +562,14 @@ A spice is some kind of substance added to flavor or protect a brew. Spices can 
 | use      | string | boil      | When to use the spice (mash, boil, primary, etc) |
 | weight   | number | 1.0       | Weight in kilograms                              |
 
+### Spice.prototype.bitterness (ibuMethod, earlyOg, batchSize)
+Calculate the IBU of a spice for the given method, early OG, and batch size in liters. Available methods are `'tinseth'` and `'rager'`. The early OG is usually calculated as the sum of gravity values for all non-late fermentables.
+
+```javascript
+>>> s.bitterness('tinseth', 1.045, 19)
+12.4
+```
+
 ### Spice.prototype.dry ()
 True if the spice is added after the boil, otherwise false. This is useful for determining if dry hopping is taking place.
 
@@ -574,6 +584,14 @@ Guess the price in USD per kilogram of this spice, based on the name. Prices are
 ```javascript
 >>> s.price()
 2.5318
+```
+
+### Spice.prototype.utilizationFactor ()
+Get the utilization factor based on the form of a spice. For example, pellets are easier to utilize than whole leaf hops.
+
+```javascript
+>>> s.utilizationFactor()
+1.15
 ```
 
 ### Spice.prototype.weightLb ()
@@ -845,6 +863,16 @@ Get the total grain weight in kg. Note that this only includes fermentables that
 ```javascript
 >>> r.grainWeight()
 4.0
+```
+
+### Recipe.prototype.scale (newBatchSize, newBoilSize)
+Scale a recipe and its ingredients to a new batch size and boil size in liters. Gravity and bitterness units are preserved. This does __not__ recalculate the recipe, it merely adjusts various weights and volumes.
+
+```javascript
+>>> r.scale(10, 6.5)
+>>> r.calculate()
+>>> r.ibu
+28.5
 ```
 
 ### Recipe.prototype.timeline (siUnits=true)

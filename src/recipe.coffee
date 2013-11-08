@@ -144,6 +144,46 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     bottleCount: ->
         Math.floor(@batchSize / @servingSize)
 
+    # Scale this recipe, keeping gravity and bitterness the same
+    scale: (batchSize, boilSize) ->
+        earlyOg = 1.0
+        newEarlyOg = 1.0
+
+        for fermentable in @fermentables
+            # Store early gravity for bitterness calculations
+            efficiency = switch fermentable.addition()
+                when 'steep' then @steepEfficiency / 100.0
+                when 'mash' then @mashEfficiency / 100.0
+                else 1.0
+
+            if not fermentable.late
+                earlyOg += fermentable.gu(@boilSize) * efficiency / 1000.0
+
+            # Adjust fermentable weight
+            fermentable.weight *= batchSize / @batchSize
+
+            if not fermentable.late
+                newEarlyOg += fermentable.gu(boilSize) * efficiency / 1000.0
+
+        for spice in @spices
+            if spice.aa and spice.time
+                bitterness = spice.bitterness @ibuMethod, earlyOg, @batchSize
+
+                switch @ibuMethod
+                    when 'tinseth'
+                        spice.weight = (bitterness * batchSize) / (1.65 * Math.pow(0.000125, newEarlyOg - 1.0) * ((1 - Math.pow(2.718, -0.04 * spice.time)) / 4.15) * (spice.aa / 100 * 1000000) * spice.utilizationFactor())
+                    when 'rager'
+                        utilization = 18.11 + 13.86 * tanh((spice.time - 31.32) / 18.27)
+                        adjustment = Math.max(0, (newEarlyOg - 1.050) / 0.2)
+                        spice.weight = bitterness / (100 * utilization * spice.utilizationFactor() * spice.aa / (batchSize * (1 + adjustment)))
+
+            else
+                # Scale linearly, no bitterness
+                spice.weight *= batchSize / @batchSize
+
+        @batchSize = batchSize
+        @boilSize = boilSize
+
     calculate: ->
         @og = 1.0
         @fg = 0.0
@@ -168,12 +208,10 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         
         # Calculate gravities and color from fermentables
         for fermentable in @fermentables
-            efficiency = 1.0
-            addition = fermentable.addition()
-            if addition is 'steep'
-                efficiency = @steepEfficiency / 100.0
-            else if addition is 'mash'
-                efficiency = @mashEfficiency / 100.0
+            efficiency = switch fermentable.addition()
+                when 'steep' then @steepEfficiency / 100.0
+                when 'mash' then @mashEfficiency / 100.0
+                else 1.0
 
             mcu += fermentable.color * fermentable.weightLb() / @batchSizeGallons()
 
@@ -183,13 +221,13 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
             @og += gravity
 
             if not fermentable.late
-                earlyOg += gravity
+                earlyOg += fermentable.gu(@boilSize) * efficiency / 1000.0
 
             # Update recipe price with fermentable
             @price += fermentable.price()
 
             # Add fermentable info into the timeline map
-            switch addition
+            switch fermentable.addition()
                 when 'boil'
                     if not fermentable.late
                         @timelineMap.fermentables.boil.push [fermentable, gu]
@@ -242,23 +280,9 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         for spice in @spices
             bitterness = 0.0
             time = spice.time
-            if spice.aa and spice.use.toLowerCase() is 'boil'
-                # Account for better utilization from pellets vs. whole
-                utilizationFactor = 1.0
-                if spice.form is 'pellet'
-                    utilizationFactor = 1.15
 
-                # Calculate bitterness based on chosen method
-                if @ibuMethod is 'tinseth'
-                    bitterness = 1.65 * Math.pow(0.000125, earlyOg - 1.0) * ((1 - Math.pow(Math.E, -0.04 * spice.time)) / 4.15) * ((spice.aa / 100.0 * spice.weight * 1000000) / @batchSize) * utilizationFactor
-                    @ibu += bitterness
-                else if @ibuMethod is 'rager'
-                    utilization = 18.11 + 13.86 * tanh((spice.time - 31.32) / 18.27)
-                    adjustment = Math.max(0, (earlyOg - 1.050) / 0.2)
-                    bitterness = spice.weight * 100 * utilization * utilizationFactor * spice.aa / (@batchSize * (1 + adjustment))
-                    @ibu += bitterness
-                else
-                    throw new Error("Unknown IBU method '#{@ibuMethod}'!")
+            if spice.aa and spice.use.toLowerCase() is 'boil'
+                @ibu += spice.bitterness @ibuMethod, earlyOg, @batchSize
 
             # Update recipe price with spice
             @price += spice.price()
