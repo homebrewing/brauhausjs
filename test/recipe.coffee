@@ -67,6 +67,9 @@ describe 'Recipe', ->
         it 'Should have a bottle count of 56', ->
             assert.equal 56, recipe.bottleCount()
 
+        it 'Should have a grade of 5', ->
+            assert.equal 5.0, recipe.grade()
+
         it 'Should calculate OG as 1.051', ->
             assert.equal 1.051, recipe.og.toFixed(3)
 

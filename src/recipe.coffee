@@ -184,6 +184,45 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
         @batchSize = batchSize
         @boilSize = boilSize
 
+    # Give this recipe a grade based on the completeness and quality
+    # of the recipe, where the larger the grade, the better the
+    # recipe quality. A totally blank recipe will return zero.
+    grade: ->
+        grade = 0.0
+
+        # Basic recipe name, description, and author should be set
+        if @name.toLowerCase() not in ['', 'new recipe', 'untitled']
+            grade += 1.0
+
+        if @description.toLowerCase() not in ['', 'recipe description']
+            grade += 1.0
+
+        if @author.toLowerCase() not in ['', 'anonymous brewer']
+            grade += 1.0
+
+        # A BJCP or other target style should be set
+        if @style
+            grade += 0.5
+
+        # Do we have at least one of each fermentable/spice/yeast?
+        for ingredients in [@fermentables, @spices, @yeast]
+            if ingredients.length
+                grade += 1.0
+
+                filterFunc = (x) ->
+                    x.name.toLowerCase() in [
+                        '',
+                        'new fermentable',
+                        'new spice',
+                        'new yeast'
+                    ]
+
+                # Do all items have a name?
+                if not ingredients.filter(filterFunc).length
+                    grade += 0.5
+
+        return grade
+
     calculate: ->
         @og = 1.0
         @fg = 0.0

@@ -14,6 +14,7 @@ A javascript library for homebrew beer calculations both in the browser and on t
    * Dry hopping support
  * Automatically generated recipe instructions and timeline
  * Estimate monetary recipe cost in USD based on ingredients
+ * Grade recipes based on recipe completeness
  * Built-in unit conversions (kg <-> lb/oz, liter <-> gallon, temps, etc)
  * Color in &deg;SRM to name, &deg;EBC, &deg;Lovibond, RGB conversions, CSS color, etc
  * Plugin support to add additional features
@@ -855,6 +856,14 @@ Calculate alcohol, bitterness, color, gravities, etc. This method must be called
 >>> r.calculate()
 >>> r.ibu
 28.5
+```
+
+### Recipe.prototype.grade ()
+Grade this recipe's completeness. Returned is a `Number`, where a completely blank recipe is zero and the higher the number, the higher the recipe completeness / quality. Some items carry more weight than others.
+
+```javascript
+>>> r.grade()
+4.5
 ```
 
 ### Recipe.prototype.grainWeight ()
