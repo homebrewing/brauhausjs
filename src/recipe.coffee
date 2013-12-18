@@ -144,6 +144,10 @@ class Brauhaus.Recipe extends Brauhaus.OptionConstructor
     bottleCount: ->
         Math.floor(@batchSize / @servingSize)
 
+    # Get a friendly human-readable color name
+    colorName: ->
+        Brauhaus.srmToName @color
+
     # Scale this recipe, keeping gravity and bitterness the same
     scale: (batchSize, boilSize) ->
         earlyOg = 1.0
