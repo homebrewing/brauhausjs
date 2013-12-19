@@ -82,6 +82,9 @@ describe 'Recipe', ->
         it 'Should calculate color as 4.6 SRM', ->
             assert.equal 4.6, recipe.color.toFixed(1)
 
+        it 'Should calculate colorName as yellow', ->
+            assert.equal 'yellow', recipe.colorName()
+
         it 'Should calculate calories as 165 kcal', ->
             assert.equal 165, Math.round(recipe.calories)
 
