@@ -6,4 +6,4 @@ node_js:
 before_script:
     - phantomjs --version
 after_script:
-    - ./node_modules/coffee-script/bin/cake updateCoverage
+    - npm run coveralls

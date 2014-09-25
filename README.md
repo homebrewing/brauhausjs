@@ -937,13 +937,18 @@ cd brauhausjs
 npm install
 ```
 
+Also, if you do not have [Gulp](http://gulpjs.com/) installed:
+
+```bash
+sudo npm install -g gulp
+```
+
 ### Style Guide
 Brauhaus uses the [CoffeeScript Style Guide](https://github.com/polarmobile/coffeescript-style-guide) with the following exceptions:
 
- 1. Indent 4 spaces
  1. Maximum line length is 120 characters
 
-When building `brauhaus.js` with `cake build` or `npm test` you will see the output of [CoffeeLint](http://www.coffeelint.org/), a static analysis code quality tool for CoffeeScript. Please adhere to the warnings and errors to ensure your changes will build.
+When building `brauhaus.js` with `gulp compile` or `npm test` you will see the output of [CoffeeLint](http://www.coffeelint.org/), a static analysis code quality tool for CoffeeScript. Please adhere to the warnings and errors to ensure your changes will build.
 
 ### Unit Tests
 Before submitting a pull request, please add any relevant tests and run them via:
@@ -966,7 +971,7 @@ New tests can be added in the `test` directory. If you add a new file there, ple
 You can generate a unit test code coverage report for unit tests using the following:
 
 ```bash
-cake coverage
+gulp coverage
 ```
 
 You can find an HTML report in the `coverage` directory that is created. This report will show line-by-line code coverage information.
@@ -977,10 +982,4 @@ Please note that all contributions will be licensed under the MIT license in the
 
 License
 -------
-Copyright (c) 2013 Daniel G. Taylor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+http://dgt.mit-license.org/

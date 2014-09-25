@@ -1,7 +1,7 @@
 ###
 @preserve
 Brauhaus.js Beer Calculator
-Copyright 2013 Daniel G. Taylor <danielgtaylor@gmail.com>
+Copyright 2014 Daniel G. Taylor <danielgtaylor@gmail.com>
 https://github.com/homebrewing/brauhausjs
 ###
 
