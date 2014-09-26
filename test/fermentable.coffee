@@ -1,4 +1,4 @@
-Brauhaus = Brauhaus ? require '../lib/brauhaus'
+Brauhaus = Brauhaus ? require '../dist/brauhaus.min'
 assert = assert ? require 'assert'
 
 describe 'Fermentible', ->

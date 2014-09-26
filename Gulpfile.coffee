@@ -33,6 +33,9 @@ gulp.task 'watch', ->
   gulp.watch 'src/**/*.coffee', ['compile']
 
 gulp.task 'test', ['compile'], ->
+  gulp.run 'ci'
+
+gulp.task 'ci', ->
   gulp.src 'test/**/*.coffee', read: false
     .pipe $.mocha(reporter: 'spec')
 

@@ -5,7 +5,7 @@
 A javascript library for homebrew beer calculations both in the browser and on the server. Features include:
 
  * Support for multiple Javascript runtimes
-   * Node.js 0.6.x, 0.8.x, 0.10.x
+   * Node.js 0.6.x, 0.8.x, 0.10.x, 0.11.x
    * Chrome, Firefox, Internet Explorer 9+, Safari, Opera, etc
  * Calculate estimated OG, FG, IBU, ABV, SRM color, calories, and more
  * Tinseth and Rager IBU calculation formula support
@@ -954,16 +954,16 @@ When building `brauhaus.js` with `gulp compile` or `npm test` you will see the o
 Before submitting a pull request, please add any relevant tests and run them via:
 
 ```bash
-npm test
+gulp test
 ```
 
 If you have PhantomJS installed and on your path then you can use:
 
 ```bash
-CI=true npm test
+CI=true gulp test
 ```
 
-Pull requests will automatically be tested by Travis CI both in Node.js 0.6/0.8/0.10 and in a headless webkit environment (PhantomJS). Changes that cause tests to fail will not be accepted. New features should be tested to be accepted.
+Pull requests will automatically be tested by Travis CI both in Node.js 0.10+ and in a headless webkit environment (PhantomJS). Changes that cause tests to fail will not be accepted. New features should be tested to be accepted.
 
 New tests can be added in the `test` directory. If you add a new file there, please don't forget to update the `test.html` to include it!
 

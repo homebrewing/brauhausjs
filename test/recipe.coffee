@@ -1,4 +1,4 @@
-Brauhaus = Brauhaus ? require '../lib/brauhaus'
+Brauhaus = Brauhaus ? require '../dist/brauhaus.min'
 assert = assert ? require 'assert'
 
 json = '{"name":"New Recipe","description":"Recipe description","author":"Anonymous Brewer","boilSize":10,"batchSize":20,"servingSize":0.355,"steepEfficiency":50,"steepTime":20,"mashEfficiency":75,"style":null,"ibuMethod":"tinseth","fermentables":[{"name":"Test fermentable","weight":1,"yield":75,"color":2,"late":false}],"spices":[{"name":"Test hop","weight":0.025,"aa":3.5,"use":"boil","time":60,"form":"pellet"}],"yeast":[{"name":"Test yeast","type":"ale","form":"liquid","attenuation":75}],"mash":{"name":"Test mash","grainTemp":23,"spargeTemp":76,"ph":null,"notes":"","steps":[{"name":"Test step","type":"infusion","waterRatio":3,"temp":68,"endTemp":null,"time":60,"rampTime":null}]},"bottlingTemp":0,"bottlingPressure":0,"primaryDays":14,"primaryTemp":20,"secondaryDays":0,"secondaryTemp":0,"tertiaryDays":0,"tertiaryTemp":0,"agingDays":14,"agingTemp":20}'
