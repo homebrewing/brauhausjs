@@ -7,7 +7,7 @@
   "ender": "lib/brauhaus.js",
   "scripts": {
     "prepublish": "gulp compile",
-    "test": "gulp ci",
+    "test": "gulp test",
     "compile": "gulp compile",
     "coveralls": "gulp coveralls"
   },

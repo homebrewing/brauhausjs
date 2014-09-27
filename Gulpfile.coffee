@@ -33,15 +33,12 @@ gulp.task 'watch', ->
   gulp.watch 'src/**/*.coffee', ['compile']
 
 gulp.task 'test', ['compile'], ->
-  gulp.run 'ci'
-
-gulp.task 'ci', ->
-  gulp.src 'test/**/*.coffee', read: false
-    .pipe $.mocha(reporter: 'spec')
-
   if process.env.CI
     gulp.src 'test/test.html'
       .pipe $.mochaPhantomjs()
+
+  gulp.src 'test/**/*.coffee', read: false
+    .pipe $.mocha(reporter: 'spec')
 
 gulp.task 'coverage', ['compile'], ->
   gulp.src 'lib/**/*.js'
