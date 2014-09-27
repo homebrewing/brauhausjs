@@ -1,5 +1,5 @@
 Brauhaus = Brauhaus ? require '../dist/brauhaus.min'
-assert = assert ? require 'assert'
+assert = assert ? require('chai').assert
 
 json = '{"name":"New Recipe","description":"Recipe description","author":"Anonymous Brewer","boilSize":10,"batchSize":20,"servingSize":0.355,"steepEfficiency":50,"steepTime":20,"mashEfficiency":75,"style":null,"ibuMethod":"tinseth","fermentables":[{"name":"Test fermentable","weight":1,"yield":75,"color":2,"late":false}],"spices":[{"name":"Test hop","weight":0.025,"aa":3.5,"use":"boil","time":60,"form":"pellet"}],"yeast":[{"name":"Test yeast","type":"ale","form":"liquid","attenuation":75}],"mash":{"name":"Test mash","grainTemp":23,"spargeTemp":76,"ph":null,"notes":"","steps":[{"name":"Test step","type":"infusion","waterRatio":3,"temp":68,"endTemp":null,"time":60,"rampTime":null}]},"bottlingTemp":0,"bottlingPressure":0,"primaryDays":14,"primaryTemp":20,"secondaryDays":0,"secondaryTemp":0,"tertiaryDays":0,"tertiaryTemp":0,"agingDays":14,"agingTemp":20}'
 
@@ -108,11 +108,19 @@ describe 'Recipe', ->
 
     it 'Should generate a metric unit timeline', ->
       timeline = recipe.timeline()
+
       assert.ok timeline
+      assert.equal timeline[1][1], 'Add 3.5kg of Pale liquid extract (50.6 GU), 28g of Cascade hops'
+      assert.equal timeline[2][1], 'Add 14g of Cascade hops'
+      assert.include timeline[4][1], 'Pitch Wyeast 3724 - Belgian Saison'
 
     it 'Should generate an imperial unit timeline', ->
       timeline = recipe.timeline(false)
+
       assert.ok timeline
+      assert.equal timeline[1][1], 'Add 7lb 11oz of Pale liquid extract (50.6 GU), 1.00oz of Cascade hops'
+      assert.equal timeline[2][1], 'Add 0.49oz of Cascade hops'
+      assert.include timeline[4][1], 'Pitch Wyeast 3724 - Belgian Saison'
 
     it 'Should calculate brew day time, start and end of boil', ->
       assert.equal 21.0, recipe.boilStartTime.toFixed(1)
