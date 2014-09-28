@@ -49,6 +49,7 @@ gulp.task 'coverage', ['compile'], (done) ->
         .pipe $.istanbul.writeReports
           reporters: ['text-summary', 'html', 'lcovonly']
         .on 'end', done
+  return
 
 gulp.task 'coveralls', ['coverage'], ->
   gulp.src 'coverage/lcov.info'
