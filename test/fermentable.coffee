@@ -1,9 +1,9 @@
-Brauhaus = Brauhaus ? require '../dist/brauhaus.min'
+Brauhaus = Brauhaus ? require '../lib/brauhaus'
 assert = assert ? require 'assert'
 
 describe 'Fermentible', ->
   f = new Brauhaus.Fermentable
-  
+
   names =
     'Light liquid malt extract': ['extract', 'boil']
     'Candi sugar': ['extract', 'boil']

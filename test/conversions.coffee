@@ -1,4 +1,4 @@
-Brauhaus = Brauhaus ? require '../dist/brauhaus.min'
+Brauhaus = Brauhaus ? require '../lib/brauhaus'
 assert = assert ? require 'assert'
 
 describe 'Time conversions', ->

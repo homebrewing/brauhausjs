@@ -40,14 +40,15 @@ gulp.task 'test', ['compile'], ->
   gulp.src 'test/**/*.coffee', read: false
     .pipe $.mocha(reporter: 'spec')
 
-gulp.task 'coverage', ['compile'], ->
+gulp.task 'coverage', ['compile'], (done) ->
   gulp.src 'lib/**/*.js'
     .pipe $.istanbul()
     .on 'finish', ->
       gulp.src 'test/**/*.coffee', read: false
-        .pipe $.mocha(reporter: 'spec')
+        .pipe $.mocha(reporter: 'dot')
         .pipe $.istanbul.writeReports
           reporters: ['text-summary', 'html', 'lcovonly']
+        .on 'end', done
 
 gulp.task 'coveralls', ['coverage'], ->
   gulp.src 'coverage/lcov.info'
